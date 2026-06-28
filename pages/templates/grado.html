@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Informacion del grado{% endblock %}
+
+{% block content %}
+<div class="mt-3 mb-3 p-3 bg-light border rounded shadow-sm">
+    <h4 class="text-center text-primary mb-3">Notas del periodo</h4>
+    {% if grado %}
+    <div class="row text-center">
+        <div class="col-md-4">
+            <strong>Grado:</strong> {{ grado.name }}
+        </div>
+        <div class="col-md-4">
+            <strong>Asignatura:</strong> {{ grado.nombre }}
+        </div>
+        <div class="col-md-4">
+            <strong>Periodo Actual:</strong> {{ periodo }} 
+            {% if mensaje %}
+    <div class="alert alert-warning text-center">
+        {{ mensaje }}
+    </div>
+{% endif %}
+        </div>
+    </div>
+    {% else %}
+    <p class="text-danger">No se encontró información de este grado.</p>
+    {% endif %}
+</div>
+
+<!-- Botón para ir a la página de periodos -->
+<div style="display: flex; gap: 10px; flex-wrap: wrap; ">
+<form action="{{ url_for('periodos') }}" method="get">
+    <input type="hidden" name="codemate" value="{{ grado.codemate }}">
+    <input type="hidden" name="alectivo" value="{{ alectivo }}">
+    <input type="hidden" name="codegrad" value="{{ grado.codegrad }}">
+    <input type="hidden" name="periodo" value="{{ periodo }}">
+    <input type="hidden" name="nivelesco" value="{{ nivelesco }}">
+    <input type="hidden" name="codeprof" value="{{ codeprof }}">
+    <button type="submit" class="btn btn-primary">Ver Periodos</button>
+</form>
+        
+    <a class="btn btn-dark" href="{{ url_for('asignacion', codeprof=codeprof) }}?{{ param_name }}={{ token }}">Volver a menu de asignaciones</a>
+    <div class="form-check mb-2">
+        <input class="form-check-input" type="checkbox" id="chkOcultarBloqueados">
+        <label class="form-check-label">
+            Ocultar columnas bloqueadas
+        </label>
+    </div>
+    <div class="ms-auto">
+        <button type="submit" form="form_notas" class="btn btn-primary">Guardar notas</button>
+    </div>    
+</div>
+{% if estudiantes %}
+<form id="form_notas" action="{{ url_for('guardar_notas') }}" method="POST">
+    <input type="hidden" name="codemate" value="{{ grado.codemate }}">
+    <input type="hidden" name="alectivo" value="{{ alectivo }}">
+    <input type="hidden" name="periodo" value="{{ periodo }}">
+    <input type="hidden" name="nivelesco" value="{{ nivelesco }}">
+    <input type="hidden" name="codegrad" value="{{ grado.codegrad }}">
+    <input type="hidden" name="codearea" value="{{ grado.codearea }}">
+    <input type="hidden" name="scodeemp" value="{{ grado.scodeemp }}">
+
+    <table class="table table-hover table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                {% for col in columnas %}
+                <th>{{ col.etiqueta }}</th>
+                {% endfor %}
+                <th>Promedio</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for e in estudiantes %}
+            <tr>
+                
+                <td>{{ e.scodeest }}</td>
+                <td>{{ e.nombre }}</td>
+                {% for col in columnas %}
+                {% set bloqueado = col.clo|trim == 'Y' %}        
+                <td class="{% if bloqueado %}col-bloqueada{% endif %}">
+                    <input type="text" 
+                        name="nota_{{ e.scodeest }}_{{ col.campo }}"
+                        value="{{ e[col.campo] if e[col.campo] not in [None, 0] else '' }}"
+                            {% if bloqueado %} readonly tabindex="-1" style="background-color:#e9c1c9;" {% endif %}
+                        class="form-control form-control-sm text-center" >
+                </td>
+                {% endfor %}
+                <td>{{ e.promfinal }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+</form>
+{% else %}
+<p>No hay estudiantes registrados en este grado.</p>
+{% endif %}
+
+<script>
+document.getElementById('chkOcultarBloqueados').addEventListener('change', function() {
+    let ocultar = this.checked;
+
+    document.querySelectorAll('.col-bloqueada').forEach(function(el) {
+        el.style.display = ocultar ? 'none' : '';
+    });
+});
+</script>
+
+{% endblock %}

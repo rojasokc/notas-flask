@@ -1,0 +1,33 @@
+<input type="hidden" id="nivel_grado_ajax" value="{{ nivel_grado }}">
+<table class="table table-bordered table-sm table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th style="width:20px">Nr</th>
+            <th style="width:120px">Nombre</th>
+            <th>META DE APRENDIZAJE</th>
+            <th>COMPETENCIA LABORAL</th>
+            <th style="width:30px">Codigo</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in registros %}
+        <tr>
+            <td class="fw-bold bg-light">{{ loop.index }}</td>
+            <td class="fw-bold">{{ r.nombre }}
+                <input type="hidden" name="nombre_{{ loop.index }}" value="{{ r.nombre }}">
+            </td>
+            <td>
+                <textarea name="metaapr_{{ loop.index }}" class="form-control form-control-sm" rows="3">{{ r.metaapr }}</textarea>
+            </td>
+            <td>
+                <textarea name="comptlab_{{ loop.index }}" class="form-control form-control-sm" rows="3">{{ r.comptlab }}</textarea>
+            </td>
+            <td>
+                {{ r.codemeco }}
+                <input type="hidden" name="codemeco_{{ loop.index }}" value="{{ r.codemeco }}">
+            </td>            
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<input type="hidden" name="total_filas" value="{{ registros|length }}">

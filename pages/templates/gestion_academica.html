@@ -1,0 +1,82 @@
+{% extends "basesub.html" %}
+
+{% block title %}Gestion academica{% endblock %}
+
+{% block content %}
+
+    <h4 class="text-center text-primary mb-3">Gestión académica</h4>
+
+<div class="mt-3 mb-3 p-3 bg-light border rounded shadow-sm">
+    <!-- Primera fila: 6 botones en 6 columnas iguales -->
+    <div class="row mb-2">
+        <div class="col-2">
+            
+            <a href="{{ url_for('onlycreaprofx') }}" class="btn btn-outline-primary w-100">
+            Crear Profesor
+        </a>
+        </div>
+        <div class="col-2">
+            
+            <a href="{{ url_for('onlycreagradx') }}" class="btn btn-outline-primary w-100">
+            Crear Grados
+            </a>
+        </div>
+        <div class="col-2">
+            
+            <a href="{{ url_for('creaareas') }}" class="btn btn-outline-primary w-100">
+            Crear Areas
+            </a>            
+        </div>
+        <div class="col-2">
+
+            <a href="{{ url_for('creatablaasignaturas') }}" class="btn btn-outline-primary w-100">
+            Tabla de Asignaturas
+            </a> 
+        </div>
+        <div class="col-2">
+            <a href="{{ url_for('creaasignaturas') }}" class="btn btn-outline-primary w-100">
+            Asignaturas x Grado
+            </a> 
+        </div>
+        <div class="col-2">
+
+            <a href="{{ url_for('estudiantes.index') }}" class="btn btn-outline-primary w-100">
+            Crear Estudiantes
+            </a> 
+        </div>
+    </div>
+
+    <!-- Segunda fila: otros 6 botones -->
+    <div class="row mb-2">
+        <div class="col-2">
+            <button class="btn btn-outline-primary w-100">Opción 7</button>
+        </div>
+        <div class="col-2">
+            <button class="btn btn-outline-primary w-100">Opción 8</button>
+        </div>
+        <div class="col-2">
+            <button class="btn btn-outline-primary w-100">Opción 9</button>
+        </div>
+        <div class="col-2">
+            <button class="btn btn-outline-primary w-100">Opción 10</button>
+        </div>
+        <div class="col-2">
+            <button class="btn btn-outline-primary w-100">Opción 11</button>
+        </div>
+        <div class="col-2">
+            <button class="btn btn-outline-primary w-100">Opción 12</button>
+        </div>
+    </div>
+
+    <!-- Tercera fila: solo 2 botones centrados / ocupan 3 columnas cada uno -->
+    <div class="row justify-content-center">
+        <div class="col-3">
+            <button class="btn btn-outline-primary w-100">Opción 13</button>
+        </div>
+        <div class="col-3">
+            <button class="btn btn-outline-primary w-100">Opción 14</button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

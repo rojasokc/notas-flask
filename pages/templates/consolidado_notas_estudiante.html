@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Profesores{% endblock %}
+
+{% block content %}
+
+<div class="mt-3 mb-3 p-3 bg-light border rounded shadow-sm">
+
+     
+
+  <h3>Periodo recibido: {{ periodo }}</h3>
+</div>
+    
+    <table id="tablaPeriodos" class="table table-hover table-striped table-bordered " >
+      <style>
+      .oculto { display: none; }
+      </style>
+      <style>
+            #gridNotasxestudiantexasignatura table th,
+            #gridNotasxestudiantexasignatura table td {
+            text-align: left !important;
+        }
+      </style>
+
+      <style>
+        .nivel-bajo {
+            background-color: #f8d7da !important; /* rojo suave */
+            color: #721c24;
+            font-weight: bold;
+            text-align: center;
+        }
+      </style>
+
+        <thead class="table-dark">
+           
+        </thead>
+        <tbody >
+            <div id="gridNotasxestudiantexasignatura"></div>            
+
+        </tbody>
+    </table>
+
+    <div class="mt-3 mb-3 p-3 bg-light border rounded shadow-sm">
+    <h4 class="text-center text-primary mb-3">Notas por Area</h4>
+    </div>
+    <table id="tablanotasxarea" class="table table-hover table-striped table-bordered " >
+
+      <style>
+      .oculto { display: none; }
+      </style>
+      <style>
+            #gridNotasxestudiantexarea table th,
+            #gridNotasxestudiantexarea table td {
+            text-align: left !important;
+        }
+      </style>
+        <thead class="table-dark">
+           <tr>
+            
+           </tr>
+        </thead>
+        <tbody >
+            <div id="gridNotasxestudiantexarea"></div>            
+
+        </tbody>
+    </table>
+
+<script src="{{ url_for('static', filename='js/notas_estudiante.js') }}"></script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    const codegrad = "{{ codegrad }}";
+    const codeestu = "{{ codeestu }}";
+    const periodo  = "{{ periodo }}";
+
+    fetch(`/get_notas_estudiante/${codegrad}/${codeestu}`)
+        .then(response => response.json())
+        .then(data => {
+
+            renderGridNotas(data.notas, periodo);
+            renderGridNotasArea(data.notasxarea, periodo);
+
+        });
+
+});
+
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,1699 @@
+{% extends "basesubreporte.html" %}
+
+{% block title %}Reportes{% endblock %}
+
+{% block content %}
+<form  id="frmReporte" method="GET" action="{{ url_for('reporte.index') }}">
+        <div class="container-fluid mt-3">
+                <!-- BOTON REGRESAR -->
+
+                <!-- ================== ZONA SUPERIOR (100%) ================== -->
+                <div class="row mb-3">
+
+                        <div class="col-12">
+                                <div class="card shadow-sm">
+                                        <div class="card-body bg-light py-1 px-2">
+                                                <div
+                                                        class="d-flex align-items-center justify-content-between flex-nowrap">
+
+                                                        <!-- Radios -->
+                                                        <div class="d-flex align-items-center gap-3">
+
+                                                                <div class="form-check mb-0">
+                                                                        <input class="form-check-input" type="radio"
+                                                                                name="nivel_radio" value="1" {% if
+                                                                                nivel_radio=='1' %}checked{% endif %}>
+                                                                        <label class="form-check-label">Prebas</label>
+                                                                </div>
+
+                                                                <div class="form-check mb-0">
+                                                                        <input class="form-check-input" type="radio"
+                                                                                name="nivel_radio" value="2" {% if
+                                                                                nivel_radio=='2' %}checked{% endif %}>
+                                                                        <label class="form-check-label">Primar</label>
+                                                                </div>
+
+                                                                <div class="form-check mb-0">
+                                                                        <input class="form-check-input" type="radio"
+                                                                                name="nivel_radio" value="3" {% if
+                                                                                nivel_radio=='3' %}checked{% endif %}>
+                                                                        <label class="form-check-label">Bachil</label>
+                                                                </div>
+                                                                <div class="input-group input-group-sm"
+                                                                        style="max-width: 120px;">
+                                                                        <select class="form-select" name="cualgrado"
+                                                                                id="cualgrado">
+                                                                                <option value="">Grado</option>
+                                                                                {% for g in lista_grados_persist %}
+                                                                                <option value="{{ g.codegrad }}" {% if
+                                                                                        g.codegrad==gradomx_sel.codegrad
+                                                                                        %}selected{% endif %}>
+                                                                                        {{ g.name }}
+                                                                                </option>
+                                                                                {% endfor %}
+                                                                        </select>
+
+                                                                        <div class="input-group-text">
+                                                                                <input class="form-check-input mt-0"
+                                                                                        type="radio"
+                                                                                        name="chk_pornivelogrado"
+                                                                                        value="grado" {% if
+                                                                                        chk_pornivelogrado=='grado'
+                                                                                        %}checked{% endif %}>
+                                                                        </div>
+                                                                </div>
+                                                                
+                                                                <div class="input-group input-group-sm"
+                                                                        style="max-width: 250px;">
+
+                                    <select class="form-select " name="cualestudiante" id="cualestudiante">
+                                        <option value="">Estudiante</option>
+                                        {% for g in estudiantesxgrado %}
+                                        <option value="{{ g.scodeest }}" {% if g.scodeest==estudentsfound.scodeest
+                                            %}selected{% endif %}>
+                                            {{ g.nombre }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+
+                                                                        <div class="input-group-text">
+                                                                                <input class="form-check-input mt-0"
+                                                                                        type="checkbox"
+                                                                                        name="chk_cualestudiante"
+                                                                                        id="chk_cualestudiante"
+                                                                                        value="1" {% if chk_cualestudiante=='nivelgrado' %}checked{% endif %}>
+
+
+                                                                        </div>
+
+                                                                       <select class="form-select form-select-sm"
+                                                                                name="cualperiodoconso"
+                                                                                id="cualperiodoconso">
+                                                                                <option value="">Periodo</option>
+                                                                                <option value="PER1" {% if
+                                                                                        cualperiodoarea=="PER1"
+                                                                                        %}selected{% endif %}>PER1
+                                                                                </option>
+                                                                                <option value="PER2" {% if
+                                                                                        cualperiodoarea=="PER2"
+                                                                                        %}selected{% endif %}>PER2
+                                                                                </option>
+                                                                                <option value="PER3" {% if
+                                                                                        cualperiodoarea=="PER3"
+                                                                                        %}selected{% endif %}>PER3
+                                                                                </option>
+                                                                        </select>
+
+                                                                </div>
+                                                                
+                                                                <div class="input-group input-group-sm"
+                                                                        style="max-width: 120px;">
+
+                                                                        <select class="form-select "
+                                                                                name="cualnivelgrado"
+                                                                                id="cualnivelgrado">
+                                                                                <option value="">NivelxGrado</option>
+                                                                                {% for n in nivelgradoact %}
+                                                                                <option value="{{ n.nivelgrado }}" {% if
+                                                                                        n.nivelgrado==nivelgradoact_sel.nivelgrado
+                                                                                        %}selected{% endif %}>
+                                                                                        {{ n.nivelgrado }}
+                                                                                </option>
+                                                                                {% endfor %}
+                                                                        </select>
+
+                                                                        <div class="input-group-text">
+                                                                                <input class="form-check-input mt-0"
+                                                                                        type="radio"
+                                                                                        name="chk_pornivelogrado"
+                                                                                        value="nivelgrado" {% if
+                                                                                        chk_pornivelogrado=='nivelgrado'
+                                                                                        %}checked{% endif %}>
+
+
+                                                                        </div>
+
+                                                                </div>
+                                                                
+
+                                                                <div class="input-group input-group-sm"
+                                                                        style="max-width: 150px;">
+
+                                                                        <select class="form-select form-select-sm"
+                                                                                name="cualgen" id="cualgen">
+                                                                                <option value="">Genero</option>
+                                                                                <option value="M" {% if cualgen=="M"
+                                                                                        %}selected{% endif %}>Masculino
+                                                                                </option>
+                                                                                <option value="F" {% if cualgen=="F"
+                                                                                        %}selected{% endif %}>Femenino
+                                                                                </option>
+                                                                                <option value="O" {% if cualgen=="O"
+                                                                                        %}selected{% endif %}>Otro
+                                                                                </option>
+                                                                        </select>
+
+                                                                        <div class="input-group-text">
+                                                                                <input class="form-check-input mt-0"
+                                                                                        type="checkbox" name="chk_gen"
+                                                                                        id="chk_gen" value="1" {% if
+                                                                                        chk_gen %}checked{% endif %}>
+
+                                                                        </div>
+
+                                                                </div>
+                                                                
+                                                        </div>
+
+                                                        <!-- Totales -->
+                                                        <div class="d-flex align-items-center gap-4">
+                                                                <span class="form-label small fw-bold mb-0">Total: {{
+                                                                        total_registros }}</span>
+                                                                <span class="form-label small fw-bold mb-0">Found:
+                                                                        {{ total_found }}</span>
+                                                                <span class="form-label small fw-bold mb-0">%:
+                                                                        {{ porcentaje }}</span>
+                                                        </div>
+
+
+                                                </div>
+                                        </div>
+                                        <!-- aqui elecciones <div class="card-body bg-light border-top py-1 px-2"> -->
+                                        <div class="card-body bg-primary bg-opacity-10 border-top py-1 px-2">
+
+
+                                                <div class="d-flex flex-wrap gap-3">
+
+                                                        <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                        name="chk_TICC" id="chk_TICC" value="1" {% if
+                                                                        chk_TICC %}checked{% endif %}>
+                                                                <label class="form-check-label"
+                                                                        for="chk_TICC">TICC</label>
+                                                        </div>
+
+                                                        <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                        name="chk_EPS" id="chk_EPS" value="1" {% if
+                                                                        chk_EPS %}checked{% endif %}>
+                                                                <label class="form-check-label"
+                                                                        for="chk_EPS">EPS</label>
+                                                        </div>
+
+                                                        <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                        name="chk_despla" id="chk_despla" value="1" {%
+                                                                        if chk_despla %}checked{% endif %}>
+                                                                <label class="form-check-label"
+                                                                        for="chk_despla">Desplazado</label>
+                                                        </div>
+
+                                                        <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                        name="chk_rh" id="chk_rh" value="1" {% if chk_rh
+                                                                        %}checked{% endif %}>
+                                                                <label class="form-check-label" for="chk_rh">RH</label>
+                                                        </div>
+
+                                                        <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                        name="chk_padre" id="chk_padre" value="1" {% if
+                                                                        chk_padre %}checked{% endif %}>
+                                                                <label class="form-check-label"
+                                                                        for="chk_padre">Padre</label>
+                                                        </div>
+
+                                                        <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                        name="chk_telpadre" id="chk_telpadre" value="1"
+                                                                        {% if chk_telpadre %}checked{% endif %}>
+                                                                <label class="form-check-label"
+                                                                        for="chk_telpadre">TelPadre</label>
+                                                        </div>
+
+                                                        <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                        name="chk_madre" id="chk_madre" value="1" {% if
+                                                                        chk_madre %}checked{% endif %}>
+                                                                <label class="form-check-label"
+                                                                        for="chk_madre">Madre</label>
+                                                        </div>
+
+                                                        <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                        name="chk_telmadre" id="chk_telmadre" value="1"
+                                                                        {% if chk_telmadre %}checked{% endif %}>
+                                                                <label class="form-check-label"
+                                                                        for="chk_telmadre">TelMadre</label>
+                                                        </div>
+                                                        ||
+                                                        <label class="form-label small text-start fw-bold">Edad:
+                                                        </label>
+                                                        <div class="input-group input-group-sm"
+                                                                style="max-width: 150px;">
+
+
+
+                                                                <select class="form-select form-select-sm"
+                                                                        name="edadmayorq" id="edadmayorq">
+                                                                        <option value="">MayorQue -- </option>
+                                                                        <option value="5" {% if edadmayorq=="5"
+                                                                                %}selected{% endif %}>5</option>
+                                                                        <option value="6" {% if edadmayorq=="6"
+                                                                                %}selected{% endif %}>6</option>
+                                                                        <option value="7" {% if edadmayorq=="7"
+                                                                                %}selected{% endif %}>7</option>
+                                                                        <option value="8" {% if edadmayorq=="8"
+                                                                                %}selected{% endif %}>8</option>
+                                                                        <option value="9" {% if edadmayorq=="9"
+                                                                                %}selected{% endif %}>9</option>
+                                                                        <option value="10" {% if edadmayorq=="10"
+                                                                                %}selected{% endif %}>10</option>
+                                                                        <option value="11" {% if edadmayorq=="11"
+                                                                                %}selected{% endif %}>11</option>
+                                                                        <option value="12" {% if edadmayorq=="12"
+                                                                                %}selected{% endif %}>12</option>
+                                                                        <option value="13" {% if edadmayorq=="13"
+                                                                                %}selected{% endif %}>13</option>
+                                                                        <option value="14" {% if edadmayorq=="14"
+                                                                                %}selected{% endif %}>14</option>
+                                                                        <option value="15" {% if edadmayorq=="15"
+                                                                                %}selected{% endif %}>15</option>
+                                                                        <option value="16" {% if edadmayorq=="16"
+                                                                                %}selected{% endif %}>16</option>
+                                                                        <option value="17" {% if edadmayorq=="17"
+                                                                                %}selected{% endif %}>17</option>
+                                                                        <option value="18" {% if edadmayorq=="18"
+                                                                                %}selected{% endif %}>18</option>
+                                                                        <option value="19" {% if edadmayorq=="19"
+                                                                                %}selected{% endif %}>19</option>
+                                                                        <option value="20" {% if edadmayorq=="20"
+                                                                                %}selected{% endif %}>20</option>
+                                                                        <option value="21" {% if edadmayorq=="21"
+                                                                                %}selected{% endif %}>21</option>
+                                                                        <option value="22" {% if edadmayorq=="22"
+                                                                                %}selected{% endif %}>22</option>
+                                                                        <option value="23" {% if edadmayorq=="23"
+                                                                                %}selected{% endif %}>23</option>
+                                                                        <option value="24" {% if edadmayorq=="24"
+                                                                                %}selected{% endif %}>24</option>
+                                                                        <option value="25" {% if edadmayorq=="25"
+                                                                                %}selected{% endif %}>25</option>
+
+                                                                </select>
+
+
+
+                                                                <div class="input-group-text">
+                                                                        <input class="form-check-input mt-0"
+                                                                                type="checkbox" name="chk_emayorq"
+                                                                                id="chk_emayorq" value="1" {% if
+                                                                                chk_emayorq %}checked{% endif %}>
+                                                                </div>
+
+
+                                                        </div>
+                                                        <div class="input-group input-group-sm"
+                                                                style="max-width: 150px;">
+                                                                <select class="form-select form-select-sm"
+                                                                        name="edadmenorq" id="edadmenorq">
+                                                                        <option value="">MenorQue --</option>
+                                                                        <option value="5" {% if edadmenorq=="5"
+                                                                                %}selected{% endif %}>5</option>
+                                                                        <option value="6" {% if edadmenorq=="6"
+                                                                                %}selected{% endif %}>6</option>
+                                                                        <option value="7" {% if edadmenorq=="7"
+                                                                                %}selected{% endif %}>7</option>
+                                                                        <option value="8" {% if edadmenorq=="8"
+                                                                                %}selected{% endif %}>8</option>
+                                                                        <option value="9" {% if edadmenorq=="9"
+                                                                                %}selected{% endif %}>9</option>
+                                                                        <option value="10" {% if edadmenorq=="10"
+                                                                                %}selected{% endif %}>10</option>
+                                                                        <option value="11" {% if edadmenorq=="11"
+                                                                                %}selected{% endif %}>11</option>
+                                                                        <option value="12" {% if edadmenorq=="12"
+                                                                                %}selected{% endif %}>12</option>
+                                                                        <option value="13" {% if edadmenorq=="13"
+                                                                                %}selected{% endif %}>13</option>
+                                                                        <option value="14" {% if edadmenorq=="14"
+                                                                                %}selected{% endif %}>14</option>
+                                                                        <option value="15" {% if edadmenorq=="15"
+                                                                                %}selected{% endif %}>15</option>
+                                                                        <option value="16" {% if edadmenorq=="16"
+                                                                                %}selected{% endif %}>16</option>
+                                                                        <option value="17" {% if edadmenorq=="17"
+                                                                                %}selected{% endif %}>17</option>
+                                                                        <option value="18" {% if edadmenorq=="18"
+                                                                                %}selected{% endif %}>18</option>
+                                                                        <option value="19" {% if edadmenorq=="19"
+                                                                                %}selected{% endif %}>19</option>
+                                                                        <option value="20" {% if edadmenorq=="20"
+                                                                                %}selected{% endif %}>20</option>
+                                                                        <option value="21" {% if edadmenorq=="21"
+                                                                                %}selected{% endif %}>21</option>
+                                                                        <option value="22" {% if edadmenorq=="22"
+                                                                                %}selected{% endif %}>22</option>
+                                                                        <option value="23" {% if edadmenorq=="23"
+                                                                                %}selected{% endif %}>23</option>
+                                                                        <option value="24" {% if edadmenorq=="24"
+                                                                                %}selected{% endif %}>24</option>
+                                                                        <option value="25" {% if edadmenorq=="25"
+                                                                                %}selected{% endif %}>25</option>
+
+                                                                </select>
+
+
+
+                                                                <div class="input-group-text">
+                                                                        <input class="form-check-input mt-0"
+                                                                                type="checkbox" name="chk_emenorq"
+                                                                                id="chk_emenorq" value="1" {% if
+                                                                                chk_emenorq %}checked{% endif %}>
+                                                                </div>
+
+
+                                                        </div>
+
+                                                </div>
+                                        </div>
+                                        <!-- aqui elecciones <div class="card-body bg-light border-top py-1 px-2">...  -->
+                                        <div class="card-body bg-secondary bg-opacity-10 border-top py-1 px-2">
+                                                <div class="d-flex flex-wrap gap-3 flex-wrap">
+
+                                                        <div class="input-group input-group-sm border rounded p-2"
+                                                                style="max-width: 150px;">
+                                                                <!-- LINEA 1: TITULO -->
+                                                                <div class="mb-1">
+                                                                        <label class="form-label small fw-bold mb-0">
+                                                                                Prom Min 3erPer
+                                                                        </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center mb-1">
+
+                                                                        <input class="form-check-input me-2"
+                                                                                type="checkbox" name="chk_min3erper"
+                                                                                id="chk_min3erper" value="1" {% if
+                                                                                chk_min3erper %}checked{% endif %}>
+
+                                                                        <label class="form-check-label mb-0"
+                                                                                for="chk_min3erper">
+                                                                                Min3erPer
+                                                                        </label>
+
+                                                                </div>
+
+                                                                <!-- Radios en línea -->
+                                                                <div class="mt-1">
+                                                                        <div class="form-check form-check-inline mb-0">
+                                                                                <input class="form-check-input"
+                                                                                        type="radio" name="nivel_min3p"
+                                                                                        value="1" {% if nivel_min3p=='1'
+                                                                                        %}checked{% endif %}>
+                                                                                <label
+                                                                                        class="form-check-label">Asignatu</label>
+                                                                        </div>
+
+                                                                        <div class="form-check form-check-inline mb-0">
+                                                                                <input class="form-check-input"
+                                                                                        type="radio" name="nivel_min3p"
+                                                                                        value="2" {% if nivel_min3p=='2'
+                                                                                        %}checked{% endif %}>
+                                                                                <label
+                                                                                        class="form-check-label">UnoXuno</label>
+                                                                        </div>
+                                                                </div>
+
+
+                                                        </div>
+                                                        <div class="input-group input-group-sm border rounded p-2"
+                                                                style="max-width: 150px;">
+
+                                                                <!-- FILA 1: TITULO -->
+                                                                <div class="row mb-1">
+                                                                        <div class="col-12">
+                                                                                <label
+                                                                                        class="form-label small fw-bold mb-0">
+                                                                                        Prom Tot x Est
+                                                                                </label>
+                                                                        </div>
+                                                                </div>
+                                                                <div class="d-flex align-items-center mb-1">
+
+                                                                        <input class="form-check-input me-2"
+                                                                                type="checkbox" name="chk_promtotxest"
+                                                                                id="chk_promtotxest" value="1" {% if
+                                                                                chk_promtotxest %}checked{% endif %}>
+
+                                                                        <label class="form-check-label mb-0"
+                                                                                for="chk_promtotxest">
+                                                                                Prom TotxEst
+                                                                        </label>
+
+                                                                </div>
+
+                                                                <!-- FILA 2: MAYOR -->
+                                                                <div class="row mb-1 align-items-center">
+
+                                                                        <div class="input-group input-group-sm"
+                                                                                style="max-width: 150px;">
+                                                                                <select class="form-select form-select-sm"
+                                                                                        name="prommayorq"
+                                                                                        id="prommayorq">
+                                                                                        <option value="">Mayor=</option>
+                                                                                        <option value="4.6" {% if
+                                                                                                prommayorq=="4.6"
+                                                                                                %}selected{% endif %}>
+                                                                                                4.6</option>
+                                                                                        <option value="4.59" {% if
+                                                                                                prommayorq=="4.59"
+                                                                                                %}selected{% endif %}>
+                                                                                                4.59</option>
+                                                                                        <option value="4.0" {% if
+                                                                                                prommayorq=="4.0"
+                                                                                                %}selected{% endif %}>
+                                                                                                4.0</option>
+                                                                                        <option value="3.99" {% if
+                                                                                                prommayorq=="3.99"
+                                                                                                %}selected{% endif %}>
+                                                                                                3.99</option>
+                                                                                        <option value="3.59" {% if
+                                                                                                prommayorq=="3.59"
+                                                                                                %}selected{% endif %}>
+                                                                                                3.59</option>
+                                                                                        <option value="3.0" {% if
+                                                                                                prommayorq=="3.0"
+                                                                                                %}selected{% endif %}>
+                                                                                                3.0</option>
+                                                                                        <option value="2.99" {% if
+                                                                                                prommayorq=="2.99"
+                                                                                                %}selected{% endif %}>
+                                                                                                2.99</option>
+                                                                                        <option value="2.0" {% if
+                                                                                                prommayorq=="2.0"
+                                                                                                %}selected{% endif %}>
+                                                                                                2.0</option>
+                                                                                </select>
+
+
+                                                                                <div class="input-group-text">
+                                                                                        <input class="form-check-input mt-0"
+                                                                                                type="checkbox"
+                                                                                                name="chk_prommayorq"
+                                                                                                id="chk_prommayorq"
+                                                                                                value="1" {% if
+                                                                                                chk_prommayorq
+                                                                                                %}checked{% endif %}>
+                                                                                </div>
+                                                                        </div>
+                                                                </div>
+
+                                                                <!-- FILA 3: MENOR -->
+                                                                <div class="row align-items-center">
+
+                                                                        <div class="input-group input-group-sm"
+                                                                                style="max-width: 150px;">
+                                                                                <select class="form-select form-select-sm"
+                                                                                        name="prommenorq"
+                                                                                        id="prommenorq">
+                                                                                        <option value="">Menor=</option>
+                                                                                        <option value="4.6" {% if
+                                                                                                prommenorq=="4.6"
+                                                                                                %}selected{% endif %}>
+                                                                                                4.6</option>
+                                                                                        <option value="4.59" {% if
+                                                                                                prommenorq=="4.59"
+                                                                                                %}selected{% endif %}>
+                                                                                                4.59</option>
+                                                                                        <option value="4.0" {% if
+                                                                                                prommenorq=="4.0"
+                                                                                                %}selected{% endif %}>
+                                                                                                4.0</option>
+                                                                                        <option value="3.99" {% if
+                                                                                                prommenorq=="3.99"
+                                                                                                %}selected{% endif %}>
+                                                                                                3.99</option>
+                                                                                        <option value="3.59" {% if
+                                                                                                prommenorq=="3.59"
+                                                                                                %}selected{% endif %}>
+                                                                                                3.59</option>
+                                                                                        <option value="3.0" {% if
+                                                                                                prommenorq=="3.0"
+                                                                                                %}selected{% endif %}>
+                                                                                                3.0</option>
+                                                                                        <option value="2.99" {% if
+                                                                                                prommenorq=="2.99"
+                                                                                                %}selected{% endif %}>
+                                                                                                2.99</option>
+                                                                                        <option value="2.0" {% if
+                                                                                                prommenorq=="2.0"
+                                                                                                %}selected{% endif %}>
+                                                                                                2.0</option>
+                                                                                </select>
+
+
+                                                                                <div class="input-group-text">
+                                                                                        <input class="form-check-input mt-0"
+                                                                                                type="checkbox"
+                                                                                                name="chk_prommenorq"
+                                                                                                id="chk_prommenorq"
+                                                                                                value="1" {% if
+                                                                                                chk_prommenorq
+                                                                                                %}checked{% endif %}>
+                                                                                </div>
+                                                                        </div>
+                                                                </div>
+
+                                                        </div>
+
+                                                        <!-- FILA promedio total -->
+                                                        <div class="input-group input-group-sm border rounded p-2"
+                                                                style="max-width: 150px;">
+
+                                                                <!-- LINEA 1: TITULO -->
+                                                                <div class="mb-1">
+                                                                        <label class="form-label small fw-bold mb-0">
+                                                                                PromTot x Periodo
+                                                                        </label>
+                                                                </div>
+
+                                                                <!-- LINEA 2: PERIODO -->
+                                                                <div class="input-group input-group-sm mb-1">
+                                                                        <select class="form-select form-select-sm"
+                                                                                name="cualperiodotot"
+                                                                                id="cualperiodotot">
+                                                                                <option value="">Periodo</option>
+                                                                                <option value="PER1" {% if
+                                                                                        cualperiodotot=="PER1"
+                                                                                        %}selected{% endif %}>PER1
+                                                                                </option>
+                                                                                <option value="PER2" {% if
+                                                                                        cualperiodotot=="PER2"
+                                                                                        %}selected{% endif %}>PER2
+                                                                                </option>
+                                                                                <option value="PER3" {% if
+                                                                                        cualperiodotot=="PER3"
+                                                                                        %}selected{% endif %}>PER3
+                                                                                </option>
+                                                                        </select>
+
+                                                                        <div class="input-group-text">
+                                                                                <input class="form-check-input mt-0"
+                                                                                        type="checkbox"
+                                                                                        name="chk_cualperiodotot"
+                                                                                        id="chk_cualperiodotot"
+                                                                                        value="1" {% if
+                                                                                        chk_cualperiodotot %}checked{%
+                                                                                        endif %}>
+                                                                        </div>
+                                                                </div>
+
+                                                                <!-- LINEA 3: MAYOR -->
+                                                                <div class="input-group input-group-sm mb-1">
+                                                                        <select class="form-select form-select-sm"
+                                                                                name="promtotxpermayorq"
+                                                                                id="promtotxpermayorq">
+                                                                                <option value="">Mayor=</option>
+                                                                                <option value="4.6" {% if
+                                                                                        promtotxpermayorq=="4.6"
+                                                                                        %}selected{% endif %}>4.6
+                                                                                </option>
+                                                                                <option value="4.59" {% if
+                                                                                        promtotxpermayorq=="4.59"
+                                                                                        %}selected{% endif %}>4.59
+                                                                                </option>
+                                                                                <option value="4.0" {% if
+                                                                                        promtotxpermayorq=="4.0"
+                                                                                        %}selected{% endif %}>4.0
+                                                                                </option>
+                                                                                <option value="3.99" {% if
+                                                                                        promtotxpermayorq=="3.99"
+                                                                                        %}selected{% endif %}>3.99
+                                                                                </option>
+                                                                                <option value="3.59" {% if
+                                                                                        promtotxpermayorq=="3.59"
+                                                                                        %}selected{% endif %}>3.59
+                                                                                </option>
+                                                                                <option value="3.0" {% if
+                                                                                        promtotxpermayorq=="3.0"
+                                                                                        %}selected{% endif %}>3.0
+                                                                                </option>
+                                                                                <option value="2.99" {% if
+                                                                                        promtotxpermayorq=="2.99"
+                                                                                        %}selected{% endif %}>2.99
+                                                                                </option>
+                                                                                <option value="2.0" {% if
+                                                                                        promtotxpermayorq=="2.0"
+                                                                                        %}selected{% endif %}>2.0
+                                                                                </option>
+                                                                        </select>
+
+                                                                        <div class="input-group-text">
+                                                                                <input class="form-check-input mt-0"
+                                                                                        type="checkbox"
+                                                                                        name="chk_promtotxpermayorq"
+                                                                                        id="chk_promtotxpermayorq"
+                                                                                        value="1" {% if
+                                                                                        chk_promtotxpermayorq
+                                                                                        %}checked{% endif %}>
+                                                                        </div>
+                                                                </div>
+
+                                                                <!-- LINEA 4: MENOR -->
+                                                                <div class="input-group input-group-sm">
+                                                                        <select class="form-select form-select-sm"
+                                                                                name="promtotxpermenor"
+                                                                                id="promtotxpermenor">
+                                                                                <option value="">Menor=</option>
+                                                                                <option value="4.6" {% if
+                                                                                        promtotxpermenor=="4.6"
+                                                                                        %}selected{% endif %}>4.6
+                                                                                </option>
+                                                                                <option value="4.59" {% if
+                                                                                        promtotxpermenor=="4.59"
+                                                                                        %}selected{% endif %}>4.59
+                                                                                </option>
+                                                                                <option value="4.0" {% if
+                                                                                        promtotxpermenor=="4.0"
+                                                                                        %}selected{% endif %}>4.0
+                                                                                </option>
+                                                                                <option value="3.99" {% if
+                                                                                        promtotxpermenor=="3.99"
+                                                                                        %}selected{% endif %}>3.99
+                                                                                </option>
+                                                                                <option value="3.59" {% if
+                                                                                        promtotxpermenor=="3.59"
+                                                                                        %}selected{% endif %}>3.59
+                                                                                </option>
+                                                                                <option value="3.0" {% if
+                                                                                        promtotxpermenor=="3.0"
+                                                                                        %}selected{% endif %}>3.0
+                                                                                </option>
+                                                                                <option value="2.99" {% if
+                                                                                        promtotxpermenor=="2.99"
+                                                                                        %}selected{% endif %}>2.99
+                                                                                </option>
+                                                                                <option value="2.0" {% if
+                                                                                        promtotxpermenor=="2.0"
+                                                                                        %}selected{% endif %}>2.0
+                                                                                </option>
+                                                                        </select>
+
+                                                                        <div class="input-group-text">
+                                                                                <input class="form-check-input mt-0"
+                                                                                        type="checkbox"
+                                                                                        name="chk_promtotxpermenor"
+                                                                                        id="chk_promtotxpermenor"
+                                                                                        value="1" {% if
+                                                                                        chk_promtotxpermenor %}checked{%
+                                                                                        endif %}>
+                                                                        </div>
+                                                                </div>
+
+                                                        </div>
+
+                                                        <!-- FILA promedio por periodo por area -->
+                                                        <div class="input-group input-group-sm border rounded p-2"
+                                                                style="max-width: 180px;">
+                                                                <!-- LINEA 1: TITULO -->
+                                                                <div class="mb-1">
+                                                                        <label class="form-label small fw-bold mb-0">
+                                                                                Prom x Per.AREA
+                                                                        </label>
+                                                                </div>
+
+                                                                <!-- LINEA 2: PERIODO -->
+                                                                <div class="input-group input-group-sm mb-1">
+                                                                        <select class="form-select form-select-sm"
+                                                                                name="cualperiodoarea"
+                                                                                id="cualperiodoarea">
+                                                                                <option value="">Periodo</option>
+                                                                                <option value="PER1" {% if
+                                                                                        cualperiodoarea=="PER1"
+                                                                                        %}selected{% endif %}>PER1
+                                                                                </option>
+                                                                                <option value="PER2" {% if
+                                                                                        cualperiodoarea=="PER2"
+                                                                                        %}selected{% endif %}>PER2
+                                                                                </option>
+                                                                                <option value="PER3" {% if
+                                                                                        cualperiodoarea=="PER3"
+                                                                                        %}selected{% endif %}>PER3
+                                                                                </option>
+                                                                        </select>
+
+                                                                        <div class="input-group-text">
+                                                                                <input class="form-check-input mt-0"
+                                                                                        type="checkbox"
+                                                                                        name="chk_cualperiodoarea"
+                                                                                        id="chk_cualperiodoarea"
+                                                                                        value="1" {% if
+                                                                                        chk_cualperiodoarea %}checked{%
+                                                                                        endif %}>
+                                                                        </div>
+                                                                </div>
+                                                                <!-- LINEA 3: MAYOR -->
+                                                                <div class="input-group input-group-sm mb-1">
+                                                                        <select class="form-select form-select-sm"
+                                                                                name="promxperareamayorq"
+                                                                                id="promxperareamayorq">
+                                                                                <option value="">Mayor=</option>
+                                                                                <option value="4.6" {% if
+                                                                                        promxperareamayorq=="4.6"
+                                                                                        %}selected{% endif %}>4.6
+                                                                                </option>
+                                                                                <option value="4.59" {% if
+                                                                                        promxperareamayorq=="4.59"
+                                                                                        %}selected{% endif %}>4.59
+                                                                                </option>
+                                                                                <option value="4.0" {% if
+                                                                                        promxperareamayorq=="4.0"
+                                                                                        %}selected{% endif %}>4.0
+                                                                                </option>
+                                                                                <option value="3.99" {% if
+                                                                                        promxperareamayorq=="3.99"
+                                                                                        %}selected{% endif %}>3.99
+                                                                                </option>
+                                                                                <option value="3.59" {% if
+                                                                                        promxperareamayorq=="3.59"
+                                                                                        %}selected{% endif %}>3.59
+                                                                                </option>
+                                                                                <option value="3.0" {% if
+                                                                                        promxperareamayorq=="3.0"
+                                                                                        %}selected{% endif %}>3.0
+                                                                                </option>
+                                                                                <option value="2.99" {% if
+                                                                                        promxperareamayorq=="2.99"
+                                                                                        %}selected{% endif %}>2.99
+                                                                                </option>
+                                                                                <option value="2.0" {% if
+                                                                                        promxperareamayorq=="2.0"
+                                                                                        %}selected{% endif %}>2.0
+                                                                                </option>
+                                                                        </select>
+
+                                                                        <div class="input-group-text">
+                                                                                <input class="form-check-input mt-0"
+                                                                                        type="checkbox"
+                                                                                        name="chk_promxperareamayorq"
+                                                                                        id="chk_promxperareamayorq"
+                                                                                        value="1" {% if
+                                                                                        chk_promxperareamayorq
+                                                                                        %}checked{% endif %}>
+                                                                        </div>
+                                                                </div>
+
+                                                                <!-- LINEA 4: MENOR -->
+                                                                <div class="input-group input-group-sm">
+                                                                        <select class="form-select form-select-sm"
+                                                                                name="promxperareamenor"
+                                                                                id="promxperareamenor">
+                                                                                <option value="">Menor=</option>
+                                                                                <option value="4.6" {% if
+                                                                                        promxperareamenor=="4.6"
+                                                                                        %}selected{% endif %}>4.6
+                                                                                </option>
+                                                                                <option value="4.59" {% if
+                                                                                        promxperareamenor=="4.59"
+                                                                                        %}selected{% endif %}>4.59
+                                                                                </option>
+                                                                                <option value="4.0" {% if
+                                                                                        promxperareamenor=="4.0"
+                                                                                        %}selected{% endif %}>4.0
+                                                                                </option>
+                                                                                <option value="3.99" {% if
+                                                                                        promxperareamenor=="3.99"
+                                                                                        %}selected{% endif %}>3.99
+                                                                                </option>
+                                                                                <option value="3.59" {% if
+                                                                                        promxperareamenor=="3.59"
+                                                                                        %}selected{% endif %}>3.59
+                                                                                </option>
+                                                                                <option value="3.0" {% if
+                                                                                        promxperareamenor=="3.0"
+                                                                                        %}selected{% endif %}>3.0
+                                                                                </option>
+                                                                                <option value="2.99" {% if
+                                                                                        promxperareamenor=="2.99"
+                                                                                        %}selected{% endif %}>2.99
+                                                                                </option>
+                                                                                <option value="2.0" {% if
+                                                                                        promxperareamenor=="2.0"
+                                                                                        %}selected{% endif %}>2.0
+                                                                                </option>
+                                                                        </select>
+
+                                                                        <div class="input-group-text">
+                                                                                <input class="form-check-input mt-0"
+                                                                                        type="checkbox"
+                                                                                        name="chk_promxperareamenor"
+                                                                                        id="chk_promxperareamenor"
+                                                                                        value="1" {% if
+                                                                                        chk_promxperareamenor
+                                                                                        %}checked{% endif %}>
+                                                                        </div>
+                                                                </div>
+                                                                <div class="input-group input-group-sm">
+                                                                        <select class="form-select "
+                                                                                name="cualareanaxgrado"
+                                                                                id="cualareanaxgrado"
+                                                                                style="font-size: 12px;">
+                                                                                <option value="">AREAxGrado</option>
+                                                                                {% for n in areasrealxgrado %}
+                                                                                <option value="{{ n.keymate }}" {% if
+                                                                                        n.keymate==cualareanaxgrado
+                                                                                        %}selected{% endif %}>
+                                                                                        {{ n.nombre }}
+                                                                                </option>
+                                                                                {% endfor %}
+                                                                        </select>
+
+                                                                        <div class="input-group-text">
+                                                                                <input class="form-check-input mt-0"
+                                                                                        type="checkbox"
+                                                                                        name="chk_cualareanaxgrado"
+                                                                                        id="chk_cualareanaxgrado"
+                                                                                        value="1" {% if
+                                                                                        chk_cualareanaxgrado %}checked{%
+                                                                                        endif %}>
+                                                                        </div>
+                                                                </div>
+
+
+                                                        </div>
+
+                                                        <!-- FILA promedio por periodo por asignatura -->
+                                                        <div class="input-group input-group-sm border rounded p-2"
+                                                                style="max-width: 180px;">
+                                                                <!-- LINEA 1: TITULO -->
+                                                                <div class="mb-1">
+                                                                        <label class="form-label small fw-bold mb-0">
+                                                                                Prom x Per.Asigna
+                                                                        </label>
+                                                                </div>
+
+                                                                <!-- LINEA 2: PERIODO -->
+                                                                <div class="input-group input-group-sm mb-1">
+                                                                        <select class="form-select form-select-sm"
+                                                                                name="cualperiodoasig"
+                                                                                id="cualperiodoasig">
+                                                                                <option value="">Periodo</option>
+                                                                                <option value="PER1" {% if
+                                                                                        cualperiodoasig=="PER1"
+                                                                                        %}selected{% endif %}>PER1
+                                                                                </option>
+                                                                                <option value="PER2" {% if
+                                                                                        cualperiodoasig=="PER2"
+                                                                                        %}selected{% endif %}>PER2
+                                                                                </option>
+                                                                                <option value="PER3" {% if
+                                                                                        cualperiodoasig=="PER3"
+                                                                                        %}selected{% endif %}>PER3
+                                                                                </option>
+                                                                        </select>
+
+                                                                        <div class="input-group-text">
+                                                                                <input class="form-check-input mt-0"
+                                                                                        type="checkbox"
+                                                                                        name="chk_cualperiodoasig"
+                                                                                        id="chk_cualperiodoasig"
+                                                                                        value="1" {% if
+                                                                                        chk_cualperiodoasig %}checked{%
+                                                                                        endif %}>
+                                                                        </div>
+                                                                </div>
+                                                                <!-- LINEA 3: MAYOR -->
+                                                                <div class="input-group input-group-sm mb-1">
+                                                                        <select class="form-select form-select-sm"
+                                                                                name="promxperasigmayorq"
+                                                                                id="promxperasigmayorq">
+                                                                                <option value="">Mayor=</option>
+                                                                                <option value="4.6" {% if
+                                                                                        promxperasigmayorq=="4.6"
+                                                                                        %}selected{% endif %}>4.6
+                                                                                </option>
+                                                                                <option value="4.59" {% if
+                                                                                        promxperasigmayorq=="4.59"
+                                                                                        %}selected{% endif %}>4.59
+                                                                                </option>
+                                                                                <option value="4.0" {% if
+                                                                                        promxperasigmayorq=="4.0"
+                                                                                        %}selected{% endif %}>4.0
+                                                                                </option>
+                                                                                <option value="3.99" {% if
+                                                                                        promxperasigmayorq=="3.99"
+                                                                                        %}selected{% endif %}>3.99
+                                                                                </option>
+                                                                                <option value="3.59" {% if
+                                                                                        promxperasigmayorq=="3.59"
+                                                                                        %}selected{% endif %}>3.59
+                                                                                </option>
+                                                                                <option value="3.0" {% if
+                                                                                        promxperasigmayorq=="3.0"
+                                                                                        %}selected{% endif %}>3.0
+                                                                                </option>
+                                                                                <option value="2.99" {% if
+                                                                                        promxperasigmayorq=="2.99"
+                                                                                        %}selected{% endif %}>2.99
+                                                                                </option>
+                                                                                <option value="2.0" {% if
+                                                                                        promxperasigmayorq=="2.0"
+                                                                                        %}selected{% endif %}>2.0
+                                                                                </option>
+                                                                        </select>
+
+                                                                        <div class="input-group-text">
+                                                                                <input class="form-check-input mt-0"
+                                                                                        type="checkbox"
+                                                                                        name="chk_promxperasigmayorq"
+                                                                                        id="chk_promxperasigmayorq"
+                                                                                        value="1" {% if
+                                                                                        chk_promxperasigmayorq
+                                                                                        %}checked{% endif %}>
+                                                                        </div>
+                                                                </div>
+
+                                                                <!-- LINEA 4: MENOR -->
+                                                                <div class="input-group input-group-sm">
+                                                                        <select class="form-select form-select-sm"
+                                                                                name="promxperasigmenor"
+                                                                                id="promxperasigmenor">
+                                                                                <option value="">Menor=</option>
+                                                                                <option value="4.6" {% if
+                                                                                        promxperasigmenor=="4.6"
+                                                                                        %}selected{% endif %}>4.6
+                                                                                </option>
+                                                                                <option value="4.59" {% if
+                                                                                        promxperasigmenor=="4.59"
+                                                                                        %}selected{% endif %}>4.59
+                                                                                </option>
+                                                                                <option value="4.0" {% if
+                                                                                        promxperasigmenor=="4.0"
+                                                                                        %}selected{% endif %}>4.0
+                                                                                </option>
+                                                                                <option value="3.99" {% if
+                                                                                        promxperasigmenor=="3.99"
+                                                                                        %}selected{% endif %}>3.99
+                                                                                </option>
+                                                                                <option value="3.59" {% if
+                                                                                        promxperasigmenor=="3.59"
+                                                                                        %}selected{% endif %}>3.59
+                                                                                </option>
+                                                                                <option value="3.0" {% if
+                                                                                        promxperasigmenor=="3.0"
+                                                                                        %}selected{% endif %}>3.0
+                                                                                </option>
+                                                                                <option value="2.99" {% if
+                                                                                        promxperasigmenor=="2.99"
+                                                                                        %}selected{% endif %}>2.99
+                                                                                </option>
+                                                                                <option value="2.0" {% if
+                                                                                        promxperasigmenor=="2.0"
+                                                                                        %}selected{% endif %}>2.0
+                                                                                </option>
+                                                                        </select>
+
+                                                                        <div class="input-group-text">
+                                                                                <input class="form-check-input mt-0"
+                                                                                        type="checkbox"
+                                                                                        name="chk_promxperasigmenor"
+                                                                                        id="chk_promxperasigmenor"
+                                                                                        value="1" {% if
+                                                                                        chk_promxperasigmenor
+                                                                                        %}checked{% endif %}>
+                                                                        </div>
+                                                                </div>
+                                                                <div class="input-group input-group-sm">
+                                                                        <select class="form-select "
+                                                                                name="cualasignaxgrado"
+                                                                                id="cualasignaxgrado"
+                                                                                style="font-size: 12px;">
+                                                                                <option value="">AsignaxGrado</option>
+                                                                                {% for n in areasxgrado %}
+                                                                                <option value="{{ n.keymate }}" {% if
+                                                                                        n.keymate==cualasignaxgrado
+                                                                                        %}selected{% endif %}>
+                                                                                        {{ n.nombre }}
+                                                                                </option>
+                                                                                {% endfor %}
+                                                                        </select>
+
+                                                                        <div class="input-group-text">
+                                                                                <input class="form-check-input mt-0"
+                                                                                        type="checkbox"
+                                                                                        name="chk_cualasignaxgrado"
+                                                                                        id="chk_cualasignaxgrado"
+                                                                                        value="1" {% if
+                                                                                        chk_cualasignaxgrado %}checked{%
+                                                                                        endif %}>
+                                                                        </div>
+                                                                </div>
+
+
+                                                        </div>
+
+                                                        <!-- FILA AHR -->
+                                                        <div class="input-group input-group-sm border rounded p-2"
+                                                                style="max-width: 150px;">
+                                                                <!-- LINEA 1: TITULO -->
+                                                                <div class="mb-1">
+                                                                        <label class="form-label small fw-bold mb-0">
+                                                                                Status AHR
+                                                                        </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center mb-1">
+
+                                                                        <input class="form-check-input me-2"
+                                                                                type="checkbox" name="chk_cualAHR"
+                                                                                id="chk_cualAHR" value="1" {% if
+                                                                                chk_cualAHR %}checked{% endif %}>
+
+                                                                        <label class="form-check-label mb-0"
+                                                                                for="chk_cualAHR">
+                                                                                Status AHR
+                                                                        </label>
+
+                                                                </div>
+
+                                                                <div class="d-flex align-items-center mb-1">
+
+                                                                        <input class="form-check-input me-2"
+                                                                                type="checkbox" name="chk_aprobo"
+                                                                                id="chk_aprobo" value="1" {% if
+                                                                                chk_aprobo %}checked{% endif %}>
+
+                                                                        <label class="form-check-label mb-0"
+                                                                                for="chk_aprobo">
+                                                                                Aprobo
+                                                                        </label>
+
+                                                                </div>
+
+                                                                <div class="d-flex align-items-center mb-1">
+
+                                                                        <input class="form-check-input me-2"
+                                                                                type="checkbox" name="chk_reprobo"
+                                                                                id="chk_reprobo" value="1" {% if
+                                                                                chk_reprobo %}checked{% endif %}>
+
+                                                                        <label class="form-check-label mb-0"
+                                                                                for="chk_reprobo">
+                                                                                Reprobo
+                                                                        </label>
+
+                                                                </div>
+
+                                                                <div class="d-flex align-items-center mb-1">
+
+                                                                        <input class="form-check-input me-2"
+                                                                                type="checkbox" name="chk_otrocaso"
+                                                                                id="chk_otrocaso" value="1" {% if
+                                                                                chk_otrocaso %}checked{% endif %}>
+
+                                                                        <label class="form-check-label mb-0"
+                                                                                for="chk_otrocaso">
+                                                                                OtroCaso
+                                                                        </label>
+
+                                                                </div>
+                                                        </div>
+
+                                                        <div class="row mb-2">
+                                                                <div class="col-12">
+                                                                        <button type="submit"
+                                                                                class="btn btn-primary btn-sm">
+                                                                                Generar
+                                                                        </button>
+                                                                </div>
+                                                        </div>
+
+
+                                                        <div class="row mb-2">
+                                                                <div class="col-12">
+                                                                        <a href="{{ url_for('opcionesadmin') }}"
+                                                                                class="btn btn-outline-secondary btn-sm">
+                                                                                Regresar
+                                                                        </a>
+                                                                </div>
+                                                        </div>
+
+
+                                                </div>
+                                        </div>
+
+                                </div>
+                        </div>
+                </div>
+
+
+
+                <!-- ================== CONTENIDO PRINCIPAL ================== -->
+                <div class="row">
+
+
+
+
+                        <!-- ================== ZONA INFERIOR (80%) ================== -->
+                        <div class="col-12 col-md-12">
+
+                                <div class="card shadow-sm">
+
+
+                                        <div class="card-body p-0 table-responsive">
+
+                                                <table
+                                                        class="table table-sm table-striped mb-0 small text-nowrap w-100">
+                                                        <thead class="table-secondary">
+                                                                <tr>
+                                                                        <th>Nombre</th>
+                                                                        <th>Grado</th>
+
+                                                                        {% if chk_emayorq or chk_emenorq %}
+                                                                        <th>Edad</th>
+                                                                        {% endif %}
+
+                                                                        {% if nivel_min3p or chk_prommayorq or
+                                                                        chk_prommenorq or chk_cualperiodoasig or
+                                                                        chk_cualperiodotot or chk_cualperiodoarea %}
+                                                                        <th>Promfinal</th>
+                                                                        {% endif %}
+
+
+                                                                        {% if nivel_min3p or chk_cualperiodoasig or
+                                                                        chk_cualperiodoarea %}
+                                                                        <th>matnombre</th>
+                                                                        {% endif %}
+
+                                                                        {% if chk_TICC %}
+                                                                        <th>TICC</th>
+                                                                        {% endif %}
+
+                                                                        {% if chk_EPS %}
+                                                                        <th>EPS</th>
+                                                                        {% endif %}
+
+                                                                        {% if chk_despla %}
+                                                                        <th>Desplazado</th>
+                                                                        {% endif %}
+
+                                                                        {% if chk_rh %}
+                                                                        <th>RHtipo</th>
+                                                                        {% endif %}
+
+                                                                        {% if chk_padre %}
+                                                                        <th>Padre</th>
+                                                                        {% endif %}
+
+                                                                        {% if chk_telpadre %}
+                                                                        <th>TelPadre</th>
+                                                                        {% endif %}
+
+                                                                        {% if chk_madre %}
+                                                                        <th>Madre</th>
+                                                                        {% endif %}
+
+                                                                        {% if chk_telmadre %}
+                                                                        <th>TelMadre</th>
+                                                                        {% endif %}
+
+                                                                        {% if chk_cualAHR %}
+                                                                        <th>StatusARH</th>
+                                                                        {% endif %}
+                                                                </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                                {% for r in estudents %}
+                                                                <tr>
+                                                                        <td class="form-label small text-start">{{
+                                                                                r.nombre }}</td>
+                                                                        <td>{{ r.name }}</td>
+
+                                                                        {% if chk_emayorq or chk_emenorq %}
+                                                                        <td>{{ r.edad2 }}</td>
+                                                                        {% endif %}
+
+                                                                        {% if nivel_min3p or chk_prommayorq or
+                                                                        chk_prommenorq or chk_cualperiodoasig or
+                                                                        chk_cualperiodotot or chk_cualperiodoarea %}
+                                                                        <td>{{ r.promfinal }}</td>
+                                                                        {% endif %}
+
+
+                                                                        {% if nivel_min3p or chk_cualperiodoasig or
+                                                                        chk_cualperiodoarea%}
+                                                                        <td>{{ r.matnombre }}</td>
+                                                                        {% endif %}
+
+                                                                        {% if chk_TICC %}
+                                                                        <td>{{ r.IDTICC }}</td>
+                                                                        {% endif %}
+
+                                                                        {% if chk_EPS %}
+                                                                        <td class="form-label small text-start">{{ r.eps
+                                                                                }}</td>
+                                                                        {% endif %}
+
+                                                                        {% if chk_despla %}
+                                                                        <td>{{ r.desplaza }}</td>
+                                                                        {% endif %}
+
+                                                                        {% if chk_rh %}
+                                                                        <td>{{ r.rhtipo }}</td>
+                                                                        {% endif %}
+
+                                                                        {% if chk_padre %}
+                                                                        <td class="form-label small text-start">{{
+                                                                                r.padre }}</td>
+                                                                        {% endif %}
+
+                                                                        {% if chk_telpadre %}
+                                                                        <td class="form-label small text-start">{{
+                                                                                r.telpadr }}</td>
+                                                                        {% endif %}
+
+                                                                        {% if chk_madre %}
+                                                                        <td class="form-label small text-start">{{
+                                                                                r.madre }}</td>
+                                                                        {% endif %}
+
+                                                                        {% if chk_telmadre %}
+                                                                        <td class="form-label small text-start">{{
+                                                                                r.telmadr }}</td>
+                                                                        {% endif %}
+
+                                                                        {% if chk_cualAHR %}
+                                                                        <td>{{ r.statusARH }}</td>
+                                                                        {% endif %}
+                                                                </tr>
+                                                                {% else %}
+                                                                <tr>
+                                                                        <td colspan="3" class="text-center text-muted">
+                                                                                No hay resultados
+                                                                        </td>
+                                                                </tr>
+                                                                {% endfor %}
+                                                        </tbody>
+                                                </table>
+
+                                        </div>
+                                </div>
+
+                        </div>
+
+                </div>
+<div id="gridNotasxestudiantexasignatura"></div>
+
+<div id="gridNotasxestudiantexarea"></div>
+                
+
+                </div>
+
+        </div>
+
+</form>
+
+<script src="{{ url_for('static', filename='js/notas_estudiante.js') }}"></script>
+<!--lee el boton submit-->
+<script>
+document
+.getElementById("frmReporte")
+.addEventListener("submit", function(e){
+
+    const chk =
+        document.getElementById("chk_cualestudiante");
+
+    if(!chk.checked){
+        return;
+    }
+
+    e.preventDefault();
+
+    const codegrad =
+        document.getElementById("cualgrado").value;
+
+    const codeestu =
+        document.getElementById("cualestudiante").value;
+
+    const periodo =
+        document.getElementById("cualperiodoconso").value; // o donde lo tengas cualperiodoconso
+
+    console.log("codegrad:", codegrad);
+    console.log("codeestu:", codeestu);
+    console.log("periodo:", periodo);
+
+    fetch(
+        `/get_notas_estudiante/${codegrad}/${codeestu}`
+    )
+    .then(r => r.json())
+    .then(data => {
+
+        renderGridNotas(
+            data.notas,
+            periodo
+        );
+
+        renderGridNotasArea(
+            data.notasxarea,
+            periodo
+        );
+
+    });
+
+});
+</script>
+
+<!--Desde del grid se carga el grado en un select-->
+<script src="{{ url_for('static', filename='js/grados.js') }}"></script>
+
+
+<!-- Carga las areas x grado cuando se selecciona un grado, select name="cualasignaxgrado"-->
+<script>
+        const asignaAREASeleccionada = "{{ cualareanaxgrado }}";
+</script>
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+                const radioGrado1 = document.querySelector('input[name="chk_pornivelogrado"][value="grado"]');
+                const selectGrado1 = document.getElementById("cualgrado");
+                const selectArea1 = document.getElementById("cualareanaxgrado");
+
+                if (!radioGrado1 || !selectGrado1 || !selectArea1) return;
+
+                function cargarAreas1() {
+
+                        const codegrad = selectGrado1.value;
+
+                        // Limpiar siempre
+                        selectArea1.innerHTML = '<option value="">AREAVICxGrado</option>';
+
+                        if (!codegrad) return;
+
+                        fetch(`/reporte/get_area_por_grado/${codegrad}`)
+                                .then(response => {
+                                        if (!response.ok) throw new Error("Error HTTP " + response.status);
+                                        return response.json();
+                                })
+                                .then(data => {
+                                        data.forEach(area1 => {
+                                                const option = document.createElement("option");
+                                                option.value = area1.codearea;
+                                                option.textContent = area1.nombrearea;
+                                                if (area1.codearea === asignaAREASeleccionada) {
+                                                        option.selected = true;
+                                                }
+                                                selectArea1.appendChild(option);
+                                        });
+                                })
+                                .catch(error => console.error("Error cargando asignaturas:", error));
+                }
+
+                // 1️⃣ Cuando se marque el radio
+                radioGrado1.addEventListener("change", function () {
+                        if (this.checked) {
+                                cargarAreas1();
+                        }
+                });
+
+                // 2️⃣ Cuando cambie el grado
+                selectGrado1.addEventListener("change", function () {
+                        if (radioGrado1.checked) {
+                                cargarAreas1();
+                        }
+                });
+
+                // 3️⃣ Si la página ya carga con radio marcado
+                if (radioGrado1.checked && selectGrado1.value !== "") {
+                        cargarAreas1();
+                }
+
+        });
+</script>
+
+<!-- Carga las areas x grado cuando se selecciona un NIVEL, select name="cualasignaxgrado"-->
+<script>
+        const asignaAREASeleccionada2 = "{{ cualareanaxgrado }}";
+</script>
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+                //const radioGrado1  = document.querySelector('input[name="chk_pornivelogrado"][value="grado"]');
+                const radioNivel2 = document.querySelector('input[name="chk_pornivelogrado"][value="nivelgrado"]');
+                //const selectGrado1 = document.getElementById("cualgrado");
+                const selectNivel2 = document.getElementById("cualnivelgrado");
+                const selectArea1 = document.getElementById("cualareanaxgrado");
+
+                if (!radioNivel2 || !selectNivel2 || !selectArea1) return;
+
+                function cargarAreas2() {
+
+                        //const codegrad = selectNivel2.value;
+                        const nivelgrado = selectNivel2.value;
+
+                        // Limpiar siempre
+                        selectArea1.innerHTML = '<option value="">AREAVICxGrado</option>';
+
+                        if (!nivelgrado) return;
+
+                        fetch(`/reporte/get_area_por_nivelgrado/${nivelgrado}`)
+                                .then(response => {
+                                        if (!response.ok) throw new Error("Error HTTP " + response.status);
+                                        return response.json();
+                                })
+                                .then(data => {
+                                        data.forEach(area1 => {
+                                                const option = document.createElement("option");
+                                                option.value = area1.codearea;
+                                                option.textContent = area1.nombrearea;
+                                                if (area1.codearea === asignaAREASeleccionada2) {
+                                                        option.selected = true;
+                                                }
+                                                selectArea1.appendChild(option);
+                                        });
+                                })
+                                .catch(error => console.error("Error cargando asignaturas:", error));
+                }
+
+                // 1️⃣ Cuando se marque el radio
+                radioNivel2.addEventListener("change", function () {
+                        if (this.checked) {
+                                cargarAreas2();
+                        }
+                });
+
+                // 2️⃣ Cuando cambie el grado
+                selectNivel2.addEventListener("change", function () {
+                        if (radioNivel2.checked) {
+                                cargarAreas2();
+                        }
+                });
+
+                // 3️⃣ Si la página ya carga con radio marcado
+                if (radioNivel2.checked && selectNivel2.value !== "") {
+                        cargarAreas2();
+                }
+
+        });
+</script>
+
+<!-- Carga las asignaturas x grado cuando se selecciona un grado, select name="cualasignaxgrado"-->
+<script>
+        const asignaSeleccionada = "{{ cualasignaxgrado }}";
+</script>
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+                const radioGrado = document.querySelector('input[name="chk_pornivelogrado"][value="grado"]');
+
+                const selectGrado = document.getElementById("cualgrado");
+                const selectAsignatura = document.getElementById("cualasignaxgrado");
+
+                if (!radioGrado || !selectGrado || !selectAsignatura) return;
+
+                function cargarAsignaturas() {
+
+                        const codegrad = selectGrado.value;
+
+
+                        // Limpiar siempre
+                        selectAsignatura.innerHTML = '<option value="">AsignaxGrado</option>';
+
+                        if (!codegrad) return;
+
+                        fetch(`/reporte/get_asigna_por_grado/${codegrad}`)
+                                .then(response => {
+                                        if (!response.ok) throw new Error("Error HTTP " + response.status);
+                                        return response.json();
+                                })
+                                .then(data => {
+                                        data.forEach(area => {
+                                                const option = document.createElement("option");
+                                                option.value = area.keymate;
+                                                option.textContent = area.nombre;
+                                                if (area.keymate === asignaSeleccionada) {
+                                                        option.selected = true;
+                                                }
+                                                selectAsignatura.appendChild(option);
+                                        });
+                                })
+                                .catch(error => console.error("Error cargando asignaturas:", error));
+                }
+
+                // 1️⃣ Cuando se marque el radio
+                radioGrado.addEventListener("change", function () {
+                        if (this.checked) {
+                                cargarAsignaturas();
+                        }
+                });
+
+                // 2️⃣ Cuando cambie el grado
+                selectGrado.addEventListener("change", function () {
+                        if (radioGrado.checked) {
+                                cargarAsignaturas();
+                        }
+                });
+
+                // 3️⃣ Si la página ya carga con radio marcado
+                if (radioGrado.checked && selectGrado.value !== "") {
+                        cargarAsignaturas();
+                }
+
+        });
+</script>
+
+<!-- Carga las asignaturas x grado cuando se selecciona un NIVEL, select name="cualasignaxgrado"-->
+
+<script>
+        const asignaSeleccionada1 = "{{ cualasignaxgrado }}";
+</script>
+
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+                const radioNivel = document.querySelector('input[name="chk_pornivelogrado"][value="nivelgrado"]');
+
+                const selectNivel = document.getElementById("cualnivelgrado");
+                const selectAsignatura = document.getElementById("cualasignaxgrado");
+
+                if (!radioNivel || !selectNivel || !selectAsignatura) return;
+
+                function cargarAsignaturas() {
+
+                        const nivelgrado = selectNivel.value;
+
+                        // Limpiar siempre
+                        selectAsignatura.innerHTML = '<option value="">AsignaxGrado</option>';
+
+                        if (!nivelgrado) return;
+
+                        fetch(`/reporte/get_asigna_por_nivelgrado/${nivelgrado}`)
+                                .then(response => {
+                                        if (!response.ok) throw new Error("Error HTTP " + response.status);
+                                        return response.json();
+                                })
+                                .then(data => {
+                                        data.forEach(area => {
+                                                const option = document.createElement("option");
+                                                option.value = area.keymate;
+                                                option.textContent = area.nombre;
+
+                                                if (area.keymate === asignaSeleccionada1) {
+                                                        option.selected = true;
+                                                }
+
+                                                selectAsignatura.appendChild(option);
+                                        });
+                                })
+                                .catch(error => console.error("Error cargando asignaturas:", error));
+                }
+
+                // 1️⃣ Cuando se marque el radio
+                radioNivel.addEventListener("change", function () {
+                        if (this.checked) {
+                                cargarAsignaturas();
+                        }
+                });
+
+                // 2️⃣ Cuando cambie el nivel
+                selectNivel.addEventListener("change", function () {
+                        if (radioNivel.checked) {
+                                cargarAsignaturas();
+                        }
+                });
+
+                // 3️⃣ Si la página ya carga con radio marcado
+                if (radioNivel.checked && selectNivel.value !== "") {
+                        cargarAsignaturas();
+                }
+
+        });
+</script>
+<!-- carga los estudiantes en el select -->
+<script>
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        //const checkbox = document.querySelector('input[name="chk_cualgrado"]');
+        const checkbox = document.querySelector('input[name="chk_pornivelogrado"]');
+        
+        const selectGrado = document.getElementById("cualgrado");
+        const selectEstudiante = document.getElementById("cualestudiante");
+
+        function cargarEstudiantes() {
+
+            if (!checkbox.checked) return;
+
+            const codegrad = selectGrado.value;
+
+            if (!codegrad) return;
+
+            fetch(`/estudiantes/callestudiante/${codegrad}?chk_cualgrado=1`)
+                .then(response => response.json())
+                .then(data => {
+
+                    selectEstudiante.innerHTML = '<option value="">Estudiante</option>';
+
+                    data.forEach(est => {
+
+                        const option = document.createElement("option");
+
+                        option.value = est.scodeest;
+                        option.textContent = est.totname;
+
+                        selectEstudiante.appendChild(option);
+
+                    });
+
+                });
+
+        }
+
+        // cuando se marca el checkbox
+        checkbox.addEventListener("change", function () {
+
+            if (!this.checked) {
+                selectEstudiante.innerHTML = '<option value="">Estudiante</option>';
+                return;
+            }
+
+            cargarEstudiantes();
+
+        });
+
+        // cuando cambia el grado
+        selectGrado.addEventListener("change", function () {
+
+            if (checkbox.checked) {
+                cargarEstudiantes();
+            }
+
+        });
+
+    });
+
+</script>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,558 @@
+{% extends "base.html" %}
+
+{% block title %}Onlyeditlabels{% endblock %}
+
+{% block content %}
+<div class="mt-3 mb-3 p-3 bg-light border rounded shadow-sm">
+    <h4 class="text-center text-primary mb-3">Editando labels de notas</h4>
+    {% if grado %}
+    <div class="row text-center">
+        <div class="col-md-4">
+            <strong>Grado:</strong> {{ grado.name }} 
+        </div>
+        <div class="col-md-4">
+            <strong>Asignatura:</strong> {{ grado.nombre }}
+        </div>
+        <div class="col-md-4">
+            <strong>Periodo Actual:</strong> {{ periodo }}
+        </div>
+        {% if periodo == "PERIODO CERRADO" %}
+          <div class="alert alert-warning mt-2">
+            El periodo está cerrado. No se permiten modificaciones.
+          </div>
+        {% endif %}
+    </div>
+    {% else %}
+        <p class="text-danger">No se encontró información de este grado.</p>
+    {% endif %}
+  </div>
+
+ 
+
+<form action="{{ url_for('guardar_onlyeditnotas') }}" method="POST">
+ <div style="display: flex; gap: 10px; flex-wrap: wrap justify-content-end; ">
+    <!-- 🔑 campos ocultos -->
+    <input type="hidden" name="codemate" value="{{ codemate }}">
+    <input type="hidden" name="codeprof" value="{{ codeprof }}">
+    <input type="hidden" name="periodo" value="{{ periodo }}">
+    <input type="hidden" name="prodid" value="{{ datanotas.prodid if datanotas else '' }}">
+    <!-- 🔵 datanotas mira si ya hay labels si si, entonces muestra el boton actualizar-->
+    {% if datanotas %}
+    <!-- 🔵 MODO EDICIÓN DE UN REGISTRO-->
+    
+    <button class="btn btn-success btn-sm" type="submit" name="accion" value="guardar"
+    {% if periodo == "PERIODO CERRADO" %}disabled{% endif %}> <!-- 🟢 si el periodo esta cerrado se desactiva el boton -->
+      Actualizar 
+    </button>
+    
+    {% else %}
+    <!-- 🟢 MODO ADD NUEVO REGISTRO -->
+    
+    <button class="btn btn-primary btn-sm" type="submit" name="accion" value="nuevo"
+    {% if periodo == "PERIODO CERRADO" %}disabled{% endif %}>
+      Guardar Nuevo
+    </button>
+
+    <button class="btn btn-secondary btn-sm" type="reset"
+    {% if periodo == "PERIODO CERRADO" %}disabled{% endif %}>
+      Clear
+
+    </button>
+    
+    {% endif %}
+    <a class="btn btn-dark" href="{{ url_for('asignacion', codeprof=codeprof) }}?{{ param_name }}={{ token }}">Volver a menu de asignaciones</a>
+  </div>
+  <table class="table table-hover table-striped table-bordered">
+
+  <thead class="table-dark">
+    <tr>
+      <td>
+        <label>Nmbr</label>
+      </td>
+      <td>
+        <strong>Nombre de la Nota:</strong>
+      </td>
+      <td></td>
+      <td></td>
+      <td><button type="button" class="btn btn-primary btn-sm" name="clearbutton">Clear %</button></td><!-- era Button26-->
+      <td><button type="button" class="btn btn-primary btn-sm" name="blockbutton">Blq +</button></td><!-- era Button25-->
+      <td>
+        <strong>Descripción corta de la prueba</strong>
+      </td>
+    </tr>
+  </thead>
+  
+  
+  <tbody>
+    <tr> 
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button1">RT+</button></td> 
+      <td> <input type="text" class="form-control form-control-sm" name="textbox1" value="{{ tbox['tbox1label1'] }}"></td> 
+      <td><input type="checkbox" name="CheckBox1" value="1" {% if tfija['tbox1fija1'] == 'Y' %}checked{% endif %} ></td> 
+      <td><label class="label-percent">Val%</label></td> 
+      <td><input type="text" class="form-control form-control-sm" name="textbox51" value="{{ tval['tbox51valor1'] }}"></td> 
+      <td><input type="checkbox" name="CheckBox51" value="1" {% if tclo['tbox1clon1'] == 'Y' %}checked{% endif %} ></td> 
+      <td><input type="text" class="form-control form-control-sm" name="TextBox101" value="{{ tnota['tbox1nota1'] }}"></td> 
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button2">RD+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox2" value="{{ tbox['tbox2label2'] }}"></td>
+      <td><input type="checkbox" name="CheckBox2" value="1" {% if tfija['tbox2fija2'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox52" value="{{ tval['tbox52valor2'] }}"></td>
+      <td><input type="checkbox" name="CheckBox52" value="1" {% if tclo['tbox2clon2'] == 'Y' %}checked{% endif %}></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox102" value="{{ tnota['tbox2nota2'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button3">E1+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox3" value="{{ tbox['tbox3label3'] }}"></td>
+      <td><input type="checkbox" name="CheckBox3" value="1" {% if tfija['tbox3fija3'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox53" value="{{ tval['tbox53valor3'] }}"></td>
+      <td><input type="checkbox" name="CheckBox53" value="1" {% if tclo['tbox3clon3'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox103" value="{{ tnota['tbox3nota3'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button4">E2+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox4" value="{{ tbox['tbox4label4'] }}"></td>
+      <td><input type="checkbox" name="CheckBox4" value="1" {% if tfija['tbox4fija4'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox54" value="{{ tval['tbox54valor4'] }}"></td>
+      <td><input type="checkbox" name="CheckBox54" value="1" {% if tclo['tbox4clon4'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox104" value="{{ tnota['tbox4nota4'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button5">E3+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox5" value="{{ tbox['tbox5label5'] }}"></td>
+      <td><input type="checkbox" name="CheckBox5" value="1" {% if tfija['tbox5fija5'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox55" value="{{ tval['tbox55valor5'] }}"></td>
+      <td><input type="checkbox" name="CheckBox55" value="1" {% if tclo['tbox5clon5'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox105" value="{{ tnota['tbox5nota5'] }}" ></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button6">E4+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox6" value="{{ tbox['tbox6label6'] }}"></td>
+      <td><input type="checkbox" name="CheckBox6" value="1" {% if tfija['tbox6fija6'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox56" value="{{ tval['tbox56valor6'] }}"></td>
+      <td><input type="checkbox" name="CheckBox56" value="1" {% if tclo['tbox6clon6'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox106" value="{{ tnota['tbox6nota6'] }}" ></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button7">E5+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox7" value="{{ tbox['tbox7label7'] }}"></td>
+      <td><input type="checkbox" name="CheckBox7" value="1" {% if tfija['tbox7fija7'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox57" value="{{ tval['tbox57valor7']  }}"></td>
+      <td><input type="checkbox" name="CheckBox57" value="1" {% if tclo['tbox7clon7'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox107" value="{{ tnota['tbox7nota7'] }}" ></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button8">E6+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox8" value="{{ tbox['tbox8label8'] }}"></td>
+      <td><input type="checkbox" name="CheckBox8" value="1" {% if tfija['tbox8fija8'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox58" value="{{ tval['tbox58valor8']  }}"></td>
+      <td><input type="checkbox" name="CheckBox58" value="1" {% if tclo['tbox8clon8'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox108" value="{{ tnota['tbox8nota8'] }}" ></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button9">E7+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox9" value="{{ tbox['tbox9label9'] }}"></td>
+      <td><input type="checkbox" name="CheckBox9" value="1" {% if tfija['tbox9fija9'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox59" value="{{ tval['tbox59valor9'] }}"></td>
+      <td><input type="checkbox" name="CheckBox59" value="1" {% if tclo['tbox9clon9'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox109" value="{{ tnota['tbox9nota9'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button10">E8+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox10" value="{{ tbox['tbox10label10'] }}"></td>
+      <td><input type="checkbox" name="CheckBox10" value="1" {% if tfija['tbox10fija10'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox60" value="{{ tval['tbox60valor10'] }}"></td>
+      <td><input type="checkbox" name="CheckBox60" value="1" {% if tclo['tbox10clon10'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox110" value="{{ tnota['tbox10nota10'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button11">LC+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox11" value="{{ tbox['tbox11label11'] }}"></td>
+      <td><input type="checkbox" name="CheckBox11" value="1" {% if tfija['tbox11fija11'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox61" value="{{ tval['tbox61valor11'] }}"></td>
+      <td><input type="checkbox" name="CheckBox61" value="1" {% if tclo['tbox11clon11'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox111" value="{{ tnota['tbox11nota11'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button12">ESQ1+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox12" value="{{ tbox['tbox12label12'] }}"></td>
+      <td><input type="checkbox" name="CheckBox12" value="1" {% if tfija['tbox12fija12'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox62" value="{{ tval['tbox62valor12'] }}"></td>
+      <td><input type="checkbox" name="CheckBox62" value="1" {% if tclo['tbox12clon12'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox112" value="{{ tnota['tbox12nota12'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button13">ESQ2+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox13" value="{{ tbox['tbox13label13'] }}"></td>
+      <td><input type="checkbox" name="CheckBox13" value="1" {% if tfija['tbox13fija13'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox63" value="{{ tval['tbox63valor13'] }}"></td>
+      <td><input type="checkbox" name="CheckBox63" value="1" {% if tclo['tbox13clon13'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox113" value="{{ tnota['tbox13nota13'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button14">ICF+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox14" value="{{ tbox['tbox14label14'] }}"></td>
+      <td><input type="checkbox" name="CheckBox14" value="1" {% if tfija['tbox14fija14'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox64" value="{{ tval['tbox64valor14'] }}"></td>
+      <td><input type="checkbox" name="CheckBox64" value="1" {% if tclo['tbox14clon14'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox114" value="{{ tnota['tbox14nota14'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button15">TE1+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox15" value="{{ tbox['tbox15label15'] }}"></td>
+      <td><input type="checkbox" name="CheckBox15" value="1" {% if tfija['tbox15fija15'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox65" value="{{ tval['tbox65valor15'] }}"></td>
+      <td><input type="checkbox" name="CheckBox65" value="1" {% if tclo['tbox15clon15'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox115" value="{{ tnota['tbox15nota15'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button16">TE2+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox16" value="{{ tbox['tbox16label16'] }}"></td>
+      <td><input type="checkbox" name="CheckBox16" value="1" {% if tfija['tbox16fija16'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox66" value="{{ tval['tbox66valor16'] }}"></td>
+      <td><input type="checkbox" name="CheckBox66" value="1" {% if tclo['tbox16clon16'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox116" value="{{ tnota['tbox16nota16'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button17">TE3+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox17" value="{{ tbox['tbox17label17'] }}"></td>
+      <td><input type="checkbox" name="CheckBox17" value="1" {% if tfija['tbox17fija17'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox67" value="{{ tval['tbox67valor17'] }}"></td>
+      <td><input type="checkbox" name="CheckBox67" value="1" {% if tclo['tbox17clon17'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox117" value="{{ tnota['tbox17nota17'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button18">TE4+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox18" value="{{ tbox['tbox18label18'] }}"></td>
+      <td><input type="checkbox" name="CheckBox18" value="1" {% if tfija['tbox18fija18'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox68" value="{{ tval['tbox68valor18'] }}"></td>
+      <td><input type="checkbox" name="CheckBox68" value="1" {% if tclo['tbox18clon18'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox118" value="{{ tnota['tbox18nota18'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button19">TE5+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox19" value="{{ tbox['tbox19label19'] }}"></td>
+      <td><input type="checkbox" name="CheckBox19" value="1" {% if tfija['tbox19fija19'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox69" value="{{ tval['tbox69valor19'] }}"></td>
+      <td><input type="checkbox" name="CheckBox69" value="1" {% if tclo['tbox19clon19'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox119" value="{{ tnota['tbox19nota19'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button20">TE6+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox20" value="{{ tbox['tbox20label20'] }}"></td>
+      <td><input type="checkbox" name="CheckBox20" value="1" {% if tfija['tbox20fija20'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox70" value="{{ tval['tbox70valor20'] }}"></td>
+      <td><input type="checkbox" name="CheckBox70" value="1" {% if tclo['tbox20clon20'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox120" value="{{ tnota['tbox20nota20'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button21">TE7+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox21" value="{{ tbox['tbox21label21'] }}"></td>
+      <td><input type="checkbox" name="CheckBox21" value="1" {% if tfija['tbox21fija21'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox71" value="{{ tval['tbox71valor21'] }}"></td>
+      <td><input type="checkbox" name="CheckBox71" value="1" {% if tclo['tbox21clon21'] == 'Y' %}checked{% endif %}></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox121" value="{{ tnota['tbox21nota21'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button22">CLG1+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox22" value="{{ tbox['tbox22label22'] }}"></td>
+      <td><input type="checkbox" name="CheckBox22" value="1" {% if tfija['tbox22fija22'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox72" value="{{ tval['tbox72valor22'] }}"></td>
+      <td><input type="checkbox" name="CheckBox72" value="1" {% if tclo['tbox22clon22'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox122" value="{{ tnota['tbox22nota22'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button23">CLG2+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox23" value="{{ tbox['tbox23label23'] }}"></td>
+      <td><input type="checkbox" name="CheckBox23" value="1" {% if tfija['tbox23fija23'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox73" value="{{ tval['tbox73valor23'] }}"></td>
+      <td><input type="checkbox" name="CheckBox73" value="1" {% if tclo['tbox23clon23'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox123" value="{{ tnota['tbox23nota23'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button24">CLG3+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox24" value="{{ tbox['tbox24label24'] }}"></td>
+      <td><input type="checkbox" name="CheckBox24" value="1" {% if tfija['tbox24fija24'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox74" value="{{ tval['tbox74valor24'] }}"></td>
+      <td><input type="checkbox" name="CheckBox74" value="1" {% if tclo['tbox24clon24'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox124" value="{{ tnota['tbox24nota24'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button25">EVA+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox25" value="{{ tbox['tbox25label25'] }}"></td>
+      <td><input type="checkbox" name="CheckBox25" value="1" {% if tfija['tbox25fija25'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox75" value="{{ tval['tbox75valor25'] }}"></td>
+      <td><input type="checkbox" name="CheckBox75" value="1" {% if tclo['tbox25clon25'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox125" value="{{ tnota['tbox25nota25'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button26">EF+</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox26" value="{{ tbox['tbox26label26'] }}"></td>
+      <td><input type="checkbox" name="CheckBox26" value="1" {% if tfija['tbox26fija26'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox76" value="{{ tval['tbox76valor26'] }}"></td>
+      <td><input type="checkbox" name="CheckBox76" value="1" {% if tclo['tbox26clon26'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox126" value="{{ tnota['tbox26nota26'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button27" disabled>Nota27</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox27" value="{{ tbox['tbox27label27'] }}"></td>
+      <td><input type="checkbox" name="CheckBox27" value="1" {% if tfija['tbox27fija27'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox77" value="{{ tval['tbox77valor27'] }}"></td>
+      <td><input type="checkbox" name="CheckBox77" value="1" {% if tclo['tbox27clon27'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox127" value="{{ tnota['tbox27nota27'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button28" disabled>Nota28</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox28" value="{{ tbox['tbox28label28'] }}"></td>
+      <td><input type="checkbox" name="CheckBox28" value="1" {% if tfija['tbox28fija28'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox78" value="{{ tval['tbox78valor28'] }}"></td>
+      <td><input type="checkbox" name="CheckBox78" value="1" {% if tclo['tbox28clon28'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox128" value="{{ tnota['tbox28nota28'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button29" >Recu1</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox29" value="{{ tbox['tbox29label29'] }}"></td>
+      <td><input type="checkbox" name="CheckBox29" value="1" {% if tfija['tbox29fija29'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox79" value="{{ tval['tbox79valor29'] }}"></td>
+      <td><input type="checkbox" name="CheckBox79" value="1" {% if tclo['tbox29clon29'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox129" value="{{ tnota['tbox29nota29'] }}"></td>
+    </tr>
+
+    <tr>
+      <td><button type="button" class="btn btn-primary btn-sm" name="Button30" >Recu2</button></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox30" value="{{ tbox['tbox30label30'] }}"></td>
+      <td><input type="checkbox" name="CheckBox30" value="1" {% if tfija['tbox30.fija30'] == 'Y' %}checked{% endif %} ></td>
+      <td><label class="label-percent">Val%</label></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox80" value="{{ tval['tbox80valor30'] }}"></td>
+      <td><input type="checkbox" name="CheckBox80" value="1" {% if tclo['tbox30clon30'] == 'Y' %}checked{% endif %} ></td>
+      <td><input type="text" class="form-control form-control-sm" name="TextBox130" value="{{ tnota['tbox30nota30'] }}"></td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><input type="text" class="form-control form-control-sm text-center" style="width:100%;" name="TextBox74" disabled></td>
+      <td><input type="text" class="form-control form-control-sm text-center" style="width:100%;" name="TextBox73" disabled></td>
+      <td>&nbsp;</td>
+    </tr>
+
+
+
+  </tbody>
+  
+</table>
+</form>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    // -------------------------------
+    // Función para recalcular porcentajes
+    // -------------------------------
+    function recalcularPorcentajes() {
+        const TOTAL = 100;
+        let totalFijo = 0;
+        let dinamicos = [];
+
+        // Detectar si 29 y 30 tienen label
+        let txt29 = document.getElementsByName("TextBox29")[0];
+        let txt79 = document.getElementsByName("TextBox79")[0];
+
+        let txt30 = document.getElementsByName("TextBox30")[0];
+        let txt80 = document.getElementsByName("TextBox80")[0];
+
+        let tiene29 = txt29 && txt29.value.trim() !== "";
+        let tiene30 = txt30 && txt30.value.trim() !== "";
+
+        // Variable para marcar quién tiene el 100
+        let ganador = null; 
+
+        // Regla excluyente: si ambos, gana 30
+        if (tiene29 && !tiene30) ganador = 29;
+        if (!tiene29 && tiene30) ganador = 30;
+        if (tiene29 && tiene30) ganador = 30;  // Exclusión: 30 gana
+
+        // -------------------------------------
+        // CASO ESPECIAL (29 o 30 activados)
+        // -------------------------------------
+        if (ganador !== null) {
+
+            // Resetear todos los valores 51..80
+            for (let i = 1; i <= 30; i++) {
+                let nameVal = (i === 1) ? "textbox51" : "TextBox" + (50 + i);
+                let elem = document.getElementsByName(nameVal)[0];
+                if (elem) elem.value = "";
+            }
+
+            // Asignar 100% al ganador
+            if (ganador === 29 && txt79) txt79.value = "100";
+            if (ganador === 30 && txt80) txt80.value = "100";
+
+            // -------------------------------------
+            // División entre los demás
+            // -------------------------------------
+
+            // Contar dinámicos (labels no vacíos) excepto 29 y 30
+            for (let i = 1; i <= 30; i++) {
+
+                if (i === 29 || i === 30) continue; // estos no participan
+
+                let txtLabel = (i === 1) ? "textbox1" : "TextBox" + i;
+                let txtLabelElem = document.getElementsByName(txtLabel)[0];
+
+                if (txtLabelElem && txtLabelElem.value.trim() !== "") {
+                    dinamicos.push(i);
+                }
+            }
+
+            // dividir 100 entre los restantes
+            let cantidad = dinamicos.length;
+            let division = (cantidad > 0) ? (TOTAL / cantidad) : 0;
+
+            dinamicos.forEach(i => {
+                let txtValorName = (i === 1) ? "textbox51" : "TextBox" + (50 + i);
+                let txtValorElem = document.getElementsByName(txtValorName)[0];
+                if (txtValorElem) txtValorElem.value = division.toFixed(5);
+            });
+
+            return;
+        }
+        
+
+        for (let i = 1; i <= 30; i++) {
+            let txtLabel = (i === 1) ? "textbox1" : "TextBox" + i;
+            let txtValor = (i === 1) ? "textbox51" : "TextBox" + (50 + i);
+            let chkFijo = document.getElementsByName("CheckBox" + i)[0];
+            let txtLabelElem = document.getElementsByName(txtLabel)[0];
+            let txtValorElem = document.getElementsByName(txtValor)[0];
+
+            if (!txtLabelElem) continue;
+
+            if (chkFijo && chkFijo.checked) {
+                // Valor fijo, no se toca
+                totalFijo += parseFloat(txtValorElem.value) || 0;
+            } else if (txtLabelElem.value.trim() !== "") {
+                // Dinámico
+                dinamicos.push(i);
+            }
+        }
+
+        let restante = TOTAL - totalFijo;
+        let division = (dinamicos.length > 0) ? (restante / dinamicos.length) : 0;
+
+        // Asignar valor a los textbox dinámicos
+        dinamicos.forEach(i => {
+            let txtValorName = (i === 1) ? "textbox51" : "TextBox" + (50 + i);
+            let txtValorElem = document.getElementsByName(txtValorName)[0];
+            if (txtValorElem) {
+                txtValorElem.value = division.toFixed(5);
+            }
+        });
+    }
+
+    // -------------------------------
+    // Función que maneja el click de cada botón
+    // -------------------------------
+    function procesarBoton(boton) {
+        let nro = parseInt(boton.name.replace("Button", ""), 10);
+        let nombreTextbox = (nro === 1) ? "textbox1" : "TextBox" + nro;
+        let txt = document.getElementsByName(nombreTextbox)[0];
+
+        if (!txt) return;
+
+        let caption = boton.textContent.replace("+", "").replace("-", "").trim();
+
+        if (txt.value.trim() === "") {
+            // Agregar caption
+            txt.value = caption;
+            boton.textContent = caption + "-";
+        } else {
+            // Quitar caption
+            txt.value = "";
+            boton.textContent = caption + "+";
+
+            // Limpiar textbox51..80 correspondiente solo si no es fijo
+            let chkFijo = document.getElementsByName("CheckBox" + nro)[0];
+            let txtValorName = (nro === 1) ? "textbox51" : "TextBox" + (50 + nro);
+            let txtValorElem = document.getElementsByName(txtValorName)[0];
+
+            if (txtValorElem && (!chkFijo || !chkFijo.checked)) {
+                txtValorElem.value = "";
+            }
+        }
+
+        // Recalcular valores para todos los textbox con caption
+        recalcularPorcentajes();
+    }
+
+    // -------------------------------
+    // Conectar los botones
+    // -------------------------------
+    document.querySelectorAll('button[name^="Button"]').forEach(boton => {
+        boton.addEventListener("click", function () {
+            procesarBoton(this);
+        });
+    });
+
+});
+</script>
+
+{% endblock %}

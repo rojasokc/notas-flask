@@ -1,0 +1,135 @@
+{% extends "basesub.html" %}
+
+{% block title %}Empresa{% endblock %}
+
+{% block content %}
+
+        <h4 class="text-center text-primary mb-3">Editar datos del Instituto</h4>
+<!-- Aquí va el contenido específico -->
+
+<div class="container-fluid mt-3">
+
+    <div class="row">
+
+        <!-- ================== COLUMNA IZQUIERDA : FORMULARIO ================== -->
+        <div class="col-md-10 mx-auto">
+
+            <form method="POST" action="{{ url_for('save_empresa') }}">
+
+                <!-- FILA 1 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Empresa:</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name="campo1emp" value="{{ allemp['empname'] if allemp else '' }}">
+                    </div>
+                    <label class="col-sm-3 col-form-label text-end">{{ allemp['codecole'] }}</label>
+                    <input type="hidden"name="codecole"value="{{ allemp['codecole'] }}">
+                </div>
+
+                <!-- FILA 2 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Tel :</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name="campo2tel" value="{{ allemp['emptel'] if allemp else '' }}">
+                    </div>
+                </div>
+
+                <!-- FILA 3 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Cel/wasp:</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name="campo3cel" value="{{ allemp['emptel2'] if allemp else '' }}">
+                    </div>
+                </div>
+
+                <!-- FILA 4 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Dir:</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name="campo4dir" value="{{ allemp['empaddr'] if allemp else '' }}">
+                    </div>
+                </div>
+
+                <!-- FILA 5 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Ciudad:</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name="campo5ciu" value="{{ allemp['empcity'] if allemp else '' }}">
+                    </div>
+                </div>
+
+                <!-- FILA 6 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Dpto:</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name="campo6dpt" value="{{ allemp['empst'] if allemp else '' }}">
+                    </div>
+                </div>
+
+
+
+                <!-- FILA 8 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Area/zip:</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name="campo8zip" value="{{ allemp['empzip'] if allemp else '' }}">
+                    </div>
+                </div>
+
+                <!-- FILA 9 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Pais:</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name="campo9pai" value="{{ allemp['empcountry'] if allemp else '' }}">
+                    </div>
+                </div>
+
+                <!-- FILA 10 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">URL/Dominio:</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name="campo10url" value="{{ allemp['dominio'] if allemp else '' }}">
+                    </div>
+                </div>
+
+
+
+
+                <!-- BOTONES -->
+                <div class="row mt-3">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-5">
+
+                        {% if allemp %}
+                            <!-- ACTUALIZAR -->
+                            <button type="submit"
+                                    formaction="{{ url_for('update_empresa', codecole=allemp['codecole']) }}"
+                                    class="btn btn-warning me-2">
+                                Actualizar
+                            </button>
+
+                            <!-- CERRAR EDICIÓN -->
+                            <a href="{{ url_for('onlycreaprofx', search=search) }}"
+                            class="btn btn-secondary">
+                                Cerrar edición
+                            </a>
+                        {% else %}
+                            <!-- GUARDAR -->
+                            <button type="submit"
+                                    class="btn btn-primary">
+                                Guardar datos Instituto
+                            </button>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+
+
+    </div>
+</div>        
+
+{% endblock %}

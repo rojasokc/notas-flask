@@ -1,0 +1,412 @@
+{% extends "basesub.html" %}
+
+{% block title %}Crea Estudiante{% endblock %}
+
+{% block content %}
+<h2>Crea - Inscribe Estudiante</h2>
+
+<div class="container-fluid mt-2">
+
+    <div class="row">
+        <!-- ================== COLUMNA IZQUIERDA : FORMULARIO ================== -->
+        <div class="col-md-7 text-start">
+
+            <form method="POST" action="{{ url_for('estudiantes.save_estudiante') }}">
+                <!-- FILA A -->
+                <div class="row mb-2 align-items-center"> 
+                    <div class="col-sm-8">
+                            <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="insmatri" id="insmatri1" value="1" required {% if
+                                estu_sel and estu_sel.status=='INSCRITO' %}checked{% endif %}>
+                            <label class="form-check-label" for="nivel1">Inscribe</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="insmatri" id="insmatri2" value="2" {% if
+                                estu_sel and estu_sel.status=='MATRICUL' %}checked{% endif %}>
+                            <label class="form-check-label" for="nivel2">Matricula</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- FILA 0 -->
+                <div class="row mb-2 align-items-center">
+
+                    <div class="col-sm-8">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="nivel_radio" id="nivel1" value="1" required {% if
+                                grado_sel and grado_sel.nivelesco=='PREBAS' %}checked{% endif %}>
+                            <label class="form-check-label" for="nivel1">Prebasica</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="nivel_radio" id="nivel2" value="2" {% if
+                                grado_sel and grado_sel.nivelesco=='PRIMAR' %}checked{% endif %}>
+                            <label class="form-check-label" for="nivel2">Primaria</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="nivel_radio" id="nivel3" value="3" {% if
+                                grado_sel and grado_sel.nivelesco=='BACHIL' %}checked{% endif %}>
+                            <label class="form-check-label" for="nivel3">Bachillerato</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FILA 1 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-1 col-form-label text-start">Nombr: </label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control form-control-sm" required name="nombre" id="nombre"
+                            value="{{ estu_sel.names if estu_sel }}">
+                    </div>
+                    <label class="col-sm-1 col-form-label text-start">Apell: </label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control form-control-sm" required name="apellido" id="apellido"
+                            value="{{ estu_sel.lastn if estu_sel }}">
+                    </div>
+                    <label class="col-sm-1 col-form-label text-start">2doAp: </label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control form-control-sm" required name="secapel" id="secapel"
+                            value="{{ estu_sel.lastn2 if estu_sel }}">
+                    </div>
+                </div>
+                <!-- FILA 2 -->
+                <div class="row mb-2 align-items-center">
+
+                    <div class="col-sm-8">
+                        <label class="col-sm-2 col-form-label text-start">Genero: </label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="genmf" id="genmf1" value="1" required {% if
+                                estu_sel and estu_sel.genero=='M' %}checked{% endif %}>
+                            <label class="form-check-label" for="nivel1">Mas</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="genmf" id="genmf2" value="2" {% if
+                                estu_sel and estu_sel.genero=='F' %}checked{% endif %}>
+                            <label class="form-check-label" for="nivel2">Fem</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <select class="form-select form-select-sm" required name="opcionsrh" id="opcionsrh"
+                                <option value="">Sel Tipo-RH</option>
+                                    <option value="O+"  {% if estu_sel and estu_sel.rhtipo == 'O+' %}selected{% endif %}>O+</option>
+                                    <option value="A+"  {% if estu_sel and estu_sel.rhtipo == 'A+' %}selected{% endif %}>A+</option>
+                                    <option value="B+"  {% if estu_sel and estu_sel.rhtipo == 'B+' %}selected{% endif %}>B+</option>
+                                    <option value="AB+" {% if estu_sel and estu_sel.rhtipo == 'AB+' %}selected{% endif %}>AB+</option>
+
+                                    <option value="O-"  {% if estu_sel and estu_sel.rhtipo == 'O-' %}selected{% endif %}>O-</option>
+                                    <option value="A-"  {% if estu_sel and estu_sel.rhtipo == 'A-' %}selected{% endif %}>A-</option>
+                                    <option value="B-"  {% if estu_sel and estu_sel.rhtipo == 'B-' %}selected{% endif %}>B-</option>
+                                    <option value="AB-" {% if estu_sel and estu_sel.rhtipo == 'AB-' %}selected{% endif %}>AB-</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FILA 3 -->
+                <div class="row mb-2 align-items-center">
+
+                    <!-- Label Dsplzdo -->
+                    <label class="col-sm-1 col-form-label text-start">Dsplzdo:</label>
+
+                    <!-- Radio SI -->
+                    <div class="col-sm-1">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="dezpl" id="dezpl1" value="1" required {% if
+                                estu_sel and estu_sel.desplaza=='SI' %}checked{% endif %}>
+                            <label class="form-check-label" for="nivel1">Sí</label>
+                        </div>
+                    </div>
+
+                    <!-- Radio NO -->
+                    <div class="col-sm-1">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="dezpl" id="dezpl2" value="2" {% if
+                                estu_sel and estu_sel.desplaza=='NO' %}checked{% endif %}>
+                            <label class="form-check-label" for="nivel2">No</label>
+                        </div>
+                    </div>
+
+                    <!-- Label Email -->
+                    <label class="col-sm-1 col-form-label text-start" >Email:</label>
+
+                    <!-- Input Email -->
+                    <div class="col-sm-5">
+                        <input type="email" class="form-control" required name="email" id="email"
+                            value="{{ estu_sel.email1 if estu_sel }}">
+                    </div>
+
+                </div>
+
+                <!-- FILA 4 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-1 col-form-label text-start">TID/CC: </label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control " required name="tidcc" id="tidcc"
+                            value="{{ estu_sel.IDTICC if estu_sel }}">
+                    </div>
+                    <label class="col-sm-1 col-form-label text-start">EPS: </label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control form-control-sm" required name="eps" id="eps"
+                            value="{{ estu_sel.eps if estu_sel }}">
+                    </div>
+
+                </div>
+
+                <!-- FILA 5 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-1 col-form-label text-start">TelCel: </label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control " required name="telcel" id="telcel"
+                            value="{{ estu_sel.telf if estu_sel }}">
+                    </div>
+                    <label class="col-sm-1 col-form-label text-start">Nac: </label>
+                    <div class="col-sm-3">
+                        <input type="date" class="form-control" required name="fechnac" id="fechnac"
+                            value="{{ estu_sel.fechnac if estu_sel }}">
+                    </div>
+                </div>
+
+                <!-- FILA 6 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-1 col-form-label text-start">Grado: </label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control " style="background-color:#f2f2f2;" required name="gradoact" id="gradoact"
+                            readonly value="{{ estu_sel.grade if estu_sel }}">
+                    </div>
+                    <div class="col-sm-2">
+
+                        <input type="text" class="form-control" style="background-color:#f2f2f2;" required name="campo2_hidden"
+                            id="campo2_hidden" readonly value="{{ estu_sel.codegrad if estu_sel }}">
+
+                    </div>                    
+                    <label class="col-sm-1 col-form-label text-start">asignar: </label>
+                        <div class="col-sm-3">
+                            <select class="form-select" required name="cualgrado" id="cualgrado">
+                                <option value=""> Seleccione --</option>
+
+                            </select>
+
+                        </div>
+
+                    <div class="col-sm-1">
+                        <input type="checkbox" class="form-check-input" name="chk_cualgrado" required id="chk_cualgrado">
+                    </div>
+                </div>
+
+                <!-- FILA 7 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-1 col-form-label text-start">Direcc: </label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control " required name="dircc" id="dircc"
+                            value="{{ estu_sel.direc if estu_sel }}">
+                    </div>
+                    <label class="col-sm-1 col-form-label text-start">Ciudad: </label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" required name="ciudad" id="ciudad"
+                            value="{{ estu_sel.city if estu_sel }}">
+                    </div>
+                    <label class="col-sm-1 col-form-label text-start">Dpto: </label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" required name="dpto" id="dpto"
+                            value="{{ estu_sel.state if estu_sel }}">
+                    </div>
+                </div>
+
+                <!-- FILA 8 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-1 col-form-label text-start">Padre: </label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control " required name="padre" id="padre"
+                            value="{{ estu_sel.padre if estu_sel }}">
+                    </div>
+                    <label class="col-sm-1 col-form-label text-start">acudnt: </label>
+                    <div class="col-sm-1">
+                        <input type="checkbox" class="form-check-input"  name="acudpa" id="acudpa"
+                            value="{{ estu_sel.acudpa if estu_sel }}">
+                    </div>
+                    <label class="col-sm-1 col-form-label text-start">celph: </label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" required name="celphp" id="celphp"
+                            value="{{ estu_sel.telpadr if estu_sel }}">
+                    </div>
+                </div>                
+
+                <!-- FILA 9 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-1 col-form-label text-start">Madre: </label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control " required name="madre" id="madre"
+                            value="{{ estu_sel.madre if estu_sel }}">
+                    </div>
+                    <label class="col-sm-1 col-form-label text-start">acudnt: </label>
+                    <div class="col-sm-1">
+                        <input type="checkbox" class="form-check-input"  name="acudma" id="acudma"
+                            value="{{ estu_sel.acudma if estu_sel }}">
+                    </div>
+                    <label class="col-sm-1 col-form-label text-start">celph: </label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" required name="celphm" id="celphm"
+                            value="{{ estu_sel.telmadr if estu_sel }}">
+                    </div>
+                </div>
+                
+                <!-- FILA 10 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-1 col-form-label text-start" hidden >Login: </label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control " hidden name="nlogin" id="nlogin"
+                            value="{{ estu_sel.login if estu_sel }}">
+                    </div>
+                  <label class="col-sm-1 col-form-label text-start" hidden >Pass: </label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" hidden name="npass" id="npass"
+                            value="{{ estu_sel.password if estu_sel }}">
+                    </div>
+                </div>                
+                
+                <!-- hasta aquimmmmmmmmmmmmmmmm -->
+                <div class="row mt-3">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-5">
+
+                        {% if estu_sel %}
+                        <!-- ACTUALIZAR -->
+                        <button type="submit"
+                            formaction="{{ url_for('estudiantes.update_estudiante', scodeest=estu_sel.scodeest) }}"
+                            class="btn btn-warning me-2">
+                            Actualizar estudiante
+                        </button>
+
+                        <!-- LIMPIAR -->
+                        <a href="{{ url_for('estudiantes.index') }}" class="btn btn-secondary">
+                            Limpiar
+                        </a>
+                        {% else %}
+                        <!-- GUARDAR -->
+                        <button type="submit" class="btn btn-primary">
+                            Crear estudiante
+                        </button>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <!-- LADO DERECHO -->
+        <!-- ================== COLUMNA DERECHA : GRID Grados ================== -->
+        <div class="col-md-5 mb-0 small">
+             
+            <!-- Buscador -->
+            <form method="GET" action="{{ url_for('estudiantes.onlybuscaestu') }}" class="row g-3 mb-3">
+                <div class="col-auto">
+                    Buscar x apellido:
+                </div>
+                <div class="col-auto">
+
+                    <input type="text" class="form-control" name="searchestu" placeholder="Buscar por apellido..."
+                        value="{{ searchestu }}">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-secondary">
+                        Buscar
+                    </button>
+                </div>
+            </form>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <strong>Datos de estudiante</strong>
+                </div>
+
+                <div class="card-body p-0 ">
+
+                    <table class="table table-sm table-striped mb-0 ">
+                        <thead class="table-secondary">
+                            <tr>
+                                <th class="text-start">Nombre</th>
+                                <th class="text-start">IDTICC</th>
+                                <th class="text-start">Grado</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for a in estudentsfound %}
+                            <tr>
+                                <td class="text-start">
+                                    <a href="{{ url_for('estudiantes.onlybuscaestu',
+                                                    scodeest=a['scodeest'],
+                                                    searchestu=searchestu) }}">
+                                        {{ a['namesestu'] }}
+                                    </a>
+                                </td>
+                                <td class="text-start">{{ a['IDTICC'] }}</td>
+                                <th class="text-start">{{a['grade']}}</th>
+                                <!-- Botón Eliminar -->
+
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="text-start text-muted">
+                                    No hay registros registrados
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+<!--Desde del grid se carga el grado en un select-->
+<script src="{{ url_for('static', filename='js/grados.js') }}"></script>
+
+
+<script>
+const chkGrado    = document.getElementById('chk_cualgrado');
+const selectGrado = document.getElementById('cualgrado');
+const inputGrado  = document.getElementById('gradoact');
+const hiddenGrado = document.getElementById('campo2_hidden');
+
+// 1️⃣ Al marcar / desmarcar el checkbox
+chkGrado.addEventListener('change', function () {
+
+    if (this.checked) {
+        cargarGradoSeleccionado();
+    } else {
+        inputGrado.value = '';
+        hiddenGrado.value = '';
+    }
+});
+
+// 2️⃣ Al cambiar el dropdown (SOLO si el checkbox está marcado)
+selectGrado.addEventListener('change', function () {
+
+    if (chkGrado.checked) {
+        cargarGradoSeleccionado();
+    }
+});
+
+// Función centralizada (validación incluida)
+function cargarGradoSeleccionado() {
+
+    const selectedOption = selectGrado.options[selectGrado.selectedIndex];
+
+    if (selectedOption && selectedOption.value !== '') {
+        inputGrado.value = selectedOption.text;
+        hiddenGrado.value = selectedOption.value;
+    } else {
+        inputGrado.value = '';
+        hiddenGrado.value = '';
+    }
+}
+</script>
+
+{% endblock %}

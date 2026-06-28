@@ -1,0 +1,691 @@
+{% extends "basesub.html" %}
+
+{% block title %}Parametros gen{% endblock %}
+
+{% block content %}
+<h2>Crear Asignaturas por Grado</h2>
+
+<div class="container-fluid mt-3">
+
+    <div class="row">
+                <!-- ================== COLUMNA IZQUIERDA : FORMULARIO ================== -->
+        <div class="col-md-7 text-start">
+
+            <form method="POST" action="{{ url_for('save_materia') }}">
+
+                <!-- FILA 1 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Nivel escolar: </label>
+                    <div class="col-sm-6">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="nivel_radio" id="nivel1" value="1" required
+                            {% if materxgrado_sel and materxgrado_sel.nivelesco == 'PREBAS' %}checked{% endif %}>
+                            <label class="form-check-label" for="nivel1">Prebasica</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="nivel_radio" id="nivel2" value="2" required
+                            {% if materxgrado_sel and materxgrado_sel.nivelesco == 'PRIMAR' %}checked{% endif %}>
+                            <label class="form-check-label" for="nivel2">Primaria</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="nivel_radio" id="nivel3" value="3" required
+                            {% if materxgrado_sel and materxgrado_sel.nivelesco == 'BACHIL' %}checked{% endif %}>
+                            <label class="form-check-label" for="nivel3">Bachillerato</label>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- FILA 2B -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Grado asignado: </label>
+                    <div class="col-sm-4">
+
+                        <input type="text" class="form-control" style="background-color:#f2f2f2;" name="campo2"
+                            id="campo2" readonly value="{{ gradosxm_sel.name if gradosxm_sel }}">
+
+                    </div>
+                    <label class="col-sm-1 col-form-label text-end">code: </label>   
+                    <div class="col-sm-2">
+
+                        <input type="text" class="form-control" style="background-color:#f2f2f2;" name="campo2_hidden"
+                            id="campo2_hidden" readonly value="{{ gradosxm_sel.codegrad if gradosxm_sel }}">
+                        <input type="text" class="form-control" style="background-color:#f2f2f2;" name="campo3_hidden"
+                            id="campo3_hidden" readonly value="{{ gradosxm_sel.nivelgrado if gradosxm_sel }}">
+
+                    </div>
+                </div>
+
+
+                <!-- FILA 2C -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Seleccionar Grado:</label>
+                    <div class="col-sm-4">
+
+                        <div class="col-sm-7">
+                            <select class="form-select" name="cualgrado" id="cualgrado" required>
+                                <option value=""> Seleccione --</option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+                    <div class="col-sm-2 text-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="chk_cualgrado" id="chk_cualgrado" required
+                                value="1">
+                            <label class="form-check-label" for="chk_cualgrado">
+                                Activo
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- FILA 3 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Profesor de asignatura:</label>
+                    <div class="col-sm-6">
+                         <input type="text" class="form-control" style="background-color:#f2f2f2;" name="profexmateriat"
+                            id="profexmateriat" readonly value="{{ profexmateria_sel.totname if profexmateria_sel }}">
+                    </div>
+                </div>
+
+             
+                
+                <!-- FILA 4 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end"><strong>Seleccionar profesor: </strong></label>
+                    <div class="col-sm-4">
+
+                        <div class="col-sm-7">
+                            <select class="form-select" name="codeprofemt" id="codeprofemt" required>
+                                <option value=""> Seleccione --</option>
+
+                                {% for d in profexmateria %}
+                                <option value="{{ d.codeprof }}">
+                                    {{ d.totname }}
+                                </option>
+                                {% endfor %}
+                            </select>
+
+                        </div>
+
+                    </div>
+                    <div class="col-sm-2 text-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="chk_profexmateriat" id="chk_profexmateriat" required
+                                value="1">
+                            <label class="form-check-label" for="chk_profexmateriat">
+                                Activo
+                            </label>
+                        </div>
+                    </div>
+
+                </div>   
+
+                <!-- FILA 5 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Area de estudio:</label>
+                    <div class="col-sm-6">
+                         <input type="text" class="form-control" style="background-color:#f2f2f2;" name="arealistt"
+                            id="arealistt" readonly value="{{ areasxmate_sel.nombre if areasxmate_sel }}">
+                    </div>
+                </div>                       
+
+                <!-- FILA 6 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Seleccionar Area:</label>
+                    <div class="col-sm-4">
+
+                        <div class="col-sm-7">
+                            <select class="form-select" name="codearealistt" id="codearealistt" required>
+                                <option value=""> Seleccione --</option>
+
+                                {% for a in areasxmate %}
+                                <option value="{{ a.codearea }}">
+                                    {{ a.nombre }}
+                                </option>
+                                {% endfor %}
+                            </select>
+
+                        </div>
+
+                    </div>
+                    <div class="col-sm-2 text-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="chk_arealistt" id="chk_arealistt" required
+                                value="1">
+                            <label class="form-check-label" for="chk_arealistt">
+                                Activo
+                            </label>
+                        </div>
+                    </div>
+
+                </div>  
+
+                <!-- FILA 7 
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Asignatura:</label>
+                    <div class="col-sm-6">
+                         <input type="text" class="form-control" style="background-color:#f2f2f2;" name="materlistt"
+                            id="materlistt" readonly value="{{ area_sel.codeprof if area_sel }}">
+                    </div>
+                </div> -->        
+
+                <!-- FILA 2 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Nombre de la asignatura: </label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="campo1" style="background-color:#f2f2f2;" readonly value="{{ materxgrado_sel.nombre if materxgrado_sel }}">
+                    </div>
+                    <label class="col-sm-1 col-form-label text-end">Valor%: </label>
+                    <div class="col-sm-2">
+                        <input type="number" class="form-control" name="campo1B" min="1" max="100" step="1" required value="{{ materxgrado_sel.valorm if materxgrado_sel }}">
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" name="campo2B" value="{{ materxgrado_sel.codemate if materxgrado_sel }}">
+                    </div>
+
+                </div>
+
+                <!-- FILA 8 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Seleccionar Asignatura:</label>
+                    <div class="col-sm-4">
+
+                        <div class="col-sm-7">
+                            <select class="form-select" name="codematerlistt" id="codematerlistt" required>
+                                <option value=""> Seleccione --</option>
+
+                                {% for d in materxmate %}
+                                <option value="{{ d.keymate }}" data-codemate = "{{ d.codemate }}">
+                                    {{ d.nombre }}
+                                </option>
+                                {% endfor %}
+                                <input type="hidden" name="codemate" id="codemate_hidden">
+                            </select>
+
+                        </div>
+
+                    </div>
+                    <div class="col-sm-2 text-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="chk_materlistt" id="chk_materlistt" required
+                                value="1">
+                            <label class="form-check-label" for="chk_materlistt">
+                                Activo
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="row mt-3">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-5">
+
+                        {% if materxgrado_sel %}
+                        <!-- ACTUALIZAR -->
+                        <button type="submit" formaction="{{ url_for('update_materia', codemate=materxgrado_sel.codemate) }}"
+                            class="btn btn-warning me-2">
+                            Actualizar Asignatura
+                        </button>
+
+                        <!-- LIMPIAR -->
+                        <a href="{{ url_for('creaasignaturas') }}" class="btn btn-secondary">
+                            Limpiar
+                        </a>
+                        {% else %}
+                        <!-- GUARDAR -->
+                        <button type="submit" class="btn btn-primary">
+                            Guardar Asignatura
+                        </button>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+                <!-- ================== COLUMNA DERECHA : GRID Grados ================== -->
+        <div class="col-md-6 col-lg-5">
+            <!-- Buscador -->
+            <form method="GET" action="{{ url_for('creaasignaturas') }}" class="row g-3 mb-3">
+                <!-- <input type="hidden" name="nivel_radio" id="nivel_radio_hidden">-->
+                <input type="hidden" name="profexmateriat" id="profexmateriat_hidden">
+
+                <div class="col-auto">
+                    Buscar x Asignatura | y | <strong>Seleccionar profesor</strong>
+                </div>
+
+                <div class="col-auto">
+
+                    <input type="text" class="form-control" name="searchmater" placeholder="Buscar por asignatura..."
+                        value="{{ searchmater }}">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-secondary">
+                        Buscar
+                    </button>
+                    
+                </div>
+
+            </form>
+            <form method="POST" action="{{ url_for('getallmaterx') }}" class="row g-3 mb-3">
+                <input type="hidden" name="profexmateriat" id="profexmateriat_hidden">
+                <div class="row mb-2 align-items-center">
+                    <div class="col-sm-4">
+
+                        <div class="col-sm-7">
+                            <select class="form-select" name="cualgradop2" id="cualgradop2">
+                                <option value=""> Seleccione --</option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-auto">
+                        <button type="submit" 
+                                class="btn btn-secondary">
+                                
+                            Buscarnn
+                        </button>
+                        
+                    </div>                    
+                </div>
+            </form>
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <strong>Asignaturas creadas</strong>
+                </div>
+
+                <div class="card-body p-0 ">
+
+                    <table class="table table-sm table-striped mb-0 small">
+                        <thead class="table-secondary">
+                            <tr>
+                                <th style="display:none;">Code</th>
+                                <th class="text-start">Asignatura</th>
+                                <th class="text-start">Valor%</th>                                
+                                <th class="text-start">Grado</th>                                
+                                <th style="width: 25% no-wrap">Profesor</th>
+                                <th class="text-start">Accion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for a in materfilter %}
+                            <tr>
+                                <td style="display:none;">
+                                    <a href="{{ url_for('creaasignaturas',
+                                                    codemate=a['codemate'],
+                                                    searchmater=searchmater) }}">
+                                        {{ a['codemate'] }}
+                                    </a>
+                                </td>
+                                <td class="text-start">
+                                    <a href="{{ url_for('creaasignaturas',
+                                                    codemate=a['codemate'],
+                                                    searchmater=searchmater) }}">
+                                        {{ a['nombre'] }}
+                                    </a>
+                                </td>
+                                <td class="text-start">{{ a['valorm'] }}</td>
+                                <td class="text-start">{{ a['name'] }}</td>
+                                <td class="text-start" >{{ a['nombreprof'] }}</td>
+                                <!-- Botón Eliminar -->
+                                <td>
+                                    <form method="POST"
+                                        action="{{ url_for('delete_mater', codemate= a['codemate'] ) }}">
+                                        <input type="hidden" name="searchmater" value="{{ searchmater }}">
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('¿Seguro que deseas eliminar este registro?');">
+                                            Eliminar
+                                        </button>
+                                    </form>
+
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="text-start text-muted">
+                                    No hay asignaturas registrados
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+<!--Desde del grid se carga el grado en un select
+<script src="{{ url_for('static', filename='js/grados.js') }}"></script>-->
+
+<!-- carga el select con los grados-->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    document.querySelectorAll('input[name="nivel_radio"]').forEach(radio => {
+
+        radio.addEventListener('change', function () {
+
+            let nivelesco = '';
+
+            if (this.value === '1') nivelesco = 'PREBAS';
+            if (this.value === '2') nivelesco = 'PRIMAR';
+            if (this.value === '3') nivelesco = 'BACHIL';
+
+            fetch(`/get_grados_por_nivel?nivelesco=${nivelesco}`)
+                .then(response => response.json())
+                .then(data => {
+
+                    const select = document.getElementById('cualgrado');
+
+
+                    select.innerHTML = '<option value="">Seleccione grado --</option>';
+
+
+                    data.forEach(grado => {
+
+                        const option = document.createElement('option');
+                        option.value = grado.codegrad;
+                        option.textContent = grado.gradox;
+                        // 🔥 guardar dato extra
+                        option.dataset.nivelgrado = grado.nivelgrado;
+
+                        select.appendChild(option);
+
+     
+
+                    });
+
+                });
+
+        });
+
+    });
+
+});
+</script>
+
+<!-- carga el select con los grados-->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    document.querySelectorAll('input[name="nivel_radio"]').forEach(radio => {
+
+        radio.addEventListener('change', function () {
+
+            let nivelesco = '';
+
+            if (this.value === '1') nivelesco = 'PREBAS';
+            if (this.value === '2') nivelesco = 'PRIMAR';
+            if (this.value === '3') nivelesco = 'BACHIL';
+
+            fetch(`/get_grados_por_nivel?nivelesco=${nivelesco}`)
+                .then(response => response.json())
+                .then(data => {
+
+                    const select = document.getElementById('cualgradop2');
+
+
+                    select.innerHTML = '<option value="">Seleccione grado --</option>';
+
+
+                    data.forEach(grado => {
+
+                        const option = document.createElement('option');
+                        option.value = grado.codegrad;
+                        option.textContent = grado.gradox;
+
+                        option.dataset.nivelgrado = grado.nivelgrado;
+                        
+                        select.appendChild(option);
+
+                    });
+
+                });
+
+        });
+
+    });
+
+});
+</script>
+
+
+<script>
+const chkGrado    = document.getElementById('chk_cualgrado');
+const selectGrado = document.getElementById('cualgrado');
+const inputGrado  = document.getElementById('campo2');
+const hiddenGrado = document.getElementById('campo2_hidden');
+const inputNivel  = document.getElementById('campo3_hidden'); // 👈 nuevo
+
+
+//const select = document.getElementById("cualgrado");
+
+// 1️⃣ Al marcar / desmarcar el checkbox
+chkGrado.addEventListener('change', function () {
+
+    if (this.checked) {
+        cargarGradoSeleccionado();
+    } else {
+        inputGrado.value = '';
+        hiddenGrado.value = '';
+        inputNivel.value = ''; // 👈 limpiar también
+
+    }
+});
+
+// 2️⃣ Al cambiar el dropdown (SOLO si el checkbox está marcado)
+selectGrado.addEventListener('change', function () {
+
+    if (chkGrado.checked) {
+        cargarGradoSeleccionado();
+    }
+});
+
+// Función centralizada (validación incluida)
+function cargarGradoSeleccionado() {
+
+    const selectedOption = selectGrado.options[selectGrado.selectedIndex];
+
+
+    if (selectedOption && selectedOption.value !== '') {
+
+        const nivelgrado = selectedOption.dataset.nivelgrado; // ✅ correcto
+
+        inputGrado.value = selectedOption.text;
+        hiddenGrado.value = selectedOption.value;
+        inputNivel.value = nivelgrado || ''; // 👈 aquí lo cargas
+
+        
+
+    } else {
+        inputGrado.value = '';
+        hiddenGrado.value = '';
+        inputNivel.value = '';
+
+    }
+}
+
+
+
+</script>
+
+<script>
+const selectp = document.getElementById("cualgrado");
+
+selectp.addEventListener("change", function () {
+    const selected = this.options[this.selectedIndex];
+
+    const nivelgrado = selected.dataset.nivelgrado;
+
+    //console.log("Nivel grado:", nivelgrado);
+    document.getElementById("compo3_hidden").value = nivelgrado;
+});
+</script>
+
+<script>
+const chkprofemt    = document.getElementById('chk_profexmateriat');
+const selectprofemt = document.getElementById('codeprofemt');
+const inputprofemt  = document.getElementById('profexmateriat');
+
+// 1️⃣ Al marcar / desmarcar el checkbox
+chkprofemt.addEventListener('change', function () {
+
+    if (this.checked) {
+        cargarprofexmat();
+    } else {
+        inputprofemt.value = '';
+    }
+});
+
+// 2️⃣ Al cambiar el dropdown (SOLO si el checkbox está marcado)
+selectprofemt.addEventListener('change', function () {
+
+    if (chkprofemt.checked) {
+        cargarprofexmat();
+    }
+});
+
+// Función centralizada (validación incluida)
+function cargarprofexmat() {
+
+    const selectedOption = selectprofemt.options[selectprofemt.selectedIndex];
+
+    if (selectedOption && selectedOption.value !== '') {
+        inputprofemt.value = selectedOption.text;
+    } else {
+        inputprofemt.value = '';
+    }
+}
+</script>
+
+<script>
+const chkarealt    = document.getElementById('chk_arealistt');
+const selectarealt = document.getElementById('codearealistt'); 
+const inputarealt  = document.getElementById('arealistt');
+
+// 1️⃣ Al marcar / desmarcar el checkbox
+chkarealt.addEventListener('change', function () {
+
+    if (this.checked) {
+        cargarareasl();
+    } else {
+        inputarealt.value = '';
+    }
+});
+
+// 2️⃣ Al cambiar el dropdown (SOLO si el checkbox está marcado)
+selectarealt.addEventListener('change', function () {
+
+    if (chkarealt.checked) {
+        cargarareasl();
+    }
+});
+
+// Función centralizada (validación incluida)
+function cargarareasl() {
+
+    const selectedOption = selectarealt.options[selectarealt.selectedIndex];
+
+    if (selectedOption && selectedOption.value !== '') {
+        inputarealt.value = selectedOption.text;
+    } else {
+        inputarealt.value = '';
+    }
+}
+</script>
+
+<!-- carga las asignaturas-->
+<script>
+const chkmaterlt    = document.getElementById('chk_materlistt');
+const selectmaterlt = document.getElementById('codematerlistt'); 
+//const inputmaterlt  = document.getElementById('materlistt');
+const inputCampo1   = document.querySelector('input[name="campo1"]');
+
+
+// 1️⃣ Al marcar / desmarcar el checkbox
+chkmaterlt.addEventListener('change', function () {
+
+    if (this.checked) {
+        cargarmaterl();
+    } else {
+        //inputmaterlt.value = '';
+        inputCampo1.value  = '';
+        inputCampo1.disabled = false; // por si lo deshabilitas
+        
+    }
+});
+
+// 2️⃣ Al cambiar el dropdown (SOLO si el checkbox está marcado)
+selectmaterlt.addEventListener('change', function () {
+
+    if (chkmaterlt.checked) {
+        cargarmaterl();
+    }
+});
+
+// Función centralizada (validación incluida)
+function cargarmaterl() {
+
+    const selectedOption = selectmaterlt.options[selectmaterlt.selectedIndex];
+
+    if (selectedOption && selectedOption.value !== '') {
+        //inputmaterlt.value = selectedOption.text;
+        inputCampo1.value  = selectedOption.text;
+    } else {
+        //inputmaterlt.value = '';
+        inputCampo1.value  = '';
+        inputCampo1.disabled = false;
+    }
+}
+</script>
+
+<!-- carga el codemate extra desde el select -->
+<script>
+const select = document.getElementById("codematerlistt");
+
+select.addEventListener("change", function() {
+    const selected = this.options[this.selectedIndex];
+    const codemate = selected.dataset.codemate;
+
+    document.getElementById("codemate_hidden").value = codemate;
+});
+
+</script>
+
+<script>
+document.querySelectorAll('input[name="nivel_radio"]').forEach(radio => {
+    radio.addEventListener('change', function () {
+        document.getElementById('nivel_radio_hidden').value = this.value;
+    });
+});
+</script>
+
+<script>
+const formBuscar = document.querySelector('form[action="{{ url_for("creaasignaturas") }}"]');
+
+formBuscar.addEventListener('submit', function () {
+    document.getElementById('profexmateriat_hidden').value =
+        document.getElementById('profexmateriat').value;
+});
+</script>
+
+{%  endblock %}

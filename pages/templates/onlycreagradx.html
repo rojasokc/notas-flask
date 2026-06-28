@@ -1,0 +1,379 @@
+{% extends "basesub.html" %}
+
+{% block title %}Parametros gen{% endblock %}
+
+{% block content %}
+<h2>Crear Grados</h2>
+
+<div class="container-fluid mt-3">
+
+    <div class="row">
+
+        <!-- ================== COLUMNA IZQUIERDA : FORMULARIO ================== -->
+        <div class="col-md-7 text-start">
+
+            <form method="POST" action="{{ url_for('save_grado') }}">
+
+                <!-- FILA 1 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Nivel escolar: </label>
+                    <div class="col-sm-6">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="nivel_radio" id="nivel1" value="1"
+                            {% if grado_sel and grado_sel.nivelesco == 'PREBAS' %}checked{% endif %}>
+                            <label class="form-check-label" for="nivel1">Prebasica</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="nivel_radio" id="nivel2" value="2"
+                            {% if grado_sel and grado_sel.nivelesco == 'PRIMAR' %}checked{% endif %}>
+                            <label class="form-check-label" for="nivel2">Primaria</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="nivel_radio" id="nivel3" value="3"
+                            {% if grado_sel and grado_sel.nivelesco == 'BACHIL' %}checked{% endif %}>
+                            <label class="form-check-label" for="nivel3">Bachillerato</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FILA 2 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Grado:</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name="campo2" value="{{ grado_sel.name if grado_sel }}">
+                    </div>
+                </div>
+
+                <!-- FILA 3 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Nombre corto:</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name="campo3"
+                            value="{{ grado_sel.codeinte if grado_sel }}">
+                    </div>
+                </div>
+
+                <!-- FILA 4 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Director de grupo:</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" style="background-color:#f2f2f2;" name="responsable"
+                            id="responsable" readonly value="{{ grado_sel.responsable if grado_sel }}">
+                    </div>
+                </div>
+
+
+                <!-- FILA 5 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Seleccionar Dir de Grupo:</label>
+                    <div class="col-sm-4">
+
+                        <div class="col-sm-7">
+                            <select class="form-select" name="codeprof" id="codeprof">
+                                <option value=""> Seleccione --</option>
+
+                                {% for d in directores %}
+                                <option value="{{ d.id }}">
+                                    {{ d.totname }}
+                                </option>
+                                {% endfor %}
+                            </select>
+
+                        </div>
+
+                    </div>
+                    <div class="col-sm-2 text-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="chk_director" id="chk_director"
+                                value="1">
+                            <label class="form-check-label" for="chk_director">
+                                Activo
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- FILA 6 antes -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Nivel escolar:</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" style="background-color:#f2f2f2;" name="nivelgradot"
+                            id="nivelgradot" readonly value="{{ grado_sel.nivelgrado if grado_sel }}">
+                    </div>
+                </div>
+
+                <!-- FILA 6 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Seleccionar Nivel:</label>
+                    <div class="col-sm-4">
+
+                        <div class="col-sm-7">
+                            <select class="form-select" name="nivelgrado" id="nivelgrado">
+                                <option value=""> Seleccione --</option>
+
+                                {% for n in nivelgrado %}
+                                <option value="{{ n.nivelgrado }}">
+                                    {{ n.nivelgrado }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 text-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="chk_nivel" id="chk_nivel" value="1">
+                            <label class="form-check-label" for="chk_nivel">
+                                Activo
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FILA 7 antes -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Subnivel:</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" style="background-color:#f2f2f2;" name="subnivelt"
+                            id="subnivelt" readonly value="{{ grado_sel.subnivel if grado_sel }}">
+                    </div>
+                </div>
+
+                <!-- FILA 7 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Seleccionar subnivel:</label>
+                    <div class="col-sm-4">
+
+                        <div class="col-sm-7">
+                            <select class="form-select" name="subnivel" id="subnivel">
+                                <option value=""> Seleccione --</option>
+
+                                {% for n in subnivel %}
+                                <option value="{{ n.subnivel }}">
+                                    {{ n.subnivel }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 text-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="chk_subnivel" id="chk_subnivel"
+                                value="1">
+                            <label class="form-check-label" for="chk_subnivel">
+                                Activo
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row mt-3">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-5">
+
+                        {% if grado_sel %}
+                        <!-- ACTUALIZAR -->
+                        <button type="submit" formaction="{{ url_for('update_grado', codegrad=grado_sel.codegrad) }}"
+                            class="btn btn-warning me-2">
+                            Actualizar Grado
+                        </button>
+
+                        <!-- LIMPIAR -->
+                        <a href="{{ url_for('onlycreagradx') }}" class="btn btn-secondary">
+                            Limpiar
+                        </a>
+                        {% else %}
+                        <!-- GUARDAR -->
+                        <button type="submit" class="btn btn-primary">
+                            Guardar Grado
+                        </button>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <!--aqui-->
+        <!-- ================== COLUMNA DERECHA : GRID Grados ================== -->
+        <div class="col-md-5">
+            <!-- Buscador -->
+            <form method="GET" action="{{ url_for('onlycreagradx') }}" class="row g-3 mb-3">
+                <div class="col-auto">
+                    Buscar x grado:
+                </div>
+                <div class="col-auto">
+
+                    <input type="text" class="form-control" name="searchgrado" placeholder="Buscar por grado..."
+                        value="{{ searchgrado }}">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-secondary">
+                        Buscar
+                    </button>
+                </div>
+            </form>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <strong>Grados creados</strong>
+                </div>
+
+                <div class="card-body p-0 ">
+
+                    <table class="table table-sm table-striped mb-0 ">
+                        <thead class="table-secondary">
+                            <tr>
+                                <th class="text-start">Código</th>
+                                <th class="text-start">Responsable</th>
+                                <th class="text-start">NivelEsco</th>
+                                <th class="text-start">Grado</th>
+                                <th class="text-start">Nivel</th>
+                                <th class="text-start">Subnivel</th>
+                                <th class="text-start">Accion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for g in grados %}
+                            <tr>
+                                <td class="text-start">
+                                    <a href="{{ url_for('onlycreagradx',
+                                                    codegrad=g['codegrad'],
+                                                    searchgrado=searchgrado) }}">
+                                        {{ g['codegrad'] }}
+                                    </a>
+                                </td>
+                                <td class="text-start">{{ g['responsable'] }}</td>
+                                <td class="text-start">{{ g['nivelesco'] }}</td>
+                                <td class="text-start">{{ g['codeinte'] }}</td>
+                                <td class="text-start">{{ g['nivelgrado'] }}</td>
+                                <td class="text-start">{{ g['subnivel'] }}</td>
+                                <!-- Botón Eliminar -->
+                                <td>
+                                    <form method="POST"
+                                        action="{{ url_for('delete_grado', codegrad= g['codegrad'] ) }}">
+                                        <input type="hidden" name="searchgrado" value="{{ searchgrado }}">
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('¿Seguro que deseas eliminar este registro?');">
+                                            Eliminar
+                                        </button>
+                                    </form>
+
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="text-start text-muted">
+                                    No hay profesores registrados
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const chk = document.getElementById("chk_director");
+        const sel = document.getElementById("codeprof");
+        const txt = document.getElementById("responsable");
+
+        function copiarNombre() {
+            const option = sel.options[sel.selectedIndex];
+
+            if (chk.checked === true) {
+                txt.value = option.text.trim();
+            } else {
+                txt.value = "";
+            }
+        }
+
+        // Checkbox
+        chk.addEventListener("click", copiarNombre);
+
+        // Cambio de profesor
+        sel.addEventListener("change", () => {
+            // Si el usuario cambia el profesor, activamos automáticamente el checkbox
+
+            copiarNombre();
+        });
+
+    });
+</script>
+
+<!-- // seis antes-->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const chk = document.getElementById("chk_nivel");
+        const sel = document.getElementById("nivelgrado");
+        const txt = document.getElementById("nivelgradot");
+
+        function copiarNombre2() {
+            const option = sel.options[sel.selectedIndex];
+
+            if (chk.checked === true) {
+                txt.value = option.text.trim();
+            } else {
+                txt.value = "";
+            }
+        }
+
+        // Checkbox
+        chk.addEventListener("click", copiarNombre2);
+
+        // Cambio de profesor
+        sel.addEventListener("change", () => {
+            // Si el usuario cambia el profesor, activamos automáticamente el checkbox
+
+            copiarNombre2();
+        });
+
+    });
+</script>
+
+<!-- // siete antes-->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const chk = document.getElementById("chk_subnivel");
+        const sel = document.getElementById("subnivel");
+        const txt = document.getElementById("subnivelt");
+
+        function copiarNombre3() {
+            const option = sel.options[sel.selectedIndex];
+
+            if (chk.checked === true) {
+                txt.value = option.text.trim();
+            } else {
+                txt.value = "";
+            }
+        }
+
+        // Checkbox
+        chk.addEventListener("click", copiarNombre3);
+
+        // Cambio de profesor
+        sel.addEventListener("change", () => {
+            // Si el usuario cambia el profesor, activamos automáticamente el checkbox
+
+            copiarNombre3();
+        });
+
+    });
+</script>
+{% endblock %}

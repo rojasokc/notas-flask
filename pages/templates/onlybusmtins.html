@@ -1,0 +1,331 @@
+{% extends "basesub.html" %}
+
+{% block title %}Formativo{% endblock %}
+
+{% block content %}
+<h2>Agregar Asignaturas por estudiante por grado</h2>
+<div id="nombre_estudiante_bar" class="alert alert-info py-1 px-3 mb-2" >
+    Estudiante: <strong id="nombre_estudiante_txt"></strong>
+</div>
+<form method="GET" action="{{ url_for('addmaterias.inscribematxest') }}" class="row g-3 mb-3">
+    <div class="container-fluid mt-3">
+        <!-- ================== ZONA SUPERIOR (100%) ================== -->
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-body bg-light py-1 px-2">
+                        <div class="d-flex align-items-center justify-content-between flex-nowrap">
+
+                            <!-- Radios -->
+                            <div class="d-flex align-items-center gap-3">
+
+                                <div class="form-check mb-0">
+                                    <input class="form-check-input" type="radio" name="nivel_radio" value="1" {% if
+                                        nivel_radio=='1' %}checked{% endif %}>
+                                    <label class="form-check-label">Prebas</label>
+                                </div>
+
+                                <div class="form-check mb-0">
+                                    <input class="form-check-input" type="radio" name="nivel_radio" value="2" {% if
+                                        nivel_radio=='2' %}checked{% endif %}>
+                                    <label class="form-check-label">Primaria</label>
+                                </div>
+
+                                <div class="form-check mb-0">
+                                    <input class="form-check-input" type="radio" name="nivel_radio" value="3" {% if
+                                        nivel_radio=='3' %}checked{% endif %}>
+                                    <label class="form-check-label">Bachill</label>
+                                </div> 
+                                <div class="input-group input-group-sm" style="max-width: 250px;">
+                                    <select class="form-select" name="cualgrado" id="cualgrado">
+                                        <option value="">Grado</option>
+                                        {% for g in lista_grados_persist %}
+                                        <option value="{{ g.codegrad }}" {% if g.codegrad==gradomx_sel.codegrad
+                                            %}selected{% endif %}>
+                                            {{ g.name }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <div class="input-group-text">
+                                        <input class="form-check-input mt-0" type="checkbox" name="chk_cualgrado"
+                                            value="1" {% if chk_pornivelogrado=='grado' %}checked{% endif %}>
+                                    </div>
+                                </div>
+                                <div class="input-group input-group-sm" style="max-width: 250px;">
+
+                                    <select class="form-select " name="cualestudiante" id="cualestudiante">
+                                        <option value="">Estudiante</option>
+                                        {% for g in estudiantesxgrado %}
+                                        <option value="{{ g.scodeest }}" {% if g.scodeest==estudentsfound.scodeest
+                                            %}selected{% endif %}>
+                                            {{ g.nombre }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <div class="input-group-text">
+                                        <input class="form-check-input mt-0" type="checkbox" name="chk_cualestudiante"
+                                        id="chk_cualestudiante"
+                                            value="1" {% if chk_cualestudiante=='nivelgrado' %}checked{% endif %}>
+
+
+                                    </div>
+
+   
+                                </div>
+                               
+                                    <div class="input-group-text">
+                                        <input class="form-check-input mt-0" type="checkbox" name="chk_verpanel"
+                                        id="chk_verpanel"
+                                            value="1" {% if chk_verhabilita%}checked{% endif %}> Ver opciones de cambio
+
+
+                                    </div>
+                                                    <div class="col-auto">
+                    <button type="button" id="btnCargarAsignaturas" class="btn btn-secondary">
+                        Cargar Asignaturas
+                    </button>
+                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>        
+
+        </div>
+
+    </div>
+
+        <!-- ================== CONTENIDO PRINCIPAL ================== -->
+        <div class="row"> 
+        
+            <!-- ================== ZONA INFERIOR (80%) ================== -->
+            <div class="col-12 col-md-12">
+
+                <div class="card shadow-sm">
+
+
+                    <div class="card-body p-0 table-responsive">
+
+                        <div class="card-body p-0 ">
+                            <div class="table-responsive">
+                    <div id="tabla_asinaturas_inscritas_body">
+
+                    <div class="text-muted p-3">
+                    Seleccione un estudiante
+                    </div>
+
+                    </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+</form>
+<!-- carga los grados en el select despues de picar el radiobutton -->
+<script src="{{ url_for('static', filename='js/grados.js') }}"></script>
+
+<!-- carga los estudiantes en el select -->
+<script>
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const checkbox = document.querySelector('input[name="chk_cualgrado"]');
+        const selectGrado = document.getElementById("cualgrado");
+        const selectEstudiante = document.getElementById("cualestudiante");
+
+        function cargarEstudiantes() {
+
+            if (!checkbox.checked) return;
+
+            const codegrad = selectGrado.value;
+
+            if (!codegrad) return;
+
+            fetch(`/estudiantes/callestudiante/${codegrad}?chk_cualgrado=1`)
+                .then(response => response.json())
+                .then(data => {
+
+                    selectEstudiante.innerHTML = '<option value="">Estudiante</option>';
+
+                    data.forEach(est => {
+
+                        const option = document.createElement("option");
+
+                        option.value = est.scodeest;
+                        option.textContent = est.totname;
+
+                        selectEstudiante.appendChild(option);
+
+                    });
+
+                });
+
+        }
+
+        // cuando se marca el checkbox
+        checkbox.addEventListener("change", function () {
+
+            if (!this.checked) {
+                selectEstudiante.innerHTML = '<option value="">Estudiante</option>';
+                return;
+            }
+
+            cargarEstudiantes();
+
+        });
+
+        // cuando cambia el grado
+        selectGrado.addEventListener("change", function () {
+
+            if (checkbox.checked) {
+                cargarEstudiantes();
+            }
+
+        });
+
+    });
+
+</script>
+
+<!-- AJAX carga las notas en la tabla -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+    const checkbox = document.querySelector('input[name="chk_cualestudiante"]');
+    const selectGrado = document.getElementById("cualgrado");
+    const selectEstudiante = document.getElementById("cualestudiante");
+    const tablaBody = document.getElementById("tabla_asinaturas_inscritas_body");
+
+    if(!checkbox){
+        console.log("Checkbox no encontrado");
+        return;
+    }
+
+    // Evento checkbox
+    checkbox.addEventListener("change", function(){
+        if(this.checked){
+            cargarAsignaturas(); // 👈 ahora sí funciona
+        }else{
+            tablaBody.innerHTML = "";
+        }
+    });
+
+    // Cambio estudiante
+    selectEstudiante.addEventListener("change", function(){
+        if(checkbox.checked){
+            cargarAsignaturas();
+        }
+    });
+
+    // Cambio grado
+    selectGrado.addEventListener("change", function(){
+        selectEstudiante.value = "";
+        tablaBody.innerHTML = "";
+        checkbox.checked = false;
+    });
+
+});
+</script>
+<!-- aqui esta la funcion carga las notas en la tabla -->
+
+<script>
+    function cargarAsignaturas(){
+
+    const checkbox = document.querySelector('input[name="chk_cualestudiante"]');
+    const selectGrado = document.getElementById("cualgrado");
+    const selectEstudiante = document.getElementById("cualestudiante");
+    const tablaBody = document.getElementById("tabla_asinaturas_inscritas_body");
+
+    const barraNombre = document.getElementById("nombre_estudiante_bar");
+    const txtNombre = document.getElementById("nombre_estudiante_txt");
+
+    const codegrad = selectGrado.value;
+    const codeestu = selectEstudiante.value;
+
+    if(!codegrad || !codeestu){
+        return;
+    }
+
+    // Mostrar nombre
+    const nombreEst = selectEstudiante.options[selectEstudiante.selectedIndex].text;
+    txtNombre.textContent = nombreEst;
+    barraNombre.style.display = "block";
+
+    fetch(`/addmaterias/ajax_muestra_asignaturas?codegrad=${codegrad}&codeestu=${codeestu}`)
+    .then(resp => {
+        if (!resp.ok){
+            throw new Error("Error en servidor");
+        }
+        return resp.text();
+    })
+    .then(htmlNotas => {
+        tablaBody.innerHTML = htmlNotas;
+    })
+    .catch(error => {
+        console.log(error);
+        tablaBody.innerHTML =
+            `<div class="text-danger p-2">Error cargando asignaturas</div>`;
+    });
+}
+</script>
+
+<!-- AJAX guarda o agrega las asignaturas para el estudiante -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+    const btn = document.getElementById("btnCargarAsignaturas");
+    const selectGrado = document.getElementById("cualgrado");
+    const selectEstudiante = document.getElementById("cualestudiante");
+
+    btn.addEventListener("click", function () {
+
+        const codegrad = selectGrado.value;
+        const codeestu = selectEstudiante.value;
+
+        if (!codegrad || !codeestu) {
+            alert("Seleccione grado y estudiante");
+            return;
+        }
+
+        //fetch(`/addmaterias/inscribematxest?cualgrado=${codegrad}&cualestudiante=${codeestu}`)
+        fetch(`/addmaterias/inscribematxest`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                codegrad: codegrad,
+                codeestu: codeestu
+            })
+        })
+        .then(resp => resp.json())
+        .then(data => {
+
+            if (data.status === "ok") {
+                // 👇 aquí refrescas la grid
+                cargarAsignaturas();
+            }
+
+        })
+        //.catch(err => {
+        //    console.log(err);
+        //    alert("Error en proceso");
+        //});
+
+    });
+
+});
+</script>
+
+{% endblock %}

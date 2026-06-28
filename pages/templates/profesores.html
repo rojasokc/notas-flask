@@ -1,0 +1,36 @@
+
+{% extends "base.html" %}
+
+{% block title %}Profesores{% endblock %}
+
+{% block content %}
+<h2 class="text-center mb-4">Lista de Profesores</h2>
+<table class="table table-hover table-striped table-bordered">
+    <thead class="table-dark">
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Cargo</th>
+        <th>Login</th>
+        <th>Password</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for p in profesores %}
+    <tr>
+        <td>
+            <a href="{{ url_for('asignacion', codeprof=p.codeprof) }}" class="text-decoration-none">
+                {{ p.codeprof }}
+            </a>
+        </td>
+        <td>{{ p.names }}</td>
+        <td>{{ p.cargo }}</td>
+        <td>{{ p.login }}</td>
+        <td>{{ p.password }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<br>
+<a href="{{ url_for('home') }}">Volver al inicio</a>
+{% endblock %}

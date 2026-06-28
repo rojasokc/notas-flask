@@ -1,0 +1,296 @@
+{% extends "base.html" %}
+{% block title %}Periodos{% endblock %}
+{% block content %}
+
+    <div class="mt-3 mb-3 p-3 bg-light border rounded shadow-sm">
+    <h4 class="text-center text-primary mb-3">Promedios por periodo</h4>
+    {% if grado %}
+    <div class="row text-center">
+        
+        <div  class="col-md-3">
+            <strong>Grado:</strong> {{ grado.name }}
+        </div>
+        <div  class="col-md-3">
+            <strong>Asignatura:</strong> {{ grado.nombre }}
+        </div>
+        <div  class="col-md-3">
+            <strong>Periodo Actual:</strong> {{ periodo }}
+            <strong>Profe:</strong> {{ codeprof }}
+        </div>
+        <div  class="col-md-3">
+    
+          <div class="mb-3">
+            <label for="nivelSelect" class="form-label"><strong>Nivel ({{ nivelesco }}):</strong></label>
+            <select id="nivelSelect" class="form-select w-auto d-inline-block">
+              <option value="">-- Seleccionar --</option>
+              {% for obs in observaciones %}
+                <option value="{{ obs.notatt }}" data-codeobse="{{ obs.codeobse }}" {% if nivel_actual == obs.codeobse %}selected{% endif %}>
+                  {{ obs.notatt }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+        
+        </div>  
+
+    </div>
+    {% else %}
+        <p class="text-danger">No se encontró información de este grado.</p>
+    {% endif %}
+    </div>
+
+    <hr>
+
+    <!--<div class="container mt-4">-->
+    
+
+    <table id="tablaPeriodos" class="table table-hover table-striped table-bordered">
+      <style>
+      .oculto { display: none; }
+      </style>
+      
+        <thead class="table-dark">
+            <tr>
+                <th>Código</th>
+                <th>Nombre Completo</th>
+                {% if periodo == 'PER1' %}
+                <th>Per1</th>
+                {% endif %}
+
+                {% if periodo == 'PER2' %}
+                <th>Per1</th>
+                <th>Per2</th>
+                {% endif %}
+
+                {% if periodo == 'PER3' %}
+                <th>Per1</th>
+                <th>Per2</th>                
+                <th>Per3</th>
+                {% endif %}
+
+                <!--<th class="{% if periodo == 'PER3' %}oculto{% endif %}">FP1</th>
+                <th class="{% if periodo == 'PER3' %}oculto{% endif %}">FP2</th>-->
+
+                <!-- FP1 -->
+                <!-- <th class="{% if periodo == 'PER2' or periodo == 'PER3' or periodo == 'PER4' %}oculto{% endif %}">FP1</th> -->
+                {% if periodo == 'PER1' %}
+                <th>FP1</th>
+                {% endif %}
+
+                <!-- FP2 -->
+                <!-- <th class="{% if periodo == 'PER3' or periodo == 'PER1' or periodo == 'PER4' %}oculto{% endif %}">FP2</th> -->
+                {% if periodo == 'PER2' %}
+                <th>FP1</th>
+                <th>FP2</th>
+                {% endif %}
+
+                <!-- FP3 -->
+                <!-- <th class="{% if periodo == 'PER2' or periodo == 'PER1' or periodo == 'PER4' %}oculto{% endif %}">FP3</th> -->
+                {% if periodo == 'PER3' %}
+                <th>FP1</th>
+                <th>FP2</th>
+                <th>FP3</th>
+                {% endif %}
+
+                <!-- FP4 -->
+                <th class="{% if periodo == 'PER2' or periodo == 'PER1' or periodo == 'PER3' %}oculto{% endif %}">FP4</th>
+
+                <!--<th>fp3</th>-->
+                <th>Act faltas</th>
+                <th>FaltasTot</th>
+                {% if periodo == 'PER1' %}
+                <th>Prom Final1</th>
+                {% endif %}
+
+                {% if periodo == 'PER2' %}
+                <th>Prom Final1</th>
+                <th>Prom Final2</th>
+                {% endif %}
+
+                {% if periodo == 'PER3' %}
+                <th>Prom Final1</th>
+                <th>Prom Final2</th>
+                <th>Prom Final3</th>
+                {% endif %}
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for fila in resultados %}
+            <tr id="fila-{{ fila.scodeest }}" class="text-center align-middle">
+                <td>{{ fila.scodeest }}</td>
+                <td class="text-start">{{ fila.nombre }}</td>
+                {% if periodo == 'PER1' %}
+                <td>{{ fila.nota1 }}</td>
+                {% endif %}
+
+                {% if periodo == 'PER2' %}
+                <td>{{ fila.nota1 }}</td>
+                <td>{{ fila.nota2 }}</td>
+                {% endif %}
+
+                {% if periodo == 'PER3' %}
+                <td>{{ fila.nota1 }}</td>
+                <td>{{ fila.nota2 }}</td>
+                <td>{{ fila.nota3 }}</td>
+                {% endif %}
+
+                <!--<td class="fp1 {% if periodo == 'PER3' %}oculto{% endif %}">{{ fila.fp1 }}</td>
+                <td class="fp2 {% if periodo == 'PER3' %}oculto{% endif %}">{{ fila.fp2 }}</td>-->
+
+                <!-- FP1 -->
+                 <!-- <td class="fp1 {% if periodo == 'PER2' or periodo == 'PER3' or periodo == 'PER4' %}oculto{% endif %}"> -->
+                {% if periodo == 'PER1' %}
+                <td>{{ fila.fp1 | mostrar_vacio }}</td>
+                {% endif %}
+
+                <!-- FP2 -->
+                <!-- <td class="fp2 {% if periodo == 'PER3' or periodo == 'PER1' or periodo == 'PER4' %}oculto{% endif %}"> -->
+                {% if periodo == 'PER2' %}
+                <td>{{ fila.fp1 | mostrar_vacio }}</td>
+                <td>{{ fila.fp2 | mostrar_vacio }}</td>
+                {% endif %}
+
+                <!-- FP3 -->
+                <!-- <td class="fp3 {% if periodo == 'PER2' or periodo == 'PER1' or periodo == 'PER4' %}oculto{% endif %}"> -->
+                {% if periodo == 'PER3' %}
+                <td>{{ fila.fp1 | mostrar_vacio }}</td>
+                <td>{{ fila.fp2 | mostrar_vacio }}</td>
+                <td>{{ fila.fp3 | mostrar_vacio }}</td>
+                {% endif %}
+
+                <!-- FP4 -->
+                <td class="fp4 {% if periodo == 'PER2' or periodo == 'PER1' or periodo == 'PER3' %}oculto{% endif %}">
+                  {{ fila.fp4 | mostrar_vacio }}
+                </td>
+
+                <!--<td class="fp3">{{ fila.fp3 | mostrar_vacio}}</td>-->
+                
+                
+                <td>
+                    <div class="form-check ">
+                    <input class="form-check-input falta-radio" type="radio" name="{{ fila.scodeest }}" 
+                            data-student="{{ fila.scodeest }}" data-codemate="{{ fila.codemate }}" data-periodo="{{ periodo }}">
+                    <label class="form-check-label ">Agregar falta</label>
+                    </div>
+                    <div class="form-check ">
+                    <input class="form-check-input falta-radio" type="radio" name="{{ fila.scodeest }}" 
+                            data-student="{{ fila.scodeest }}" data-codemate="{{ fila.codemate }}" data-periodo="{{ periodo}}">
+                    <label class="form-check-label ">quitar falta</label>
+                    </div>
+                </td>
+
+                <td class="faltas">{{ fila.faltas | mostrar_vacio}}</td>
+                {% if periodo == 'PER1' %}
+                <td>{{ fila.promedio | mostrar_vacio}}</td>
+                {% endif %}
+
+                {% if periodo == 'PER2' %}
+                <td>{{ fila.promedio | mostrar_vacio}}</td>
+                <td>{{ fila.promedio2 | mostrar_vacio}}</td>
+                {% endif %}
+
+                {% if periodo == 'PER3' %}
+                <td>{{ fila.promedio | mostrar_vacio}}</td>
+                <td>{{ fila.promedio2 | mostrar_vacio}}</td>                
+                <td>{{ fila.promedio3 | mostrar_vacio}}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+<!--</div>-->
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  // Selecciona todos los radios de la tabla
+  document.querySelectorAll(".falta-radio").forEach(radio => {
+    radio.addEventListener("change", async (e) => {
+
+      const scodeest = e.target.dataset.student;
+      const codemate = e.target.dataset.codemate;
+      const periodo = e.target.dataset.periodo.at(-1);
+
+      // Determinar acción: sumar o restar
+      const labelText = e.target.nextElementSibling.textContent.trim().toLowerCase();
+      const accion = labelText.includes("quitar") ? -1 : 1;
+
+      //try {
+        const response = await fetch("/actualizar_falta", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            scodeest: scodeest,
+            codemate: codemate,
+            periodo: periodo,
+            cambio: accion
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.status === "ok") {
+          // Actualiza los valores visibles sin recargar
+          const fila = document.querySelector(`#fila-${scodeest}`);
+          fila.querySelector(`.fp${periodo}`).textContent = data[`fp${periodo}`];
+          fila.querySelector(".faltas").textContent = data.faltas;
+
+          // feedback visual
+          fila.style.backgroundColor = accion === 1 ? "#d4edda" : "#f8d7da";
+          setTimeout(() => (fila.style.backgroundColor = ""), 500);
+        } else {
+          alert("Error al actualizar falta");
+        }
+
+      //} catch (error) {
+      //  console.error("Error de conexión:", error);
+      //  alert("No se pudo conectar con el servidor v");
+      //}
+    });
+  });
+});
+</script>
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const select = document.querySelector("#nivelSelect");
+
+  select.addEventListener("change", function() {
+    // 🔹 Texto visible (lo que el usuario lee)
+    const selectedText = this.options[this.selectedIndex].text.trim();
+    // 🔹 Código interno (si lo necesitas)
+    const selectedCode = this.options[this.selectedIndex].dataset.codeobse;
+    // 🔹 Valor del option (por si también lo usas)
+    const selectedValue = this.value.trim();
+
+    // Variables de Flask
+    const codemate = "{{ grado.codemate if grado else '' }}";
+    const codegrad = "{{ grado.codegrad if grado else '' }}";
+    const periodo = "{{ periodo }}";  
+    const nivelesco = "{{ nivelesco }}";  // 👈 aquí lo agregas
+    const codeprof = "{{ codeprof }}";
+
+    console.log("Texto visible:", selectedText);
+    console.log("codeobse:", selectedCode);
+    console.log("codemate:", codemate);
+    console.log("codegrad:", codegrad);
+
+    // Redirigir y pasar ambos valores
+    const url = "{{ url_for('formativo3') }}" +
+                "?codeobse=" + encodeURIComponent(selectedCode) +
+                "&notatt=" + encodeURIComponent(selectedText) +   // 👈 texto visible
+                "&codemate=" + encodeURIComponent(codemate) +
+                "&codegrad=" + encodeURIComponent(codegrad) +
+                "&periodo=" + encodeURIComponent(periodo) +
+                "&nivelesco=" + encodeURIComponent(nivelesco) +  // 👈 aquí lo envías;
+                "&codeprof=" + encodeURIComponent(codeprof);
+
+    window.location.href = url;
+  });
+});
+</script>
+
+{% endblock %}

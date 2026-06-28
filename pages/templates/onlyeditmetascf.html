@@ -1,0 +1,275 @@
+{% extends "basesub.html" %}
+
+{% block title %}Metas de aprendizaje{% endblock %}
+
+{% block content %}
+
+
+
+<h2>Metas y Competencias</h2>
+
+<div class="container-fluid mt-3">
+
+    <div class="row">
+
+        <!-- ================== COLUMNA IZQUIERDA : FORMULARIO ================== -->
+        <div class="col-md-12 text-start">
+            <form method="POST" action="{{ url_for('metasdea.index') }}">
+
+                <!-- FILA 1 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end"><strong> Nivel escolar: </strong></label>
+                    <div class="col-sm-6">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="nivel_radio" value="1" {% if
+                                nivel_radio=='1' %}checked{% endif %}>
+                            <label class="form-check-label" for="nivel1">Prebasica</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="nivel_radio" value="2" {% if
+                                nivel_radio=='2' %}checked{% endif %}>
+                            <label class="form-check-label" for="nivel2">Primaria</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="nivel_radio" value="3" {% if
+                                nivel_radio=='3' %}checked{% endif %}>
+                            <label class="form-check-label" for="nivel3">Bachillerato</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FILA 2 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end"><strong>Periodo: </strong></label>
+                    <div class="col-sm-8">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="nivel_per" id="npe1" value="1" "
+                            {% if nivel_per  == '1' %}checked{% endif %}>
+                            <label class=" form-check-label" for="nivel1">1er per</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="nivel_per" id="npe2" value="2" {% if
+                                nivel_per=='2' %}checked{% endif %}>
+                            <label class="form-check-label" for="nivel2">2do per</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="nivel_per" id="npe3" value="3" {% if
+                                nivel_per=='3' %}checked{% endif %}>
+                            <label class="form-check-label" for="nivel3">3er per</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="nivel_per" id="npe4" value="4" {% if
+                                nivel_per=='4' %}checked{% endif %}>
+                            <label class="form-check-label" for="nivel3">4to per</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FILA 2B -->
+                <div class="row mb-2 align-items-center ">
+                    <label class="col-sm-3 col-form-label text-end">Grado asignado: </label>
+                    <div class="col-sm-4">
+
+                        <input type="text" class="form-control" style="background-color:#f2f2f2;" name="campo2"
+                            id="campo2" readonly value="{{ gradosxm_sel.name if gradosxm_sel }}">
+
+                    </div>
+                    <label class="col-sm-1 col-form-label text-end">code: </label>
+                    <div class="col-sm-2">
+
+                        <input type="text" class="form-control" style="background-color:#f2f2f2;" name="campo2_hidden"
+                            id="campo2_hidden" readonly value="{{ gradosxm_sel.codegrad if gradosxm_sel }}">
+
+                    </div>
+                </div>
+                <!-- FILA 3 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Seleccionar Grado:</label>
+                    <div class="col-sm-4">
+
+                        <div class="col-sm-7">
+                            <select class="form-select select-normal" name="cualgrado" id="cualgrado">
+                                <option value=""> Seleccione --</option>
+                                {% for g in lista_grados_persist %}
+                                <option value="{{ g.codegrad }}" {% if g.codegrad==gradosxm_sel.codegrad %}selected{%
+                                    endif %}>
+                                    {{ g.gradox }}
+                                </option>
+                                {% endfor %}
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-2 text-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="chk_pornivel" id="chk_pornivel"
+                                value="1" checked>
+
+                            Guardar por nivel
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+
+                        <input type="text" class="form-control" style="background-color:#f2f2f2;" name="nivel_grado"
+                            id="nivel_grado" readonly value="{{ registros.nivelgrado if registros }}">
+
+                    </div>
+                </div>
+
+                <!-- FILA 4 -->
+                <div class="row mb-2">
+                    <div class="col-12" id="grid-container">
+                        <!-- aquí se inyecta la grilla por AJAX -->
+
+                    </div>
+                </div>
+
+                <!-- FILA Botoneria -->
+                <div class="row mt-3">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-5">
+
+
+                        <!-- ACTUALIZAR -->
+                        <button type="button"
+                                id="btnActualizar"
+                                class="btn btn-warning me-2 d-none">
+                            Actualizar
+                        </button>
+
+                        <!-- GUARDAR -->
+                        <button type="submit" id="btnGuardar" class="btn btn-primary">
+                            Guardar
+                        </button>
+
+                        <!-- LIMPIAR -->
+                        <a href="{{ url_for('metasdea.index') }}" class="btn btn-secondary">
+                            Limpiar
+                        </a>
+
+
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!--Desde del grid se carga el grado en un select-->
+<script src="{{ url_for('static', filename='js/grados.js') }}"></script>
+
+
+<!--carga la grid con los campos de metas de apre-->
+<script>
+    //const chkGrado    = document.getElementById('chk_cualgrado');
+    const selectGrado = document.getElementById('cualgrado');
+    const inputGrado = document.getElementById('campo2');
+    const hiddenGrado = document.getElementById('campo2_hidden');
+
+    // 1️⃣ Al marcar / desmarcar el checkbox
+    selectGrado.addEventListener('change', function () {
+
+        const option = this.options[this.selectedIndex];
+
+        if (!option.value) return;
+
+        inputGrado.value = option.text;
+        hiddenGrado.value = option.value;
+
+        cargarGrid();
+    });
+
+function cargarGrid() {
+    const nivel_radio = document.querySelector('input[name="nivel_radio"]:checked')?.value;
+    const nivel_per   = document.querySelector('input[name="nivel_per"]:checked')?.value;
+    const codegrad    = hiddenGrado.value;
+
+    if (!nivel_radio || !nivel_per || !codegrad) return;
+
+    fetch('{{ url_for("metasdea.ajax_grid") }}', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            nivel_radio,
+            nivel_per,
+            codegrad
+        })
+    })
+    .then(res => res.text())
+    .then(html => {
+        const container = document.getElementById('grid-container');
+        container.innerHTML = html;
+
+        // 🔥 nivel_grado desde la grilla
+        const nivelAjax = container.querySelector('#nivel_grado_ajax');
+        const inputNivel = document.getElementById('nivel_grado');
+
+        if (nivelAjax && nivelAjax.value) {
+            inputNivel.value = nivelAjax.value;
+        } else {
+            inputNivel.value = '';
+        }
+
+        // 🔁 CONTROL DE BOTONES (AQUÍ debe ir)
+        const btnActualizar = document.getElementById('btnActualizar');
+        const btnGuardar    = document.getElementById('btnGuardar');
+
+        if (inputNivel.value) {
+            btnActualizar.classList.remove('d-none');
+            btnGuardar.classList.add('d-none');
+        } else {
+            btnActualizar.classList.add('d-none');
+            btnGuardar.classList.remove('d-none');
+        }
+    });
+}
+</script>
+
+<script>
+    document.querySelectorAll('input[name="nivel_per"]').forEach(radio => {
+        radio.addEventListener('change', function () {
+
+            // Solo recarga si ya hay un grado seleccionado
+            if (hiddenGrado.value) {
+                cargarGrid();
+            }
+        });
+    });
+</script>
+
+<script>
+document.getElementById('btnActualizar').addEventListener('click', function () {
+
+    const form = document.querySelector('form');
+    const formData = new FormData(form);
+
+    fetch('{{ url_for("metasdea.update_metasdea") }}', {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.ok) {
+            // 🔁 Recargar SOLO la grilla
+            cargarGrid();
+        } else {
+            alert('Error al actualizar');
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Error de conexión');
+    });
+});
+</script>
+
+{% endblock %}

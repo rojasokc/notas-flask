@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+{% block title %}Periodos{% endblock %}
+{% block content %}
+
+    <div class="mt-3 mb-3 p-3 bg-light border rounded shadow-sm">
+    <h4 class="text-center text-primary mb-3">Formativos</h4>
+    {% if grado %}
+    <div class="row text-center">
+
+        <div  class="col-md-3">
+            <strong>Grado:</strong> {{ grado.name }}
+        </div>
+        <div  class="col-md-3">
+            <strong>Asignatura:</strong> {{ grado.nombre }}
+        </div>
+        <div  class="col-md-3">
+            <strong>Periodo Actual:</strong> {{ periodo }}
+            
+        </div>
+        <div  class="col-md-3">
+    
+          <div class="mb-3">
+            <label for="nivelSelect" class="form-label"><strong>Nivel ({{ nivelesco }}):</strong></label>
+            <select id="nivelSelect" class="form-select w-auto d-inline-block">
+              <option value="">-- Seleccionar --</option>
+              {% for obs in observaciones %}
+                <option value="{{ obs.notatt }}" data-codeobse="{{ obs.codeobse }}" {% if nivel_actual == obs.codeobse %}selected{% endif %}>
+                  {{ obs.notatt }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+        
+        </div>  
+
+    </div>
+    {% else %}
+        <p class="text-danger">No se encontró información de este grado.</p>
+    {% endif %}
+    </div>
+    
+    <hr>
+    
+    <!--<div class="container mt-4">-->
+    <div class="row text-left align-items-center mb-3">
+      <div class="col-md-3 d-flex align-items-center justify-content-start">
+         <!-- Botón para ir a la página de periodos -->
+
+      </div>
+      <div class="col-md-3 d-flex align-items-center justify-content-start">
+        <!--<a class="btn btn-dark" href="{{ url_for('asignacion', codeprof=codeprof) }}?{{ param_name }}={{ token }}">Volver a menu de asignaciones</a>-->
+        <button id="btnGuardarFormativo" class="btn btn-success mt-3">Guardar Formativo</button>
+      </div>
+      
+      <div class="col-md-3 d-flex align-items-center justify-content-start">
+        <input type="checkbox" id="checkAll" class="form-check-input me-2">
+        <label for="checkAll" class="mb-0"><strong>Seleccionar / Deseleccionar todos</strong></label>
+      </div>
+    </div>
+    
+    
+
+    <table id="tablaPeriodos" class="table table-hover table-striped table-bordered">
+    
+      <style>
+      .oculto { display: none; }
+      </style>
+      
+        <thead class="table-dark">
+            <tr>
+                <th>Código</th>
+                <th>Nombre Completo</th>
+                <th>Per{{ periodo_num }}</th>
+                
+                <th>FaltasTot</th>
+                
+                <th>Prom Final{{ periodo_num }}</th>
+                <th>formativo</th>
+                <th>Checbox</th>
+
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for fila in resultados %}
+            <tr id="fila-{{ fila.scodeest }}" class="text-center align-middle">
+                <td>{{ fila.scodeest }}</td>
+                <td class="text-start">{{ fila.nombre }}</td>
+
+                <td>{{ fila["nota" ~ periodo_num] }}</td>
+
+                <td class="faltas">{{ fila.faltas | mostrar_vacio}}</td>
+
+                <td>{{ fila["promedio" ~ periodo_num] | mostrar_vacio}}</td>
+                <td>{{ fila["rempe" ~ periodo_num] | mostrar_vacio}}</td>
+                <td>
+                    <input type="checkbox" class="form-check-input formativo-check" data-codecalm="{{ fila.codecalm|int }}" >
+                    
+                </td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+<!--</div>-->
+<div id="tablaFormativoContainer" >
+          <table id="tablaFormativo" class="table table-hover table-striped table-bordered">
+            <thead class="table-dark">
+              <tr>
+                <th>Concepto</th>
+                <th>Asignatura</th>
+                <th>Nivel</th>
+                <th>Seleccionar</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for filay in filasXX %}
+              <tr>
+                <td>{{ filay.concepto }}</td>
+                <td>{{ filay.nombre }}</td>
+                <td>{{ filay.notatt }}</td>
+                <td class="text-center">
+                  <input type="radio" name="seleccionFormativo" value="{{ filay.codeform }}">
+                </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const btnGuardar = document.getElementById("btnGuardarFormativo");
+  const periodo = "{{ periodo }}";
+
+  btnGuardar.addEventListener("click", function() {
+
+    // 1️⃣ Obtener el radiobutton seleccionado (concepto formativo)
+    const seleccionado = document.querySelector('input[name="seleccionFormativo"]:checked');
+    if (!seleccionado) {
+      alert("Selecciona un concepto formativo primero.");
+      return;
+    }
+
+    // Encontrar la fila (tr) donde está el radiobutton
+    const filaSeleccionada = seleccionado.closest("tr");
+
+    // Leer el texto del campo 'Concepto' (primer <td>)
+    const concepto = filaSeleccionada.cells[0].textContent.trim();
+
+    // 2️⃣ Obtener los checkboxes marcados en la tabla de estudiantes
+    const checkboxes = document.querySelectorAll(".formativo-check:checked");
+    if (checkboxes.length === 0) {
+      alert("Selecciona al menos un estudiante.");
+      return;
+    }
+
+    // Leer el codecalm (PK) de cada estudiante seleccionado
+    const codigosCalm = Array.from(checkboxes).map(ch => ch.dataset.codecalm);
+
+    // 3️⃣ Enviar los datos al servidor Flask
+    fetch("/actualizar_formativo", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ codigosCalm, concepto, periodo })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === "ok") {
+        //alert("Formativo guardado correctamente.");
+        location.reload(); // 🔁 Recarga la página para ver los cambios
+      } else {
+        alert("Error: " + data.mensaje);
+      }
+    })
+    .catch(err => {
+      console.error("Error en la solicitud:", err);
+      alert("Error al enviar los datos al servidor.");
+    });
+  });
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const checkAll = document.getElementById("checkAll");
+  const checkboxes = document.querySelectorAll(".formativo-check");
+
+  checkAll.addEventListener("change", function() {
+    checkboxes.forEach(chk => chk.checked = checkAll.checked);
+  });
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const select = document.querySelector("#nivelSelect");
+
+  select.addEventListener("change", function() {
+    // 🔹 Texto visible (lo que el usuario lee)
+    const selectedText = this.options[this.selectedIndex].text.trim();
+    // 🔹 Código interno (si lo necesitas)
+    const selectedCode = this.options[this.selectedIndex].dataset.codeobse;
+    // 🔹 Valor del option (por si también lo usas)
+    const selectedValue = this.value.trim();
+
+    // Variables de Flask
+    const codemate = "{{ grado.codemate if grado else '' }}";
+    const codegrad = "{{ grado.codegrad if grado else '' }}";
+    const periodo = "{{ periodo }}";  
+    const nivelesco = "{{ nivelesco }}";  // 👈 aquí lo agregas    
+
+    console.log("Texto visible:", selectedText);
+    console.log("codeobse:", selectedCode);
+    console.log("codemate:", codemate);
+    console.log("codegrad:", codegrad);
+
+    // Redirigir y pasar ambos valores
+    const url = "{{ url_for('formativo3') }}" +
+                "?codeobse=" + encodeURIComponent(selectedCode) +
+                "&notatt=" + encodeURIComponent(selectedText) +   // 👈 texto visible
+                "&codemate=" + encodeURIComponent(codemate) +
+                "&codegrad=" + encodeURIComponent(codegrad) +
+                "&periodo=" + encodeURIComponent(periodo) +
+                "&nivelesco=" + encodeURIComponent(nivelesco);  // 👈 aquí lo envías;                
+
+    window.location.href = url;
+  });
+});
+</script>
+
+{% endblock %}

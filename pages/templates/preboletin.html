@@ -1,0 +1,232 @@
+{% extends "basesub.html" %}
+
+{% block title %}Parametros gen{% endblock %}
+
+{% block content %}
+<div id="nombre_estudiante_bar" class="alert alert-info py-1 px-3 mb-2" >
+    Notas por Estudiante: <strong id="nombre_estudiante_txt"></strong>
+</div>
+<form action="{{ url_for('boletin.promedio_boletin') }}" method="POST">
+        <div class="row mb-3">
+
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-body bg-light py-1 px-2">
+                        <div class="d-flex align-items-center justify-content-between flex-nowrap">
+
+                            <!-- Radios -->
+                            <div class="d-flex align-items-center gap-3">
+
+                                <div class="form-check mb-0">
+                                    <input class="form-check-input" type="radio" name="nivel_radio" value="1" {% if
+                                        nivel_radio=='1' %}checked{% endif %}>
+                                    <label class="form-check-label">Prebas</label>
+                                </div>
+
+                                <div class="form-check mb-0">
+                                    <input class="form-check-input" type="radio" name="nivel_radio" value="2" {% if
+                                        nivel_radio=='2' %}checked{% endif %}>
+                                    <label class="form-check-label">Primaria</label>
+                                </div>
+
+                                <div class="form-check mb-0">
+
+                                    <input class="form-check-input" type="radio" name="nivel_radio" value="3" {% if
+                                        nivel_radio=='3' %}checked{% endif %}>
+                                    <label class="form-check-label">Bachill</label>
+                                </div> 
+                                                                <div class="input-group input-group-sm" style="max-width: 250px;">
+
+                                    <select class="form-select " name="cualperiodoonxe" id="cualperiodoonxe">
+                                        <option value="">Periodo</option>
+                                         <option value="PER1"
+                                            {% if cualperiodoonxe == "PER1" %}selected{% endif %}>
+                                                PER1
+                                            </option>
+
+                                            <option value="PER2"
+                                                {% if cualperiodoonxe == "PER2" %}selected{% endif %}>
+                                                PER2
+                                            </option>
+
+                                            <option value="PER3"
+                                                {% if cualperiodoonxe == "PER3" %}selected{% endif %}>
+                                                PER3
+                                            </option>
+                                    </select>
+ 
+                                </div> 
+                                <div class="input-group input-group-sm" style="max-width: 250px;">
+                                    <select class="form-select" name="cualgrado" id="cualgrado">
+                                        <option value="">Grado</option>
+                                        {% for g in lista_grados_persist %}
+                                        <option value="{{ g.codegrad }}" {% if g.codegrad==gradomx_sel.codegrad
+                                            %}selected{% endif %}>
+                                            {{ g.name }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <div class="input-group-text">
+                                        <input class="form-check-input mt-0" type="checkbox" name="chk_cualgrado"
+                                            value="1" {% if chk_cualgrado=='1' %}checked{% endif %}>
+                                    </div>
+                                </div>
+                                <div class="input-group input-group-sm" style="max-width: 250px;">
+
+
+                                    <select  class="form-select " name="cualestudiante" id="cualestudiante">
+                                        <option value="">Estudiante</option>
+                                        {% for g in estudiantesxgrado %}
+                                        <option value="{{ g.scodeest }}" {% if g.scodeest==estudentsfound.scodeest 
+                                            %}selected{% endif %}>
+                                            {{ g.nombre }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <div class="input-group-text">
+                                        <input class="form-check-input mt-0" type="checkbox" name="chk_cualestudiante"
+                                        id="chk_cualestudiante"
+                                            value="1" {% if chk_cualestudiante=='1' %}checked{% endif %}>
+
+
+                                    </div>
+
+
+   
+                                </div>
+                                <div class="input-group-text">
+                                    <button type="submit" class="btn btn-primary" name="generapueprom" id="generapueprom">Generar Promedio del periodo</button>
+                                </div>                               
+                              
+                                <div class="input-group-text">
+                                    <button type="submit" class="btn btn-primary" name="generabol" id="generabol"  formaction="{{ url_for('boletin.boletines_grado') }}">Generar Boletin</button>
+                                </div>
+                            </div>
+
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+
+
+
+
+</form>
+<!-- carga los grados en el select despues de picar el radiobutton -->
+<script src="{{ url_for('static', filename='js/grados.js') }}"></script>
+
+<!-- carga los estudiantes en el select -->
+<script>
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const checkbox = document.querySelector('input[name="chk_cualgrado"]');
+        const selectGrado = document.getElementById("cualgrado");
+        const selectEstudiante = document.getElementById("cualestudiante");
+
+        function cargarEstudiantes() {
+
+            if (!checkbox.checked) return;
+
+            const codegrad = selectGrado.value;
+
+            if (!codegrad) return;
+
+            fetch(`/estudiantes/callestudiante/${codegrad}?chk_cualgrado=1`)
+                .then(response => response.json())
+                .then(data => {
+
+                    selectEstudiante.innerHTML = '<option value="">Estudiante</option>';
+
+                    data.forEach(est => {
+
+                        const option = document.createElement("option");
+
+                        option.value = est.scodeest;
+                        option.textContent = est.totname;
+
+                        selectEstudiante.appendChild(option);
+
+                    });
+
+                });
+
+        }
+
+        // cuando se marca el checkbox
+        checkbox.addEventListener("change", function () {
+
+            if (!this.checked) {
+                selectEstudiante.innerHTML = '<option value="">Estudiante</option>';
+                return;
+            }
+
+            cargarEstudiantes();
+
+        });
+
+        // cuando cambia el grado
+        selectGrado.addEventListener("change", function () {
+
+            if (checkbox.checked) {
+                cargarEstudiantes();
+            }
+
+        });
+
+    });
+
+</script>
+
+<!-- aqui se carga el nombre del alumno en el titulo -->
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const chkEstudiante = document.getElementById("chk_cualestudiante");
+    const selectEstudiante = document.getElementById("cualestudiante");
+    const nombreTxt = document.getElementById("nombre_estudiante_txt");
+
+    function actualizarNombreEstudiante() {
+
+        if (chkEstudiante.checked) {
+
+            const texto =
+                selectEstudiante.options[selectEstudiante.selectedIndex].text;
+
+            if (texto !== "Estudiante") {
+                nombreTxt.textContent = texto;
+            } else {
+                nombreTxt.textContent = "";
+            }
+
+        } else {
+
+            nombreTxt.textContent = "";
+
+        }
+    }
+
+    // cuando se marca/desmarca checkbox
+    chkEstudiante.addEventListener("change", actualizarNombreEstudiante);
+
+    // cuando cambia el select
+    selectEstudiante.addEventListener("change", actualizarNombreEstudiante);
+
+    // ejecutar al cargar página
+    actualizarNombreEstudiante();
+
+});
+
+</script>
+
+
+
+{% endblock %}

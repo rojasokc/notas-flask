@@ -1,0 +1,164 @@
+<style>
+.col-hab{
+    display:none;
+}
+</style>
+<div id="nombre_estudiante_bar" class="alert alert-info py-1 px-3 mb-2" >
+    <h5>Notas por Asignatura </h5>
+</div>
+<div class="table-responsive">
+
+<table class="table table-sm table-striped mb-0 fs-6">
+
+<thead class="table-secondary">
+<tr class="small text-nowrap">
+
+<th class="text-start">Code</th>
+<th class="text-start">Asignatura</th>
+
+{% if periodo == "PER1" %}
+<th>1erPer</th>
+<th>Obspe1</th>
+{% endif %}
+
+{% if periodo == "PER2" %}
+<th>1erPer</th>
+<th>2doPer</th>
+<th>Obspe2</th>
+{% endif %}
+
+{% if periodo == "PER3" %}
+<th>1erPer</th>
+<th>2doPer</th>
+<th>3erPer</th>
+<th>Obspe3</th>
+{% endif %}
+
+{% if periodo == "PER4" %}
+<th>4toPer</th>
+<th>Obspe4</th>
+{% endif %}
+
+
+<th>CodeEstu</th>
+
+{% if periodo == "PER1" %}
+<th>PromPer1</th>
+<th>Obsprom</th>
+{% endif %}
+
+{% if periodo == "PER2" %}
+<th>PromPer2</th>
+<th>Obsprom2</th>
+{% endif %}
+
+{% if periodo == "PER3" %}
+<th>PromPer3</th>
+<th>Obsprom3</th>
+{% endif %}
+
+{% if periodo == "PER1" %}
+<th>FP1</th>
+{% endif %}
+
+{% if periodo == "PER2" %}
+<th>FP2</th>
+{% endif %}
+
+{% if periodo == "PER3" %}
+<th>FP3</th>
+{% endif %}
+
+<th>FaltasTot</th>
+
+
+<th class="col-hab">NotaHab</th>
+<th class="col-hab">NotaReh</th>
+
+
+</tr>
+</thead>
+
+<tbody>
+
+{% for r in notasyasignaturasact %}
+<tr class="small text-nowrap">
+
+<td class="form-label small text-start">{{ r.codemate }}</td>
+<td class="form-label small text-start">{{ r.nombre }}</td>
+
+{% if periodo == "PER1" %}
+<td>{{ r.nota1 }}</td>
+<td>{{ r.obstxt1 }}</td>
+{% endif %}
+
+{% if periodo == "PER2" %}
+<td>{{ r.nota1 }}</td>
+<td>{{ r.nota2 }}</td>
+<td>{{ r.obstxt2 }}</td>
+{% endif %}
+
+{% if periodo == "PER3" %}
+<td>{{ r.nota1 }}</td>
+<td>{{ r.nota2 }}</td>
+<td>{{ r.nota3 }}</td>
+<td>{{ r.obstxt3 }}</td>
+{% endif %}
+
+{% if periodo == "PER4" %}
+<td>{{ r.nota4 }}</td>
+<td>{{ r.obspe4 }}</td>
+{% endif %}
+
+
+<td>{{ r.codeestu }}</td>
+
+{% if periodo == "PER1" %}
+<td>{{ r.promedio }}</td>
+<td>{{ r.obstxtpro1 }}</td>
+{% endif %}
+
+{% if periodo == "PER2" %}
+<td>{{ r.promedio2 }}</td>
+<td>{{ r.obstxtpro2 }}</td>
+{% endif %}
+
+{% if periodo == "PER3" %}
+<td>{{ r.promedio3 }}</td>
+<td>{{ r.obstxtpro3 }}</td>
+
+{% endif %}
+
+{% if periodo == "PER1" %}
+<td>{{ r.fp1 }}</td>
+{% endif %}
+
+{% if periodo == "PER2" %}
+<td>{{ r.fp2 }}</td>
+{% endif %}
+
+{% if periodo == "PER3" %}
+<td>{{ r.fp3 }}</td>
+{% endif %}
+
+<td>{{ r.faltas }}</td>
+
+
+<td class="col-hab">{{ r.habil }}</td>
+<td class="col-hab">{{ r.rehab }}</td>
+
+
+</tr>
+{% else %}
+<tr>
+<td colspan="20" class="text-muted">
+No hay asignaturas registradas
+</td>
+</tr>
+{% endfor %}
+
+</tbody>
+</table>
+
+</div>
+

@@ -1,0 +1,139 @@
+{% extends "basesub.html" %}
+
+{% block title %}Parametros gen{% endblock %}
+
+{% block content %}
+<h2>Tabla Maestra de Asignaturas</h2>
+
+<div class="container-fluid mt-3">
+
+    <div class="row">
+                <!-- ================== COLUMNA IZQUIERDA : FORMULARIO ================== -->
+        <div class="col-md-7 text-start">
+
+            <form method="POST" action="{{ url_for('save_tablamateria') }}">
+
+                <!-- FILA 1 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Nombre de Asignatura: </label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name="nombre" value="{{ matmae_sel.nombre if matmae_sel }}">
+                    </div>
+                </div>
+
+                <!-- FILA 2 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Keymate:</label>
+                    <div class="col-sm-6">
+                         <input type="text" class="form-control" name="keymatetabla"
+                            id="keymatetabla"  value="{{ matmae_sel.keymate if matmae_sel }}">
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-5">
+
+                        {% if matmae_sel %}
+                        <!-- ACTUALIZAR -->
+                        <button type="submit" formaction="{{ url_for('update_tablamateria', codematmax=matmae_sel.codematmax) }}"
+                            class="btn btn-warning me-2">
+                            Actualizar Asignatura maestra
+                        </button>
+
+                        <!-- LIMPIAR -->
+                        <a href="{{ url_for('creatablaasignaturas') }}" class="btn btn-secondary">
+                            Limpiar
+                        </a>
+                        {% else %}
+                        <!-- GUARDAR -->
+                        <button type="submit" class="btn btn-primary">
+                            Guardar Tabla Asignatura
+                        </button>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <!-- LADO DERECHO -->
+                <!-- ================== COLUMNA DERECHA : GRID Grados ================== -->
+        <div class="col-md-5">
+            <!-- Buscador -->
+            <form method="GET" action="{{ url_for('creatablaasignaturas') }}" class="row g-3 mb-3">
+                <div class="col-auto">
+                    Buscar x Asignatura:
+                </div>
+                <div class="col-auto">
+
+                    <input type="text" class="form-control" name="searchareas" placeholder="Buscar por grado..."
+                        value="{{ searchareas }}">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-secondary">
+                        Buscar
+                    </button>
+                </div>
+            </form>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <strong>Asignaturas Tabla Maestra</strong>
+                </div>
+
+                <div class="card-body p-0 ">
+
+                    <table class="table table-sm table-striped mb-0 ">
+                        <thead class="table-secondary">
+                            <tr>
+                                <th class="text-start">nombre</th>
+                                <th class="text-start">keymate</th>
+                                <th class="text-start">Accion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for a in tablamateria %}
+                            <tr>
+                                <td class="text-start">
+                                    <a href="{{ url_for('creatablaasignaturas',
+                                                    codematmax=a['codematmax'],
+                                                    searchtabmat=searchtabmat) }}">
+                                        {{ a['nombre'] }}
+                                    </a>
+                                </td>
+                                <td class="text-start">{{ a['keymate'] }}</td>
+
+                                <!-- Botón Eliminar -->
+                                <td>
+                                    <form method="POST"
+                                        action="{{ url_for('delete_tabmat', codematmax= a['codematmax'] ) }}">
+                                        <input type="hidden" name="searchtabmat" value="{{ searchtabmat }}">
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('¿Seguro que deseas eliminar este registro?');">
+                                            Eliminar
+                                        </button>
+                                    </form>
+
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="text-start text-muted">
+                                    No hay registros registrados
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+{%  endblock %}

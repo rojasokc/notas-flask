@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+
+        .header {
+            width: 100%;
+            border-bottom: 2px solid #000;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+        }
+
+        .header-table {
+            width: 100%;
+        }
+
+        .logo {
+            width: 80px;
+        }
+
+        .titulo {
+            text-align: center;
+        }
+
+        .titulo h2 {
+            margin: 0;
+        }
+
+        .datos {
+            margin-top: 10px;
+        }
+
+        .datos table {
+            width: 100%;
+        }
+
+        .datos td {
+            padding: 3px;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        .tabla-notas {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .tabla-notas th, .tabla-notas td {
+            border: 1px solid #000;
+            padding: 4px;
+            text-align: center;
+        }
+
+        .tabla-notas th {
+            background-color: #eee;
+        }
+
+        .area {
+            font-weight: bold;
+            background-color: #ddd;
+        }
+
+        .titulo h3,
+        .titulo h4,
+        .titulo p {
+            margin: 2px 0;
+            line-height: 1.2;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 🔷 ENCABEZADO -->
+<div class="header">
+    <table class="header-table">
+        <tr>
+            <td style="width: 20%;">
+                <img src="{{ logo }}" class="logo">
+            </td>
+            <td class="titulo">
+                <h3>{{ datacole.empname }}</h3>
+                <h4>{{ datacole.empaddr }}</h4>
+                <h4>{{ datacole.empcity }} - {{ datacole.empst }}, {{ datacole.empcountry }} | Tel: {{ datacole.emptel }}</h4>
+                <p>Boletín Académico <strong>{{ periodo }}</strong> - Año Lectivo: {{ alectivo }} | Fecha: {{ fechahoy }}</p>
+            </td>
+            <td style="width: 20%; text-align: right;">
+                <p><strong></strong> </p>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<!-- 🔷 DATOS DEL ESTUDIANTE -->
+<div class="datos">
+    <table>
+        <tr>
+            <td><span class="label">Estudiante:</span> {{ dataestu.estuname }}</td>
+            <td><span class="label">Código:</span> {{ dataestu.scodeest }}</td>
+            
+            <td><span class="label">Promedio:</span> {{ dataestu.scodeest }}</td>
+        </tr>
+        <tr>
+            <td><span class="label">Grado:</span> {{ dataestu.grade }}</td>
+            <td><span class="label">Director:</span> {{ datagrado.responsable }}</td>
+        </tr>
+        <tr>
+
+        </tr>
+    </table>
+
+<!-- adesde aqui datos-->    
+<hr>
+
+<h4 style="margin-bottom:5px;">Desempeño Académico</h4>
+
+<table class="tabla-notas">
+    <thead>
+        <tr>
+            <th>Area / Asignatura</th>
+            <th>PER1 - {{ dataallparam.valporper1 }}% </th>
+            <th>PER2 - {{ dataallparam.valporper2 }}%</th>
+            <th>PER3 - {{ dataallparam.valporper3 }}%</th>
+            <th>Nivel</th>
+            <th>PromP1</th>
+            <th>PromP2</th>
+            <th>PromP3</th>
+            <th>NivelPF</th>
+            
+         
+        </tr>
+    </thead>
+    <tbody>
+
+        {% for area in notas %}
+
+            <!-- 🔷 ÁREA + NOTA (encima de las asignaturas) -->
+                         <td colspan="8" style="text-align:left; font-size:11px;">
+                
+            </td>
+            <tr>
+                <td colspan="1" style="background:#ddd; font-weight:bold; text-align:left;">
+                    Area: {{ area.nombre }} 
+                </td>
+                <td colspan="1" style="background:#ddd; font-weight:bold; ">{{ area.per1 }}</td>
+                <td colspan="1" style="background:#ddd; font-weight:bold; ">{{ area.per2 }}</td>
+                <td colspan="1" style="background:#ddd; font-weight:bold; ">{{ area.per3 }}</td>
+                <td colspan="1" style="background:#ddd; font-weight:bold; ">{{ area.nivelpro }}</td>
+                <td colspan="1" style="background:#ddd; font-weight:bold; ">{{ area.notafinal }}</td>
+                <td colspan="1" style="background:#ddd; font-weight:bold; ">{{ area.notafinal2 }}</td>
+                <td colspan="1" style="background:#ddd; font-weight:bold; ">{{ area.notafinal3 }}</td>
+                <td colspan="1" style="background:#ddd; font-weight:bold; ">{{ area.nivelprofin }}</td>
+            </tr>
+
+            {% for asig in area.asignaturas %}
+            <tr>
+                <td style="text-align: left;">{{ asig.nombre }} {{ asig.valorm }} %, Profesor: {{ asig.nombreprof }} </td>
+                <td>{{ asig.nota1 }}</td>
+                <td>{{ asig.nota2 }}</td>
+                <td>{{ asig.nota3 }}</td>
+                <td>{{ asig.nivel }}</td>
+                <td>{{ asig.promedio }}</td>
+                <td>{{ asig.promedio2 }}</td>
+                <td>{{ asig.promedio3 }}</td>
+                <td>{{ asig.nivelperf }}</td>
+                
+
+            </tr>
+            <tr>
+        <td colspan="9" style="text-align:left; font-size:11px;">
+            <strong>Meta:</strong> {{ asig.metaapr }}<br>
+            <strong>Competencia:</strong> {{ asig.comptlab }}
+        </td>
+    </tr>
+
+            {% endfor %}
+
+        {% endfor %}
+
+    </tbody>
+</table>
+<!-- hasta aqui -->
+ <hr>
+<table class="tabla-informe">
+
+        <tr>
+            <td><span class="label">Codigo Estu:</span> {{ dataestu.scodeest }}</td>
+
+            {% if periodo == "PER1" %}
+            <td><span class="label">Puesto:</span> {{ datapromedio.puestop1 }}</td>
+            {% endif %}
+            {% if periodo == "PER2" %}
+            <td><span class="label">Puesto:</span> {{ datapromedio.puestop2 }}</td>
+            {% endif %}
+            {% if periodo == "PER3" %}
+            <td><span class="label">Puesto:</span> {{ datapromedio.puestop3 }}</td>
+            {% endif %}
+            {% if periodo == "PER3" %}
+            <td><span class="label">Puesto:</span> {{ datapromedio.puestop4 }}</td>
+            {% endif %}
+
+            {% if periodo == "PER1" %}
+            <td><span class="label">Promedio:</span> {{ datapromedio.promxgp1 }}</td>
+            {% endif %}
+            {% if periodo == "PER2" %}
+            <td><span class="label">Promedio:</span> {{ datapromedio.promxgp2 }}</td>
+            {% endif %}
+            {% if periodo == "PER3" %}
+            <td><span class="label">Promedio:</span> {{ datapromedio.promxgp3 }}</td>
+            {% endif %}   
+            {% if periodo == "PER4" %}
+            <td><span class="label">Promedio:</span> {{ datapromedio.promxgp4 }}</td>
+            {% endif %}                        
+        </tr>
+        <tr>
+            <td style="height: 80px;"></td>
+            <td></td>
+        </tr>
+        <tr>
+            <th>___________________________________</th> <th>____________________________</th>
+        </tr>
+        <tr>
+
+            <th>Director de grado</th> <th>Rector</th>
+        </tr>
+
+</table>
+</div>
+
+</body>
+</html>

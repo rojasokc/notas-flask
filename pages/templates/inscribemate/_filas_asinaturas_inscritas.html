@@ -1,0 +1,44 @@
+<style>
+.col-hab{
+    display:none;
+}
+</style>
+
+<div class="table-responsive">
+
+<table class="table table-sm table-striped mb-0 fs-6">
+
+<thead class="table-secondary">
+<tr class="small text-nowrap">
+
+<th class="text-start">MateriaInscrita</th>
+<th class="text-start">codigo</th>
+<th class="text-start">profesor</th>
+
+
+</tr>
+</thead>
+
+<tbody>
+
+{% for r in asignaturasact %}
+<tr class="small text-nowrap">
+
+<td class="form-label small text-start">{{ r.nombre }}</td>
+<td class="form-label small text-start">{{ r.codemate }}</td>
+<td class="form-label small text-start">{{ r.profname }}</td>
+
+
+</tr>
+{% else %}
+<tr>
+<td colspan="20" class="text-muted">
+No hay asignaturas registradas
+</td>
+</tr>
+{% endfor %}
+
+</tbody>
+</table>
+
+</div>

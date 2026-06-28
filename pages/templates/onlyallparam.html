@@ -1,0 +1,441 @@
+{% extends "basesub.html" %}
+
+{% block title %}Parametros gen{% endblock %}
+
+{% block content %}
+    <div class="mt-3 mb-3 p-3 bg-light border rounded shadow-sm text-start">
+    <h4 class="text-center text-primary mb-3">Parametros generales</h4>
+
+    
+            <form action="{{ url_for('update_allparam') }}" method="post">
+
+            <div class="row text-left">
+                <div class="col-auto d-flex align-items-center">
+                <label for="alectivo" class="me-2 mb-0">Año_lectivo:</label>
+                <input type="text" id="alectivo" name="alectivo" class="form-control" value="{{ allparam.alectivo }}">
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-check">
+                        <input class="form-check-input falta-radio" type="radio" name="calab" id="calA" value="A"
+                            {% if allparam.calab == 'A' %}checked{% endif %}>
+                        <label class="form-check-label" for="calA">Cal A</label>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-check">
+                        <input class="form-check-input falta-radio" type="radio" name="calab" id="calB" value="B"
+                            {% if allparam.calab == 'B' %}checked{% endif %}>
+                        <label class="form-check-label" for="calB">Cal B</label>
+                    </div>
+                </div>
+                
+                <div class="col-md-2">
+                    
+                </div>
+                 
+            </div>
+
+            <!-- //aqui-->
+            <hr class="my-4">
+            <!-- //aqui para responsive -->
+             <div class="table-responsive">
+            <div style="min-width: 900px;">
+            <div class="container-fluid">
+                <div class="row fw-bold text-center mb-2">
+                <div class="col-1"></div> <!-- espacio para los radios -->
+                <div class="col">Fecha ini</div>
+                <div class="col">Fecha fin</div>
+                <div class="col">Procent_X_Per</div>
+                <div class="col">Col 5</div>
+                <div class="col">Seleccionar </div>
+                <div class="col">Fecha Ini / Fecha Fin</div>
+
+                </div>
+                <!-- FILA 1 -->
+                <div class="row mb-2">
+                    
+                    <div class="col-1">
+                        <input class="form-check-input" type="radio" name="fila_radio" value="fila1"> Per1
+                    </div>
+                    <div class="col">
+                        <input type="text" name="desde_per1" value="{{ desde_per1 }}" class="form-control">
+                    </div>
+                    <div class="col">
+                        <input type="text" name="hasta_per1" value="{{ hasta_per1 }}" class="form-control">
+                    </div>
+                    <div class="col">
+                        <input type="text" name="valporper1" value="{{ allparam.valporper1 }}" class="form-control">
+                    </div>
+                    <div class="col"><button type="submit" class="btn btn-warning">Borrar linea</button></div>
+                    <div class="col">Fecha Ini: </div>
+                    <div class="col">
+                        <input type="date" name="fecha_inicio" class="form-control">
+                    </div>
+                    
+                </div>
+
+                <!-- FILA 2 -->
+                <div class="row mb-2">
+                    
+                    <div class="col-1">
+                        <input class="form-check-input" type="radio" name="fila_radio" value="fila2"> Per2
+                    </div>
+                    <div class="col">
+                        <input type="text" name="desde_per2" value="{{ desde_per2 }}" class="form-control">
+                    </div>
+                    <div class="col">
+                        <input type="text" name="hasta_per2" value="{{ hasta_per2 }}" class="form-control">
+                    </div>
+                    <div class="col">
+                        <input type="text" name="valporper2" value="{{ allparam.valporper2 }}" class="form-control">
+                    </div>
+                    <div class="col"><button type="submit" class="btn btn-warning">Borrar linea</button></div>
+                    <div class="col">Fecha Fin: </div>
+                    <div class="col">
+                        <input type="date" name="fecha_final" class="form-control">
+                    </div>
+                    
+                </div>
+
+                <!-- FILA 3 -->
+                <div class="row mb-2">
+                    
+                    <div class="col-1">
+                        <input class="form-check-input" type="radio" name="fila_radio" value="fila3"> Per3 
+                    </div>
+                    <div class="col">
+                        <input type="text" name="desde_per3" value="{{ desde_per3 }}" class="form-control">
+                    </div>
+                    <div class="col">
+                        <input type="text" name="hasta_per3" value="{{ hasta_per3 }}" class="form-control">
+                    </div>
+                    <div class="col">
+                        <input type="text" name="valporper3" value="{{ allparam.valporper3 }}" class="form-control">
+                    </div>
+                    <div class="col"><button type="submit" class="btn btn-warning">Borrar linea</button></div>
+                    <div class="col">
+                        
+                    </div>
+                    <div class="col"></div>
+                    
+                </div>
+
+                <!-- FILA 4 -->
+                <div class="row mb-2">
+                    
+                    <div class="col-1">
+                        <input class="form-check-input" type="radio" name="fila_radio" value="fila4"> Per4
+                    </div>
+                    <div class="col">
+                        <input type="text" name="desde_per4" value="{{ desde_per4 }}" class="form-control">
+                    </div>
+                    <div class="col">
+                        <input type="text" name="hasta_per4" value="{{ hasta_per4 }}" class="form-control">
+                    </div>
+                    <div class="col">
+                        <input type="text" name="valporper4" value="{{ allparam.valporper4 }}" class="form-control">
+                    </div>
+                    <div class="col"><button type="submit" class="btn btn-secondary">Borrar linea</button></div>
+                                     
+                    <div class="col">
+                        <button type="button" name="setButton" class="btn btn-success">Set</button>
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-success">Guardar cambios</button>
+                    </div>
+                    
+                </div>
+
+
+            </div>
+            </div>
+             </div>
+            <!-- hasta aqui responsive-->
+            </form>
+    </div>
+
+
+
+ <div class="mt-3 mb-3 p-3 bg-light border rounded shadow-sm">
+  <!-- aquí abrir cerrar periodos -->
+  <hr class="my-4">
+
+  <div class="container-fluid text-start">
+
+    <div class="row">
+      <!-- COLUMNA 1 Bachiller-->
+      <div class="col">
+        <form action="{{ url_for('update_abrecierra') }}" method="post">
+        <div class="row fw-bold text-center mb-2">
+            <div class="col">Bachillerato
+
+            </div>
+        </div>
+        <div class="row mb-2"><div class="col"><label id="labelCol1Fila2">{{ status_periodo }}</label></div></div>
+        <div class="row mb-2">
+            <div class="col">
+            <input class="form-check-input" type="radio" name="abrecie1" value="radioabre1"> Abrir
+            <input class="form-check-input" type="radio" name="abrecie1" value="radiocierra1"> Cerrar
+
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col">
+                <label for="selectPeriodo1">Selecciona periodo:</label>
+                <select class="form-select" id="selectPeriodo1" name="selectPeriodo1">
+                <option value="periodo1">Periodo 1</option>
+                <option value="periodo2">Periodo 2</option>
+                <option value="periodo3">Periodo 3</option>
+                <option value="periodo4">Periodo 4</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col">
+                <button type="submit" name="savepbach" class="btn btn-success">Guardar cambios</button>
+            </div>
+        </div>
+        </form>
+      </div>
+
+      <!-- COLUMNA 2 Primaria-->
+      <div class="col">
+        <form action="{{ url_for('update_abrecierrapr') }}" method="post">
+        <div class="row fw-bold text-center mb-2"><div class="col">Primaria</div></div>
+        <div class="row mb-2"><div class="col"><label id="labelCol2Fila2">{{ status_periodopr }}</label></div></div>
+        <div class="row mb-2">
+            <div class="col">
+            <input class="form-check-input" type="radio" name="abrecie2" value="radioabre2"> Abrir
+            <input class="form-check-input" type="radio" name="abrecie2" value="radiocierra2"> Cerrar
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col">
+                <label for="selectPeriodo2">Selecciona periodo:</label>
+                <select class="form-select" id="selectPeriodo2" name="selectPeriodo2">
+                <option value="periodo1">Periodo 1</option>
+                <option value="periodo2">Periodo 2</option>
+                <option value="periodo3">Periodo 3</option>
+                <option value="periodo4">Periodo 4</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col">
+                <button type="submit" name="saveprim" class="btn btn-success">Guardar cambios</button>
+            </div>
+        </div>
+        </form>
+      </div>
+
+      <!-- COLUMNA 3 Nocturna -->
+      <div class="col">
+        <form action="{{ url_for('update_abrecierraci') }}" method="post">
+        <div class="row fw-bold text-center mb-2"><div class="col">Nocturna</div></div>
+        <div class="row mb-2"><div class="col"><label id="labelCol3Fila2">{{ status_periodoci }}</label></div></div>
+        <div class="row mb-2">
+            <div class="col">
+            <input class="form-check-input" type="radio" name="abrecie3" value="radioabre3"> Abrir
+            <input class="form-check-input" type="radio" name="abrecie3" value="radiocierra3"> Cerrar
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col">
+                <label for="selectPeriodo3">Selecciona periodo:</label>
+                <select class="form-select" id="selectPeriodo3" name="selectPeriodo3">
+                <option value="periodo1">Periodo 1</option>
+                <option value="periodo2">Periodo 2</option>
+                <option value="periodo3">Periodo 3</option>
+                <option value="periodo4">Periodo 4</option>
+                </select>
+
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col">
+                <button type="submit" name="saveasoc" class="btn btn-success">Guardar cambios</button>
+            </div>
+        </div>
+        </form>
+      </div>
+
+      <!-- COLUMNA 4 -->
+      <div class="col">
+        <form action="{{ url_for('update_abrecierraru') }}" method="post">
+        <div class="row fw-bold text-center mb-2"><div class="col">Asociadas</div></div>
+        <div class="row mb-2"><div class="col"><label id="labelCol4Fila2">{{ status_periodoru }}</label></div></div>
+        <div class="row mb-2">
+            <div class="col">
+            <input class="form-check-input" type="radio" name="abrecie4" value="radioabre4"> Abrir
+            <input class="form-check-input" type="radio" name="abrecie4" value="radiocierra4"> Cerrar
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col">
+                <label for="selectPeriodo4">Selecciona periodo:</label>
+                <select class="form-select" id="selectPeriodo4" name="selectPeriodo4">
+                <option value="periodo1">Periodo 1</option>
+                <option value="periodo2">Periodo 2</option>
+                <option value="periodo3">Periodo 3</option>
+                <option value="periodo4">Periodo 4</option>
+                </select>
+
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col">
+                <button type="submit" name="savepreb" class="btn btn-success">Guardar cambios</button>
+            </div>
+        </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="mt-3 mb-3 p-3 bg-light border rounded shadow-sm">
+  <!-- fechas de ins y matr -->
+  <hr class="my-4">
+
+  <div class="container-fluid text-start">
+
+    <div class="row">
+      <!-- Columna 1 -->
+      <div class="col">
+        <div class="row mb-2">
+          <div class="col"><input class="form-check-input" type="radio" name="abrecie4" value="radioabre4"> F. Insc</div>
+        </div>
+        <div class="row mb-2">
+          <div class="col"><input class="form-check-input" type="radio" name="abrecie4" value="radioabre4"> F. Matr</div>
+        </div>
+        <div class="row mb-2">
+          <div class="col"><input class="form-check-input" type="radio" name="abrecie4" value="radioabre4">1er P. exam</div>
+        </div>
+        <div class="row mb-2">
+          <div class="col"><input class="form-check-input" type="radio" name="abrecie4" value="radioabre4">2do P. exam</div>
+        </div>
+        <div class="row mb-2">
+          <div class="col"><input class="form-check-input" type="radio" name="abrecie4" value="radioabre4">3er P. exam</div>
+        </div>                
+      </div>
+
+      <!-- Columna 2 -->
+      <div class="col">
+        <div class="row mb-2">
+          <div class="col">Contenido fila 1 col 2</div>
+        </div>
+        <div class="row mb-2">
+          <div class="col">Contenido fila 2 col 2</div>
+        </div>
+        <div class="row mb-2">
+          <div class="col">Contenido fila 3 col 2</div>
+        </div>
+        <div class="row mb-2">
+          <div class="col">Contenido fila 3 col 2</div>
+        </div>
+        <div class="row mb-2">
+          <div class="col">Contenido fila 3 col 2</div>
+        </div>                
+      </div>
+
+      <!-- Columna 3 -->
+      <div class="col">
+        <div class="row mb-2">
+          <div class="col">.</div>
+        </div>
+        <div class="row mb-2">
+          <div class="col">.</div>
+        </div>
+        <div class="row mb-2">
+          <div class="col">.</div>
+        </div>
+        <div class="row mb-2">
+          <div class="col">.</div>
+        </div>
+        <div class="row mb-2">
+          <div class="col"><button type="submit" name="savefeexa" class="btn btn-success">Guardar cambios</button></div>
+        </div>                
+      </div>
+    </div>
+
+  </div>
+</div>
+
+  </div>
+</div>  
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Selecciona el botón Set
+    const btnSet = document.querySelector('button[name="setButton"]');
+
+    btnSet.addEventListener('click', function(e) {
+        e.preventDefault(); // Evita que el form se envíe inmediatamente
+
+        // Obtiene el valor de la fecha date del input visible
+        const fechaInput = document.querySelector('input[name="fecha_inicio"]');
+        const fechaISO = fechaInput.value; // "YYYY-MM-DD"
+        //const fechaValue = fechaInput.value;
+
+        if (!fechaISO) {
+            alert('Seleccione una fecha primero.');
+            return;
+        }
+
+        // Convierte de "YYYY-MM-DD" a "M/D/YYYY"
+        const parts = fechaISO.split('-'); // [YYYY, MM, DD]
+        const year  = parts[0];
+        const month = parseInt(parts[1], 10); // Quita ceros
+        const day   = parseInt(parts[2], 10); // Quita ceros
+
+        const fechaFormateada = day + '/' + month + '/' + year;
+
+        // Obtiene el valor de la fecha date del input visible
+        const fechaOutput = document.querySelector('input[name="fecha_final"]');
+        const fechaISO2 = fechaOutput.value; // "YYYY-MM-DD"
+
+        if (!fechaISO2) {
+            alert('Seleccione una fecha primero.');
+            return;
+        }
+
+        // Convierte de "YYYY-MM-DD" a "M/D/YYYY"
+        const parts2 = fechaISO2.split('-'); // [YYYY, MM, DD]
+        const year2  = parts2[0];
+        const month2 = parseInt(parts2[1], 10); // Quita ceros
+        const day2   = parseInt(parts2[2], 10); // Quita ceros
+
+        const fechaFormateada2 = day2 + '/' + month2 + '/' + year2;
+
+        // Revisa qué radio está seleccionado
+        const selectedRadio = document.querySelector('input[name="fila_radio"]:checked');
+        if (!selectedRadio) {
+            alert('Seleccione una fila primero.');
+            return;
+        }
+
+        const fila = selectedRadio.value; // e.g. 'fila1', 'fila2', etc.
+
+        // Según la fila, actualiza el campo desde_perX correspondiente
+        if (fila === 'fila1') {
+            document.querySelector('input[name="desde_per1"]').value = fechaFormateada;
+            document.querySelector('input[name="hasta_per1"]').value = fechaFormateada2;
+        }
+        if (fila === 'fila2') {
+            document.querySelector('input[name="desde_per2"]').value = fechaFormateada;
+            document.querySelector('input[name="hasta_per2"]').value = fechaFormateada2;
+        }
+        if (fila === 'fila3') {
+            document.querySelector('input[name="desde_per3"]').value = fechaFormateada;
+            document.querySelector('input[name="hasta_per3"]').value = fechaFormateada2;
+        }
+        if (fila === 'fila4') {
+            document.querySelector('input[name="desde_per4"]').value = fechaFormateada;
+            document.querySelector('input[name="hasta_per4"]').value = fechaFormateada2;
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Estudiantes</title>
+</head>
+<body>
+    <h1>Lista de Estudiantes</h1>
+    <table border="1" style="margin: auto;">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Grado</th>
+        </tr>
+        {% for e in estudiantes %}
+        <tr>
+            <td>{{ e.scodeest }}</td>
+            <td>{{ e.names }}</td>
+            <td>{{ e.grade }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <a href="{{ url_for('home') }}">Volver al inicio</a>
+</body>
+</html>

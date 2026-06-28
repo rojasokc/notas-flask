@@ -1,0 +1,68 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    text-align: center;
+    margin-top: 50px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    background: #007acc;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0;
+}
+
+nav ul li a {
+    display: block;
+    padding: 15px 20px;
+    color: white;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    background: #005b99;
+}
+
+h1 {
+    color: #007acc;
+}
+
+.form-select-sm {
+    padding-top: 0.15rem !important;
+    padding-bottom: 0.15rem !important;
+    font-size: 0.8rem;
+}
+
+.foto-perfil {
+    max-width: 100%;
+    height: auto;
+    align-items:center;
+}
+
+.tabla-notas {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.tabla-notas th, .tabla-notas td {
+    border: 1px solid #000;
+    padding: 4px;
+    text-align: center;
+}
+
+.tabla-notas th {
+    background-color: #eee;
+}
+
+.area {
+    font-weight: bold;
+    background-color: #ddd;
+}

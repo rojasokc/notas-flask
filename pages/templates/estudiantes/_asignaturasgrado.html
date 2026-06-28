@@ -1,0 +1,44 @@
+<table class="table table-sm table-striped mb-0 fs-6">
+
+<thead class="table-secondary">
+<tr class="small text-nowrap">
+
+<th class="text-start">Code2</th>
+<th class="text-start">Asignatura2</th>
+
+<th>codegrad</th>
+<th>name</th>
+
+
+<th>codearea</th>
+<th>nivelmate</th>
+
+</tr>
+</thead>
+
+<tbody>
+
+{% for r in asignaturasnuevas %}
+<tr class="small text-nowrap">
+
+<td class="form-label small text-start">{{ r.codemate }}</td>
+<td class="form-label small text-start">{{ r.nombre }}</td>
+
+<td>{{ r.codegrad }}</td>
+<td>{{ r.name }}</td>
+
+
+<td>{{ r.codearea }}</td>
+<td>{{ r.nivelmate }}</td>
+
+</tr>
+{% else %}
+<tr>
+<td colspan="20" class="text-muted">
+No hay asignaturas registradas
+</td>
+</tr>
+{% endfor %}
+
+</tbody>
+</table>

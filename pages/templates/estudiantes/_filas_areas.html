@@ -1,0 +1,142 @@
+<!-- segunda tabla -->
+<div id="nombre_estudiante_bar" class="alert alert-info py-1 px-3 mb-2" >
+    <h5>Notas por Area </h5>
+</div>
+<div class="table-responsive">
+
+<table class="table table-sm table-striped mb-0 fs-6">
+
+<thead class="table-secondary">
+<tr class="small text-nowrap">
+
+<th class="text-start">Codearea</th>
+<th class="text-start">Area</th>
+
+{% if periodo == "PER1" %}
+<th>1erPer</th>
+<th>Obspe1</th>
+{% endif %}
+
+{% if periodo == "PER2" %}
+<th>1erPer</th>
+<th>2doPer</th>
+<th>Obspe2</th>
+{% endif %}
+
+{% if periodo == "PER3" %}
+<th>1erPer</th>
+<th>2doPer</th>
+<th>3erPer</th>
+<th>Obspe3</th>
+{% endif %}
+
+{% if periodo == "PER4" %}
+<th>1erPer</th>
+<th>2doPer</th>
+<th>3erPer</th>
+<th>4toPer</th>
+<th>Obspe4</th>
+{% endif %}
+
+
+
+<th>CodeEstu</th>
+
+{% if periodo == "PER1" %}
+<th>PromFinP1</th>
+<th>Obspe1</th>
+{% endif %}
+
+{% if periodo == "PER2" %}
+<th>PromFinP2</th>
+<th>Obspe2</th>
+{% endif %}
+
+{% if periodo == "PER3" %}
+<th>PromFinP3</th>
+<th>Obspe3</th>
+{% endif %}
+
+<th>codecala</th>
+
+<th class="col-hab">NotaHab</th>
+<th class="col-hab">NotaReh</th>
+
+
+
+</tr>
+</thead>
+
+<tbody>
+
+{% for r in notasyareasact %}
+<tr class="small text-nowrap">
+
+<td class="form-label small text-start">{{ r.codearea }}</td>
+<td class="form-label small text-start">{{ r.nombre }}</td>
+
+{% if periodo == "PER1" %}
+<td>{{ r.per1 }}</td>
+<td>{{ r.obstext1 }}</td>
+{% endif %}
+
+{% if periodo == "PER2" %}
+<td>{{ r.per1 }}</td>
+<td>{{ r.per2 }}</td>
+<td>{{ r.obstext2 }}</td>
+{% endif %}
+
+{% if periodo == "PER3" %}
+<td>{{ r.per1 }}</td>
+<td>{{ r.per2 }}</td>
+<td>{{ r.per3 }}</td>
+<td>{{ r.obstext3 }}</td>
+{% endif %}
+
+{% if periodo == "PER4" %}
+<td>{{ r.per1 }}</td>
+<td>{{ r.per2 }}</td>
+<td>{{ r.per3 }}</td>
+<td>{{ r.per4 }}</td>
+<td>{{ r.obstext4 }}</td>
+{% endif %}
+
+
+
+<td>{{ r.codeestu }}</td>
+
+{% if periodo == "PER1" %}
+<td>{{ r.NotaFinal }}</td>
+<td>{{ r.obstextpro1 }}</td>
+{% endif %}
+
+{% if periodo == "PER2" %}
+<td>{{ r.notafinal2 }}</td>
+<td>{{ r.obstextpro2 }}</td>
+{% endif %}
+
+{% if periodo == "PER3" %}
+<td>{{ r.notafinal3 }}</td>
+<td>{{ r.obstextpro3 }}</td>
+{% endif %}
+
+<td>{{ r.codecala }}</td>
+
+<td class="col-hab">{{ r.habil }}</td>
+<td class="col-hab">{{ r.rehab }}</td>
+
+
+
+</tr>
+{% else %}
+<tr>
+<td colspan="20" class="text-muted">
+No hay asignaturas registradas
+</td>
+</tr>
+{% endfor %}
+
+</tbody>
+</table>
+
+</div>

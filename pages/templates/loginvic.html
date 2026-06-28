@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <!-- 🔴 CLAVE PARA RESPONSIVE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Login</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<style>
+/* Fondo centrado */
+.login-wrapper {
+    min-height: 100vh;
+}
+
+/* Tarjeta */
+.login-card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border-top: 5px solid #0d6efd;
+}
+
+/* Título */
+.login-card h4 {
+    font-weight: 700;
+    color: #0d6efd;
+}
+
+/* Inputs */
+.form-control {
+    border-radius: 8px;
+}
+
+/* Botón */
+.btn-primary {
+    border-radius: 8px;
+    font-weight: bold;
+}
+</style>
+
+<!-- CONTENEDOR FLEX CENTRADO -->
+<div class="container-fluid login-wrapper d-flex justify-content-center align-items-center">
+
+    <!-- GRID RESPONSIVE -->
+    <div class="col-12 col-sm-10 col-md-6 col-lg-4">
+
+        <div class="login-card">
+
+            <h4 class="text-center mb-4">Login principal</h4>
+
+            <form method="POST">
+
+                <div class="mb-3">
+                    <label class="form-label">Usuario</label>
+                    <input type="text" name="usuario" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Contraseña</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+
+                <!-- Tipo de usuario -->
+                <div class="mb-3">
+                    <label class="form-label">Tipo de acceso</label>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="tipo" value="admin" checked>
+                        <label class="form-check-label">Admin</label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="tipo" value="profesor">
+                        <label class="form-check-label">Profesor</label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="tipo" value="estudiante">
+                        <label class="form-check-label">Estudiante</label>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary w-100">Ingresar</button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

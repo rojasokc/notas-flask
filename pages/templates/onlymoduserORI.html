@@ -1,0 +1,209 @@
+{% extends "basesub.html" %}
+
+{% block title %}Edit admin{% endblock %}
+
+{% block content %}
+
+        <h4 class="text-center text-primary mb-3">Editar modificar Usuarios administradores</h4>
+
+        <!-- Aquí va el contenido específico -->
+<div class="container-fluid mt-3">
+
+    <div class="row">
+
+        <!-- ================== COLUMNA IZQUIERDA : FORMULARIO ================== -->
+        <div class="col-md-7 text-start">
+
+            <form method="POST" action="{{ url_for('save_admuser') }}">
+
+                <!-- FILA 1 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Nombres:</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="campo1name" value="{{ getadmuser['name'] if getadmuser else '' }}">
+                    </div>
+                </div>
+
+                <!-- FILA 2 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">1er Apellido:</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="campo2lastname" value="{{ getadmuser['lastname'] if getadmuser else '' }}">
+                    </div>
+                </div>
+
+                <!-- FILA 4 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Tel/Cel:</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="campo4tel1" value="{{ getadmuser['tel1'] if getadmuser else '' }}">
+                    </div>
+                </div>
+
+                <!-- FILA 5 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Email:</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="campo5email" value="{{ getadmuser['email'] if getadmuser else '' }}">
+                    </div>
+                </div>
+
+                <!-- FILA 7 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Cargo:</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="campo7cargo" value="{{ getadmuser['cargo'] if getadmuser else '' }}">
+                    </div>
+                </div>
+
+                <!-- FILA 8 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Dir/ciudad:</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="campo8city" value="{{ getadmuser['city'] if getadmuser else '' }}">
+                    </div>
+                </div>                
+
+
+                <!-- FILA 9 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">New login:</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="campo9login" value="{{ getadmuser['login'] if getadmuser else '' }}">
+                    </div>
+                </div>
+
+                <!-- FILA 10 -->
+                <div class="row mb-2">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-5 text-muted">
+                        el login debe tener más de 6 caracteres
+                    </div>
+                </div>
+
+                <!-- FILA 11 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">New Password:</label>
+                    <div class="col-sm-5">
+                        <input type="password" class="form-control" name="campo11pass">
+                    </div>
+                </div>
+
+                <!-- FILA 12 -->
+                <div class="row mb-2">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-5 text-muted">
+                        el password debe tener más de 6 caracteres
+                    </div>
+                </div>
+
+                <!-- BOTONES -->
+                <div class="row mt-3">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-5">
+
+                        {% if getadmuser %}
+                            <!-- ACTUALIZAR -->
+                            <button type="submit"
+                                    formaction="{{ url_for('update_admuser', userid=getadmuser['userid']) }}"
+                                    class="btn btn-warning me-2">
+                                Actualizar
+                            </button>
+
+                            <!-- CERRAR EDICIÓN -->
+                            <a href="{{ url_for('onlymoduserppal', search=search) }}"
+                            class="btn btn-secondary">
+                                Cerrar edición
+                            </a>
+                        {% else %}
+                            <!-- GUARDAR -->
+                            <button type="submit"
+                                    class="btn btn-primary">
+                                Guardar AdmUser
+                            </button>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- ================== COLUMNA DERECHA : GRID PROFESORES ================== -->
+        <div class="col-md-5">
+            <!-- Buscador -->
+            <form method="GET" action="{{ url_for('onlycreaprofx') }}" class="row g-3 mb-3">
+                <div class="col-auto">
+                    Buscar x Apellido:
+                </div>
+                <div class="col-auto">
+
+                    <input type="text" class="form-control" name="search" placeholder="Buscar por apellido..."
+                        value="{{ search }}">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-secondary">
+                        Buscar
+                    </button>
+                </div>
+            </form>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <strong>Usuarios creados</strong>
+                </div>
+
+                <div class="card-body p-0 ">
+
+                    <table class="table table-sm table-striped mb-0 ">
+                        <thead class="table-secondary">
+                            <tr>
+                                <th class="text-start">Código</th>
+                                <th class="text-start">Apellido</th>
+                                <th class="text-start">Nombre</th>
+                                <th class="text-start">Accion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in admusers %}
+                            <tr>
+                                <td class="text-start">
+                                <a href="{{ url_for('onlyeditauser',
+                                                    userid=p['userid'],
+                                                    search=search) }}">
+                                    {{ p['userid'] }}
+                                </a>
+                                </td>
+                                <td class="text-start">{{ p['lastname'] }}</td>
+                                <td class="text-start">{{ p['name'] }}</td>
+                                <!-- Botón Eliminar -->
+                                <td>
+                                    <form method="POST"
+                                        action="{{ url_for('profesores.delete_profesor', codeprof= p['codeprof'] ) }}">
+                                        <input type="hidden" name="search" value="{{ search }}">
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('¿Seguro que deseas eliminar este registro?');">
+                                            Eliminar
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="text-start text-muted">
+                                    No hay profesores registrados
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

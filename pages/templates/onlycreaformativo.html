@@ -1,0 +1,558 @@
+{% extends "basesub.html" %}
+
+{% block title %}Formativo{% endblock %}
+
+{% block content %}
+<h2>Concepto Formativo</h2>
+
+<div class="container-fluid mt-3">
+
+    <div class="row">
+
+        <!-- ================== COLUMNA IZQUIERDA : FORMULARIO ================== -->
+        <div class="col-md-7 text-start">
+
+            <form method="POST" action="{{ url_for('cformativo.save_formativo') }}">
+
+                <!-- FILA 1 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Nivel escolar: </label>
+                    <div class="col-sm-6">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="nivel_radio" id="nivel1" value="1"
+                            
+                            {% if nivel_radio == '1' %}checked{% endif %}>
+                            <label class="form-check-label" for="nivel1">Prebasica</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="nivel_radio" id="nivel2" value="2"
+                            
+                            {% if nivel_radio == '2' %}checked{% endif %}>
+                            <label class="form-check-label" for="nivel2">Primaria</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="nivel_radio" id="nivel3" value="3" 
+                            
+                            {% if nivel_radio == '3' %}checked{% endif %} >
+                            <label class="form-check-label" for="nivel3">Bachillerato</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FILA 2 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Concepto Formativo:</label>
+                    <div class="col-sm-9">
+                        
+                        <textarea class="form-control" name="campo2" rows="2" minlength="25" required>{{ forma_sel.concepto if forma_sel }}</textarea>
+                            <small class="text-muted">Escribir menos de 500 caracteres</small>
+                    </div>
+                </div>
+
+                <!-- FILA 3  -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end"><strong>Area seleccionada:</strong></label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" style="background-color:#f2f2f2;" name="nivelareat"
+                            id="nivelareat" readonly value="{{ forma_sel.areanombre if forma_sel }}">
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" style="background-color:#f2f2f2;" name="nivelareat_hidden"
+                            id="nivelareat_hidden" readonly value="{{ forma_sel.codearea if forma_sel }}">
+                    </div>                    
+                </div>
+
+                <!-- FILA 5 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Area:</label>
+                    <div class="col-sm-4">
+
+                        <div class="col-sm-9">
+                            <select class="form-select" name="nivelarea" id="nivelarea">
+                                <option value=""> Seleccione --</option>
+
+                                {% for d in areasxmate %}
+                                <option value="{{ d.codearea }}">
+                                    {{ d.nombre }}
+                                </option>
+                                {% endfor %}
+                            </select>
+
+                        </div>
+
+                    </div>
+                    <div class="col-sm-2 text-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="chk_elarea" id="chk_elarea"
+                                value="1">
+                            <label class="form-check-label" for="chk_elarea">
+                                Activo
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- FILA 6 antes -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end"><strong>Asignatura asignada:</strong></label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" style="background-color:#f2f2f2;" name="nivelasignaturat"
+                            id="nivelasignaturat" readonly value="{{ forma_sel.nombre if forma_sel }}">
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" style="background-color:#f2f2f2;" name="nivelasignaturat_hidden"
+                            id="nivelasignaturat_hidden" readonly value="{{ forma_sel.codemate if forma_sel }}">
+                    </div>                     
+                </div>
+
+                <!-- FILA 6 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Seleccionar Asignatura:</label>
+                    <div class="col-sm-4">
+
+                        <div class="col-sm-9">
+                            <select class="form-select" name="nivelasignatura" id="nivelasignatura" >
+                                <option value=""> Seleccione --</option>
+
+                                {% for n in materxmate %}
+                                <option value="{{ n.codemate }}">
+                                    {{ n.nombre }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 text-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="chk_asignatura" id="chk_asignatura" value="1">
+                            <label class="form-check-label" for="chk_asignatura">
+                                Activo
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FILA 7 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end"><strong>Nivel de desempeño:</strong></label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" style="background-color:#f2f2f2;" name="niveldesemt"
+                            id="niveldesemt" readonly value="{{ forma_sel.notatt if forma_sel }}">
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" style="background-color:#f2f2f2;" name="niveldesemt_hidden"
+                            id="niveldesemt_hidden" readonly value="{{ forma_sel.codeobse if forma_sel }}">
+                    </div> 
+                </div>                
+
+                <!-- FILA 8 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Seleccionar Nivel:</label>
+                    <div class="col-sm-4">
+
+                        <div class="col-sm-9">
+                            <select class="form-select" name="niveldesemp" id="niveldesemp">
+                                <option value=""> Seleccione --</option>
+
+
+                                {% for n in observa_rows %}
+                                <option value="{{ n.codeobse }}">
+                                    {{ n.notatt }}
+                                </option>
+                                {% endfor %}
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 text-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="chk_nivel" id="chk_nivel" value="1">
+                            <label class="form-check-label" for="chk_nivel">
+                                Activo
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-5">
+
+                        {% if forma_sel %}
+                        <!-- ACTUALIZAR -->
+                        <button type="submit" formaction="{{ url_for('cformativo.update_formativo', codeform=forma_sel.codeform) }}"
+                        
+                            class="btn btn-warning me-2">
+                            Actualizar Formativo
+                        </button>
+
+                        <input type="hidden" name="searcharea" value="{{ searcharea }}">
+                        <input type="hidden" name="niveldesem" value="{{ niveldesem }}">
+                        <input type="hidden" name="nivel_radio" value="{{ nivel_radio }}">
+                        <input type="hidden" name="nombrearea" value="{{ nombrearea }}">
+
+                        <!-- LIMPIAR -->
+                        <a href="{{ url_for('cformativo.index') }}" class="btn btn-secondary">
+                            Limpiar
+                        </a>
+                        {% else %}
+                        <!-- GUARDAR -->
+                        <button type="submit" class="btn btn-primary">
+                            Guardar C.Formativo
+                        </button>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <!--aqui-->
+        <!-- ================== COLUMNA DERECHA : GRID Grados ================== -->
+        <div class="col-md-5 mb-0 small">
+            <!-- Buscador -->
+            <form method="GET" action="{{ url_for('cformativo.index') }}" class="row g-3 mb-3" id="formBuscar">
+                <!-- radios -->
+                <input type="hidden" name="nivel_radio" id="nivel_radio_hidden" >
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Buscar x Area:</label>
+
+                    <div class="col-sm-7">
+                                <select class="form-select" name="searcharea" id="searcharea">
+                                    <option value="" > Seleccione el Area--</option>
+
+                                    {% for d in areasxmate %}
+                                    <option value="{{ d.codearea }}" data-nombre="{{ d.nombre }}"
+                                        {% if d.nombre == nombrearea %}selected{% endif %}>
+                                    
+                                        {{ d.nombre }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                <input type="hidden" name="nombrearea" id="nombrearea">
+                    </div> 
+                </div>
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Seleccionar_Nivel:</label>
+                    <div class="col-sm-5">
+                                <select class="form-select" name="niveldesem" id="niveldesem">
+                                    <option value="" > Seleccione --</option>
+
+
+                                    {% for n in observa_rows %}
+                                    <option value="{{ n.notatt }}" {% if n.notatt == niveldesem %}selected{% endif %}>
+                                        {{ n.notatt }}
+                                    </option>
+                                    {% endfor %}
+
+                                </select>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-secondary">
+                            Buscar
+                        </button>
+                    </div>    
+                                   
+                </div>
+ 
+            </form>
+
+            <div class="card shadow-sm table table-sm table-striped mb-0 w-100">
+                <div class="card-header bg-light">
+                    <strong>Concepto formativo, area: {{areaelecta if areaelecta else "todas"}} </strong>
+                </div>
+
+                <div class="card-body p-0 ">
+
+                    <table class="table table-sm table-striped mb-0 ">
+                        <thead class="table-secondary">
+                            <tr>
+                                <th class="text-start">Code</th>
+                                <th class="text-start">Concepto</th>
+                                <th class="text-start">Asignatura</th>
+                                <th class="text-start">Desempeño</th>
+                                <th class="text-start">Accion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for f in cformati %}
+                            <tr>
+                                <td class="text-start">
+                                    <a href="{{ url_for('cformativo.index',
+                                                    codeform=f['codeform'],
+                                                    searcharea=searcharea,
+                                                    niveldesem=niveldesem,
+                                                    nivel_radio=nivel_radio,
+                                                    nombrearea=nombrearea
+                                                    ) }}">
+                                        {{ f['codeform'] }}
+                                    </a>
+                                </td>
+                                <td class="text-start">{{ f['concepto'] }}</td>
+                                <td class="text-start">{{ f['nombre'] }}</td>
+                                <td class="text-start">{{ f['notatt'] }}</td>
+                                <!-- Botón Eliminar -->
+                                <td>
+                                    <form method="POST"
+                                        action="{{ url_for('cformativo.delete_formativo', codeform= f['codeform'] ) }}">
+                                        <input type="hidden" name="searchform" value="{{ searchform }}">
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('¿Seguro que deseas eliminar este registro?');">
+                                            Eliminar
+                                        </button>
+                                    </form>
+
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="text-start text-muted">
+                                    No hay profesores registrados
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+<script>
+const chkGrado    = document.getElementById('chk_elarea');
+const selectGrado = document.getElementById('nivelarea');
+const inputGrado  = document.getElementById('nivelareat');
+const hiddenGrado = document.getElementById('nivelareat_hidden');
+
+
+
+// 1️⃣ Al marcar / desmarcar el checkbox
+chkGrado.addEventListener('change', function () {
+
+    if (this.checked) {
+        cargarGradoSeleccionado();
+    } else {
+        inputGrado.value = '';
+        hiddenGrado.value = '';
+    }
+});
+
+// 2️⃣ Al cambiar el dropdown (SOLO si el checkbox está marcado)
+selectGrado.addEventListener('change', function () {
+
+    if (chkGrado.checked) {
+        cargarGradoSeleccionado();
+    }
+});
+
+// Función centralizada (validación incluida)
+function cargarGradoSeleccionado() {
+
+    const selectedOption = selectGrado.options[selectGrado.selectedIndex];
+
+    if (selectedOption && selectedOption.value !== '') {
+        inputGrado.value = selectedOption.text;
+        hiddenGrado.value = selectedOption.value;
+    } else {
+        inputGrado.value = '';
+        hiddenGrado.value = '';
+    }
+}
+</script>
+
+
+
+<!-- carga asignatura FILA 6-->
+ <script>
+
+
+const chkasig = document.getElementById("chk_asignatura");
+const selasig = document.getElementById("nivelasignatura"); 
+const inputtxt = document.getElementById("nivelasignaturat");
+const hiddentxt = document.getElementById("nivelasignaturat_hidden");
+
+// 1️⃣ Al marcar / desmarcar el checkbox
+chkasig.addEventListener('change', function () {
+
+    if (this.checked) {
+        cargarAsigSeleccionado();
+    } else {
+        inputtxt.value = '';
+        hiddentxt.value = '';
+    }
+});
+
+// 2️⃣ Al cambiar el dropdown (SOLO si el checkbox está marcado)
+selasig.addEventListener('change', function () {
+
+    if (chkasig.checked) {
+        cargarAsigSeleccionado();
+    }
+});
+
+// Función centralizada (validación incluida)
+function cargarAsigSeleccionado() {
+
+    const selectedOptionA = selasig.options[selasig.selectedIndex];
+
+    if (selectedOptionA && selectedOptionA.value !== '') {
+        inputtxt.value = selectedOptionA.text;
+        hiddentxt.value = selectedOptionA.value;
+    } else {
+        inputtxt.value = '';
+        hiddentxt.value = '';
+    }
+}
+</script>
+
+
+<!-- carga Nivel desempeño FILA 8-->
+ <script>
+const chkniveld    = document.getElementById('chk_nivel');
+const selectdesemp = document.getElementById('niveldesemp');
+const inputdesemp  = document.getElementById('niveldesemt');
+const hiddendesemp = document.getElementById('niveldesemt_hidden');
+
+
+// 1️⃣ Al marcar / desmarcar el checkbox
+chkniveld.addEventListener('change', function () {
+
+    if (this.checked) {
+        cargardesempSeleccionado();
+    } else {
+        inputdesemp.value = '';
+        hiddendesemp.value = '';
+    }
+});
+
+// 2️⃣ Al cambiar el dropdown (SOLO si el checkbox está marcado)
+selectdesemp.addEventListener('change', function () {
+
+    if (chkniveld.checked) {
+        cargardesempSeleccionado();
+    }
+});
+
+// Función centralizada (validación incluida)
+function cargardesempSeleccionado() {
+
+    const selectedOptiond = selectdesemp.options[selectdesemp.selectedIndex];
+
+    if (selectedOptiond && selectedOptiond.value !== '') {
+        inputdesemp.value = selectedOptiond.text;
+        hiddendesemp.value = selectedOptiond.value;
+    } else {
+        inputdesemp.value = '';
+        hiddendesemp.value = '';
+    }
+}
+</script>
+
+
+<!-- este escript lee el radiobutton externo del nivel escolar y lo manda con el boton buscar-->
+ <!--document.querySelector("formBuscar").addEventListener("submit", function() {-->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+document.getElementById("formBuscar").addEventListener("submit", function() {    
+    let radioSeleccionado = document.querySelector("input[name='nivel_radio']:checked");
+    if (radioSeleccionado) {
+        document.getElementById("nivel_radio_hidden").value = radioSeleccionado.value;
+    
+    }
+});
+});
+
+</script>
+
+<!-- este bloque script carga el radiobutton de los niveles de desempeño-->
+<script>
+document.querySelectorAll("input[name='nivel_radio']").forEach(radio => {
+    radio.addEventListener("change", function () {
+
+        let nivel = this.value;
+
+        // Redirigir enviando el nivel seleccionado
+        let url = new URL(window.location.href);
+        url.searchParams.set("nivel_radio", nivel);
+
+        window.location.href = url.toString();
+    });
+});
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const chkArea = document.getElementById("chk_elarea");
+    const selArea = document.getElementById("nivelarea");
+    const selAsignatura = document.getElementById("nivelasignatura");
+
+    chkArea.addEventListener("change", function() {
+
+        if (!this.checked) return;
+
+        let codearea = selArea.value;
+        let nivelRadio = document.querySelector("input[name='nivel_radio']:checked");
+
+        if (!codearea) {
+            alert("Seleccione un área primero");
+            return;
+        }
+
+        let nivel = nivelRadio ? nivelRadio.value : "";
+
+        fetch(`/cformativo/materias_por_area?codearea=${codearea}&nivel_radio=${nivel}`)
+            .then(response => response.json())
+            .then(data => {
+
+                // limpiar select
+                selAsignatura.innerHTML = "";
+
+                if (data.length === 0) {
+                    // si no hay materias, usar el nombre del área
+                    let option = document.createElement("option");
+                    option.value = codearea;
+                    option.text = selArea.options[selArea.selectedIndex].text;
+                    selAsignatura.appendChild(option);
+                } else {
+                    data.forEach(mat => {
+                        let option = document.createElement("option");
+                        option.value = mat.codemate;
+                        option.text = mat.nombre;
+                        selAsignatura.appendChild(option);
+                    });
+                }
+
+            })
+            .catch(error => console.error("Error cargando materias:", error));
+
+    });
+    selArea.addEventListener("change", () => {
+    chkArea.checked = false;
+    const txt = document.getElementById("nivelareat");
+    txt.value="";
+    const chk = document.getElementById("chk_asignatura");
+    chk.checked=false;
+    const txtasig = document.getElementById("nivelasignaturat");
+    txtasig.value="";
+
+});
+
+});
+</script>
+<!-- este bloque script envia el nombre del area en modo oculto-->
+<script>
+document.getElementById("searcharea").addEventListener("change", function(){
+    let nombre = this.options[this.selectedIndex].dataset.nombre;
+    document.getElementById("nombrearea").value = nombre || "";
+});
+</script>
+{% endblock %}

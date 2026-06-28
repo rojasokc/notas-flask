@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Título{% endblock %}</title>
+
+    <!-- Bootstrap opcional (más bonito que CSS crudo) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<style>
+/* ===== NAVBAR BASE ===== */
+nav {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    position: relative;
+}
+
+/* ===== LINKS PRINCIPALES ===== */
+nav ul li > a {
+    text-decoration: none;
+    padding: 8px 14px;
+    font-weight: 600;
+    color: #333;
+    border-radius: 6px;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+
+
+/* ===== DROPDOWN PEGADO ===== #0d6efd;*/
+nav ul li ul {
+    display: none;
+    position: absolute;
+    top: 100%;           /* PEGADO */
+    left: 0;
+    margin-top: 0;       /* sin espacio */
+    min-width: 220px;
+    background: #ffffff;
+    border-radius: 0 0 0px 0px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    padding: 6px 0;
+    z-index: 1000;
+}
+
+/* Hover continuo */
+nav ul li:hover > ul,
+nav ul li ul:hover {
+    display: block;
+}
+
+/* ===== ITEMS SUBMENU ===== */
+nav ul li ul li a {
+    display: block;
+    padding: 8px 16px;
+    font-weight: 500;
+    color: #444;
+}
+
+nav ul li ul li a:hover {
+    background: #caccd1;
+    color: #0d6efd;
+}
+
+/* Separador */
+nav ul li ul li hr {
+    margin: 6px 0;
+    border-color: #eaeaea;
+}
+
+/* ===== HOVER MENU PRINCIPAL ===== */
+.navbar .nav-link:hover,
+.navbar .nav-link:focus {
+    background-color: #043277; /* azul más fuerte 0b5ed7*/
+    color: #ffffff !important;
+    border-radius: 0px;
+}
+
+/* ===== HOVER SUBMENÚ ===== */
+.dropdown-menu .dropdown-item:hover,
+.dropdown-menu .dropdown-item:focus {
+    background-color: #e9ecef; /* gris claro */
+    color: #000000;
+}
+
+.navbar-nav {
+    gap: 2rem;
+}
+
+.dropdown-menu {
+    border-radius: 0 !important;
+}
+
+</style>
+
+
+<!-- Barra de navegación  {{ url_for('Gestionacade') }} -->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+  <div class="container">
+    
+    <!-- Marca -->
+    <a class="navbar-brand fw-bold text-white" href="#">Skyvic</a>
+    
+
+    <!-- Botón hamburguesa -->
+    <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Menú -->
+    <div class="collapse navbar-collapse justify-content-center " id="navbarMain">
+      <ul class="navbar-nav">
+
+        <!-- Parámetros -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
+            Parámetros Globales
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ url_for('onlyallparam') }}">Parámetros Generales</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('onlyparam') }}">Parámetros de Notas</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('creatablaasignaturas') }}">Tabla de Asignaturas</a></li>
+          </ul>
+        </li>
+
+        <!-- Gestión académica -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
+            Gestión académica
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ url_for('onlycreaprofx') }}">1. Crear profesor</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('onlycreagradx') }}">2. Crear grados</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('creaareas') }}">3. Crear Areas</a></li>
+
+                <li><a class="dropdown-item" href="{{ url_for('creaasignaturas') }}">4. Asignaturas por Grado</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('estudiantes.index') }}">5. Crear Estudiantes</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('addmaterias.index') }}">6. Inscribir Asignaturas</a></li>
+                <li><hr></li>
+                <li><a class="dropdown-item" href="{{ url_for('metasdea.index') }}">Metas de aprendizaje | Competencia laboral</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('cformativo.index') }}">Concepto formativo</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('reporte.index') }}">Reportes</a></li>            
+          </ul>
+        </li>
+
+        <!-- Estudiantes -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
+            Gestión de Estudiantes
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ url_for('onlynotasestudiante') }}">Notas y opciones de estudiante</a></li>
+          </ul>
+        </li>
+        <li>
+
+
+            {% if session.get("level") == "5" %}
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
+                Admin
+            </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ url_for('onlyeditempresa') }}">Administración Instituto</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('onlymoduserppal') }}">Editar - Crear Admin</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('boletin.pre_boletin') }}">PreBoletines</a></li>
+            </ul>
+            </li>
+
+            {% endif %}
+        </li> 
+
+
+      </ul>
+    </div>
+    <a class="btn btn-danger text-white" href="{{ url_for('logout') }}"><strong> Salir</strong></a>
+  </div>
+</nav>
+
+
+<div class="container">
+    <!-- Aquí se injecta el contenido específico -->
+    {% block content %}{% endblock %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+</div>
+
+<!-- Scripts opcionales -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+{% extends "basesub.html" %}
+
+{% block title %}Parametros gen{% endblock %}
+
+{% block content %}
+<h2>Crear Areas</h2>
+
+<div class="container-fluid mt-3">
+
+    <div class="row">
+                <!-- ================== COLUMNA IZQUIERDA : FORMULARIO ================== -->
+        <div class="col-md-7 text-start">
+
+            <form method="POST" action="{{ url_for('save_areas') }}">
+
+                <!-- FILA 1 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Nombre del Area: </label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name="campo1" value="{{ area_sel.nombre if area_sel }}">
+                    </div>
+                </div>
+
+                <!-- FILA 2 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Jefe de Area:</label>
+                    <div class="col-sm-6">
+                         <input type="text" class="form-control" style="background-color:#f2f2f2;" name="jefeareat"
+                            id="jefeareat" readonly value="{{ area_sel.jefearea if area_sel }}">
+                    </div>
+                </div>
+
+                <!-- FILA 2B -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Codigo Jefe de Area:</label>
+                    <div class="col-sm-6">
+                         <input type="text" class="form-control" style="background-color:#f2f2f2;" name="codejefeareat"
+                            id="codejefeareat" readonly value="{{ area_sel.codeprof if area_sel }}">
+                    </div>
+                </div>                
+                
+                <!-- FILA 3 -->
+                <div class="row mb-2 align-items-center">
+                    <label class="col-sm-3 col-form-label text-end">Seleccionar Jefe de Area:</label>
+                    <div class="col-sm-4">
+
+                        <div class="col-sm-7">
+                            <select class="form-select" name="codejefea" id="codejefea">
+                                <option value=""> Seleccione --</option>
+
+                                {% for d in jefearealist %}
+                                <option value="{{ d.codeprof }}">
+                                    {{ d.totname }}
+                                </option>
+                                {% endfor %}
+                            </select>
+
+                        </div>
+
+                    </div>
+                    <div class="col-sm-2 text-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="chk_jefearealist" id="chk_jefearealist"
+                                value="1">
+                            <label class="form-check-label" for="chk_jefearealist">
+                                Activo
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="row mt-3">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-5">
+
+                        {% if area_sel %}
+                        <!-- ACTUALIZAR -->
+                        <button type="submit" formaction="{{ url_for('update_area', codearea=area_sel.codearea) }}"
+                            class="btn btn-warning me-2">
+                            Actualizar Area
+                        </button>
+
+                        <!-- LIMPIAR -->
+                        <a href="{{ url_for('creaareas') }}" class="btn btn-secondary">
+                            Limpiar
+                        </a>
+                        {% else %}
+                        <!-- GUARDAR -->
+                        <button type="submit" class="btn btn-primary">
+                            Guardar Area
+                        </button>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <!-- LADO DERECHO -->
+                <!-- ================== COLUMNA DERECHA : GRID Grados ================== -->
+        <div class="col-md-5">
+            <!-- Buscador -->
+            <form method="GET" action="{{ url_for('creaareas') }}" class="row g-3 mb-3">
+                <div class="col-auto">
+                    Buscar x Area:
+                </div>
+                <div class="col-auto">
+
+                    <input type="text" class="form-control" name="searchareas" placeholder="Buscar por grado..."
+                        value="{{ searchareas }}">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-secondary">
+                        Buscar
+                    </button>
+                </div>
+            </form>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <strong>Areas creadas</strong>
+                </div>
+
+                <div class="card-body p-0 ">
+
+                    <table class="table table-sm table-striped mb-0 ">
+                        <thead class="table-secondary">
+                            <tr>
+                                <th class="text-start">Código</th>
+                                <th class="text-start">Area</th>
+                                <th class="text-start">Jefe de area</th>
+                                <th class="text-start">Accion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for a in areas %}
+                            <tr>
+                                <td class="text-start">
+                                    <a href="{{ url_for('creaareas',
+                                                    codearea=a['codearea'],
+                                                    searchareas=searchareas) }}">
+                                        {{ a['codearea'] }}
+                                    </a>
+                                </td>
+                                <td class="text-start">{{ a['nombre'] }}</td>
+                                <td class="text-start">{{ a['jefearea'] }}</td>
+                                <!-- Botón Eliminar -->
+                                <td>
+                                    <form method="POST"
+                                        action="{{ url_for('delete_area', codearea= a['codearea'] ) }}">
+                                        <input type="hidden" name="searchareas" value="{{ searchareas }}">
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('¿Seguro que deseas eliminar este registro?');">
+                                            Eliminar
+                                        </button>
+                                    </form>
+
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="text-start text-muted">
+                                    No hay profesores registrados
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const chk = document.getElementById("chk_jefearealist");
+        const sel = document.getElementById("codejefea");
+        const txt = document.getElementById("jefeareat");
+        const codetxt = document.getElementById("codejefeareat");
+
+        function copiarNombre3() {
+            const option = sel.options[sel.selectedIndex];
+
+            if (chk.checked == true ) {
+                txt.value = option.text.trim();
+                codetxt.value = option.value;
+            } else {
+                txt.value = "";
+                codetxt.value = "";
+            }
+        }
+
+        // Checkbox
+        chk.addEventListener("click", copiarNombre3);
+
+        // Cambio de profesor
+        sel.addEventListener("change", () => {
+            // Si el usuario cambia el profesor, activamos automáticamente el checkbox
+
+            copiarNombre3();
+        });
+
+    });
+</script>
+
+{% endblock %}
