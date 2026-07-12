@@ -31,7 +31,14 @@ def cargar_parametros():
         "ALECTIVO_ACTUAL": p["alectivo"],
         #"PERIODO_ACTUAL": periodo,
         "SCODEEMP": p["scodeemp"],
-        "NIVELESCO": "BACHIL"
+        "NIVELESCO": "BACHIL",
+        # Porcentajes de los períodos
+        "PORC_PER1": float(p["valporper1"] or 0) / 100,
+        "PORC_PER2": float(p["valporper2"] or 0) / 100,
+        "PORC_PER3": float(p["valporper3"] or 0) / 100,
+        "PORC_PER4": float(p["valporper4"] or 0) / 100,
+        "PORC_PER5": float(p["valporper5"] or 0) / 100,
+
     }
 
 def init_config(app):
@@ -41,6 +48,11 @@ def init_config(app):
     #app.config["PERIODO_ACTUAL"] = params.get("PERIODO_ACTUAL")
     app.config["SCODEEMP"] = params.get("SCODEEMP")
     app.config["NIVELESCO"] = params.get("NIVELESCO")
+    app.config["VALPORPER1"] = params.get("PORC_PER1")
+    app.config["VALPORPER2"] = params.get("PORC_PER2")
+    app.config["VALPORPER3"] = params.get("PORC_PER3")
+    app.config["VALPORPER4"] = params.get("PORC_PER4")
+    app.config["VALPORPER5"] = params.get("PORC_PER5")
 
 def reload_config(app):
     params = cargar_parametros()
@@ -50,4 +62,16 @@ def reload_config(app):
     app.config["SCODEEMP"] = params.get("SCODEEMP")
     app.config["NIVELESCO"] = params.get("NIVELESCO")
     pp = params.get("PERIODO_ACTUAL")
-    print(f'verificando reload parametros: {pp}')
+    app.config["VALPORPER1"] = params.get("PORC_PER1")
+    app.config["VALPORPER2"] = params.get("PORC_PER2")
+    app.config["VALPORPER3"] = params.get("PORC_PER3")
+    app.config["VALPORPER4"] = params.get("PORC_PER4")
+    app.config["VALPORPER5"] = params.get("PORC_PER5")
+
+    #app.config["VALPORPER1"] = params.get("VALPORPER1")
+    #app.config["VALPORPER2"] = params.get("VALPORPER2")
+    #app.config["VALPORPER3"] = params.get("VALPORPER3")
+    #app.config["VALPORPER4"] = params.get("VALPORPER4")
+    #app.config["VALPORPER5"] = params.get("VALPORPER5")
+
+    #print(f'verificando reload parametros: {pp}')

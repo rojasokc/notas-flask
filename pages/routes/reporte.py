@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from db import get_db_connection   # ajusta el import según tu proyecto
 from datetime import date, datetime
 from flask import current_app
+from config_loader import cargar_parametros
 
 #SCODEEMP = "31"
 #from config import (
@@ -19,11 +20,21 @@ from flask import current_app
 #SCODEEMP = "31"
 #NIVELESCO = "BACHIL"
 
+
 reporte_bp = Blueprint(
     'reporte',
     __name__,
     url_prefix='/reporte'
 )
+
+config = cargar_parametros()
+
+P1 = config["PORC_PER1"]
+P2 = config["PORC_PER2"]
+P3 = config["PORC_PER3"]
+P4 = config["PORC_PER4"]
+P5 = config["PORC_PER5"]
+
 
 
 @reporte_bp.route('/')
@@ -401,6 +412,9 @@ def index():
             total_found = len(estudents)
     
     if chk_min3erper:
+        # para calcular la nota mínima que debe obtener el estudiante en el tercer período para alcanzar una nota final de 3.0
+        # (3 - promedio_actual) / porcentaje_periodo3
+        # linea original: SUM(3-((calimate.nota1*.40)+(calimate.nota2*.30)))/.30 as promfinal, 
         query = """
             SELECT 
             estudents.*,
@@ -409,7 +423,7 @@ def index():
             DATEDIFF(NOW( ) ,
             STR_TO_DATE(fechnac, '%m/%d/%Y') )/365 as edad, 
             TIMESTAMPDIFF(YEAR,STR_TO_DATE(fechnac, '%m/%d/%Y'),CURDATE()) AS edad2, 
-            SUM(3-((calimate.nota1*.40)+(calimate.nota2*.30)))/.30 as promfinal, 
+            SUM(3-((calimate.nota1*%s)+(calimate.nota2*%s)))/%s as promfinal, 
             materia.nombre as matnombre,
             calimate.codecalm 
             FROM estudents,colgrados,calimate,materia,areasxmate 
@@ -420,7 +434,7 @@ def index():
             and trim(estudents.scodeemp) = %s 
         """
         ##+ filter() + grupo4 + having4
-        params = [SCODEEMP]
+        params = [P1,P2,P3,SCODEEMP]
 
         if chk_pornivelogrado == 'grado':
             query += " AND TRIM(colgrados.codegrad) = %s"
