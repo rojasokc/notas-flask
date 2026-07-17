@@ -178,6 +178,9 @@ def index():
     chk_promxgrado = bool(request.args.get("chk_promxgrado", ""))
     chk_min3erper = bool(request.args.get("chk_min3erper", ""))
 
+    cualrango = request.args.get("cualrango", "").strip()
+    
+
     chk_promtotxest = bool(request.args.get("chk_promtotxest"))
     
     prommayorq = request.args.get("prommayorq", "")
@@ -241,6 +244,18 @@ def index():
     
     print("cualnivelgrado:", cualnivelgrado)
     
+
+    cursor.execute("""
+        SELECT rangoini, notatt, nivelesco, codeobse
+        FROM observa
+        WHERE TRIM(scodeemp) = %s
+        AND nivelesco = %s
+        AND CHAR_LENGTH(notatt) > 1
+        ORDER BY rangoini DESC
+    """, (SCODEEMP, nivelesco))
+
+    observa_rango_sel = cursor.fetchall()
+
 
     having5 = "" 
     grupo5 = ""
@@ -415,6 +430,8 @@ def index():
         # para calcular la nota mínima que debe obtener el estudiante en el tercer período para alcanzar una nota final de 3.0
         # (3 - promedio_actual) / porcentaje_periodo3
         # linea original: SUM(3-((calimate.nota1*.40)+(calimate.nota2*.30)))/.30 as promfinal, 
+
+
         query = """
             SELECT 
             estudents.*,
@@ -423,7 +440,7 @@ def index():
             DATEDIFF(NOW( ) ,
             STR_TO_DATE(fechnac, '%m/%d/%Y') )/365 as edad, 
             TIMESTAMPDIFF(YEAR,STR_TO_DATE(fechnac, '%m/%d/%Y'),CURDATE()) AS edad2, 
-            SUM(3-((calimate.nota1*%s)+(calimate.nota2*%s)))/%s as promfinal, 
+            SUM(%s-((calimate.nota1*%s)+(calimate.nota2*%s)))/%s as promfinal, 
             materia.nombre as matnombre,
             calimate.codecalm 
             FROM estudents,colgrados,calimate,materia,areasxmate 
@@ -434,12 +451,13 @@ def index():
             and trim(estudents.scodeemp) = %s 
         """
         ##+ filter() + grupo4 + having4
-        params = [P1,P2,P3,SCODEEMP]
+        params = [cualrango,P1,P2,P3,SCODEEMP]
 
         if chk_pornivelogrado == 'grado':
             query += " AND TRIM(colgrados.codegrad) = %s"
             params.append(codegrad1)
 
+        ##AQUI SI SE ESCOGE UN ESTUDIANTE
         if chk_gen:
             query += " AND TRIM(estudents.genero) = %s"
             params.append(cualgen)
@@ -949,7 +967,8 @@ def index():
     chk_aprobo=chk_aprobo,
     chk_reprobo=chk_reprobo,
     chk_otrocaso=chk_otrocaso,
-    periodo=periodo
+    periodo=periodo,
+    observa_rango_sel=observa_rango_sel
      
            )
 

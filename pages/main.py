@@ -2046,18 +2046,42 @@ def get_grados_por_nivel():
     cursor.execute(sql, (scodeemp, nivelesco))
     grados = cursor.fetchall()
 
+    cursor.execute("""
+        SELECT rangoini, notatt, nivelesco, codeobse
+        FROM observa
+        WHERE TRIM(scodeemp) = %s
+        AND nivelesco = %s
+        AND CHAR_LENGTH(notatt) > 1
+        ORDER BY rangoini DESC
+    """, (scodeemp, nivelesco))
+
+    observa_rango = cursor.fetchall()
+
+
     cursor.close()
     conn.close()
 
     #return jsonify(grados)
-    return jsonify([
+    return jsonify({
+        "grados": [
             {
                 "codegrad": row["codegrad"],
                 "gradox": row["gradox"],
                 "nivelgrado": row["nivelgrado"]
             }
             for row in grados
-        ])
+        ],
+
+        "rangos": [
+            {
+                "rangoini": row["rangoini"],
+                "notatt": row["notatt"],
+                "nivelesco": row["nivelesco"],
+                "codeobse": row["codeobse"]
+            }
+            for row in observa_rango
+        ]
+    })
 
 @app.route('/save_materia', methods=['POST'])
 def save_materia():

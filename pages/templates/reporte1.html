@@ -402,6 +402,16 @@
                                                                         </label>
 
                                                                 </div>
+                                                                <div class="input-group input-group-sm"
+                                                                        style="max-width: 120px;">
+
+                                                                        <select id="cualrango" name="cualrango" class="form-select"
+                                                                         data-selected="{{ request.form.get('cualrango','') }}">
+                                                                        <option value="">Seleccione rango --</option>
+
+                                                                        </select>
+
+                                                                </div>
 
                                                                 <!-- Radios en línea -->
                                                                 <div class="mt-1">
@@ -1692,8 +1702,60 @@ document
     });
 
 </script>
+<script>
 
+        function cargarDatos(nivelesco) {
 
+    fetch(`/get_grados_por_nivel?nivelesco=${nivelesco}`)
+        .then(response => response.json())
+        .then(data => {
 
+            const select = document.getElementById('cualgrado');
+            select.innerHTML = '<option value="">Seleccione grado --</option>';
+
+            data.grados.forEach(grado => {
+
+                const option = document.createElement('option');
+                option.value = grado.codegrad;
+                option.textContent = grado.gradox;
+
+                select.appendChild(option);
+
+            });
+
+            const selectRango = document.getElementById('cualrango');
+
+            selectRango.innerHTML = '<option value="">Seleccione rango --</option>';
+
+            data.rangos.forEach(rango => {
+
+                const option = document.createElement('option');
+                option.value = rango.rangoini;
+                option.textContent = `${rango.rangoini} - ${rango.notatt}`;
+
+                selectRango.appendChild(option);
+
+            });
+
+        });
+
+}
+</script>
+
+<script>
+        const radioSeleccionado = document.querySelector('input[name="nivel_radio"]:checked');
+
+if (radioSeleccionado) {
+
+    let nivelesco = '';
+
+    if (radioSeleccionado.value === '1') nivelesco = 'PREBAS';
+    if (radioSeleccionado.value === '2') nivelesco = 'PRIMAR';
+    if (radioSeleccionado.value === '3') nivelesco = 'BACHIL';
+
+    cargarDatos(nivelesco);
+
+}
+</script>
 
 {% endblock %}
