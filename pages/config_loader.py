@@ -67,11 +67,4 @@ def reload_config(app):
     app.config["VALPORPER3"] = params.get("PORC_PER3")
     app.config["VALPORPER4"] = params.get("PORC_PER4")
     app.config["VALPORPER5"] = params.get("PORC_PER5")
-
-    #app.config["VALPORPER1"] = params.get("VALPORPER1")
-    #app.config["VALPORPER2"] = params.get("VALPORPER2")
-    #app.config["VALPORPER3"] = params.get("VALPORPER3")
-    #app.config["VALPORPER4"] = params.get("VALPORPER4")
-    #app.config["VALPORPER5"] = params.get("VALPORPER5")
-
     #print(f'verificando reload parametros: {pp}')
