@@ -4,6 +4,7 @@ from datetime import date, datetime
 from flask import current_app
 from config_loader import cargar_parametros
 
+
 #SCODEEMP = "31"
 #from config import (
 #    #ALECTIVO_ACTUAL,

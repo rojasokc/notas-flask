@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             cargarDatos(nivelesco);
 
+            
             /*
             fetch(`/get_grados_por_nivel?nivelesco=${nivelesco}`)
                 .then(response => response.json())
