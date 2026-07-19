@@ -27,13 +27,13 @@ reporte_bp = Blueprint(
     url_prefix='/reporte'
 )
 
-config = cargar_parametros()
+#config = cargar_parametros()
 
-P1 = config["PORC_PER1"]
-P2 = config["PORC_PER2"]
-P3 = config["PORC_PER3"]
-P4 = config["PORC_PER4"]
-P5 = config["PORC_PER5"]
+#P1 = config["PORC_PER1"]
+#P2 = config["PORC_PER2"]
+#P3 = config["PORC_PER3"]
+#P4 = config["PORC_PER4"]
+#P5 = config["PORC_PER5"]
 
 
 
@@ -430,7 +430,11 @@ def index():
         # para calcular la nota mínima que debe obtener el estudiante en el tercer período para alcanzar una nota final de 3.0
         # (3 - promedio_actual) / porcentaje_periodo3
         # linea original: SUM(3-((calimate.nota1*.40)+(calimate.nota2*.30)))/.30 as promfinal, 
-
+        P1 = current_app.config["PORC_PER1"]
+        P2 = current_app.config["PORC_PER2"]
+        P3 = current_app.config["PORC_PER3"]
+        P4 = current_app.config["PORC_PER4"]
+        P5 = current_app.config["PORC_PER5"]
 
         query = """
             SELECT 

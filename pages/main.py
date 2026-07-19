@@ -9,6 +9,7 @@ from config_loader import reload_config
 from flask import current_app
 from flask import request, Response
 from dotenv import load_dotenv 
+from config_loader import cargar_parametros
 
 load_dotenv()
 
@@ -69,6 +70,17 @@ RUTAS_PUBLICAS = ["/voice"]
 
 @app.before_request
 def verificar_login():
+        # Cargar configuración una vez por petición
+    if "CONFIG_CARGADA" not in current_app.config:
+        config = cargar_parametros()
+
+        current_app.config["PORC_PER1"] = config["PORC_PER1"]
+        current_app.config["PORC_PER2"] = config["PORC_PER2"]
+        current_app.config["PORC_PER3"] = config["PORC_PER3"]
+        current_app.config["PORC_PER4"] = config["PORC_PER4"]
+        current_app.config["PORC_PER5"] = config["PORC_PER5"]
+
+        current_app.config["CONFIG_CARGADA"] = True    
 
     if request.path in RUTAS_PUBLICAS:
         return
