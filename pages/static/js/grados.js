@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     select.innerHTML = '<option value="">Seleccione grado --</option>';
 
 
-                    data.forEach(grado => {
+                    data.grados.forEach(grado => {
 
                         const option = document.createElement('option');
                         option.value = grado.codegrad;
